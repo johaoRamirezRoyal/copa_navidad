@@ -6,3 +6,8 @@ include_once VISTA_PATH . 'header.php';
 ?>
 
 <h1>INICIO</h1>
+<button class="btn-danger btn">Botón de prueba</button>
+
+<?php
+
+include_once VISTA_PATH . 'script_and_final.php';

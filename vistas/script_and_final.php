@@ -5,4 +5,6 @@
 
 <!-- Core plugin JavaScript-->
 <script src="<?=PUBLIC_PATH?>vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="<?=PUBLIC_PATH?>js/bootstrap.bundle.min.js"></script>
+<script src="<?=PUBLIC_PATH?>js/bootstrap-select.min.js"></script>
 

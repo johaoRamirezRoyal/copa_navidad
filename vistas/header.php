@@ -47,8 +47,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
     <!-- 🔹 Estilos -->
+    <link rel="stylesheet" href="<?=PUBLIC_PATH?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?=PUBLIC_PATH?>css/bootstrap-select.css">
     <link rel="stylesheet" href="<?=PUBLIC_PATH?>css/main.css">
+    <script src="<?=PUBLIC_PATH?>js/bootstrap.bundle.min.js"></script>
 </head>
 
 
