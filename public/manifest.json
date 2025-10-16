@@ -1,0 +1,44 @@
+{
+  "name": "Copa Navidad",
+  "short_name": "CopaNavidad",
+  "description": "Evento deportivo y escolar donde equipos compiten y celebran la temporada navideña. Consulta horarios, resultados y más.",
+  "lang": "es-CO",
+  "scope": "/copa_navidad/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#fff999",
+  "icons": [
+    {
+      "src": "img/copa_navidad_icono_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/copa_navidad_icono_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "img/copa_navidad_icono_maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["sports", "event", "holiday", "community", "school", "education"],
+  "shortcuts": [
+    {
+      "name": "Resultados",
+      "short_name": "Resultados",
+      "description": "Consulta los resultados más recientes del torneo",
+      "icons": [{ "src": "img/shortcut_resultados.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Equipos",
+      "short_name": "Equipos",
+      "description": "Ver listado de equipos participantes",
+      "icons": [{ "src": "img/shortcut_equipos.png", "sizes": "192x192" }]
+    }
+  ]
+}
