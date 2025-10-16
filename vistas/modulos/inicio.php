@@ -5,12 +5,17 @@ ini_set('display_errors', 1);
 include_once CONTROL_PATH . 'EnlacesControl.php';
 
 require_once CONTROL_PATH . 'deportes' . DS . 'ControlDeportes.php';
+require_once CONTROL_PATH . 'colegios' . DS . 'ControlColegios.php';
 
 include_once VISTA_PATH . 'header.php';
 include_once VISTA_PATH . 'navbar.php';
 
 $instancia_deportes = ControlDeportes::singleton_deportes();
+$instancia_colegios = ControlColegios::singleton_colegios();
+
 $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
+$info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
+//var_dump($info_colegios);
 ?>
 <div class="container-fluid pt-3 mt-4">
     <div class="bg-light py-5">
@@ -56,35 +61,15 @@ $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
             <div class="text-center">
                 <h2 class="fw-bolder mb-5">participating schools</h2>
             </div>
-            <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+            <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <?php foreach($info_colegios as $colegio):?>
                 <div class="col mb-5 mb-5 mb-xl-0">
                     <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" src="https://dummyimage.com/150x150/ced4da/6c757d" alt="..." />
-                        <h5 class="fw-bolder">Ibbie Eckart</h5>
-                        <div class="fst-italic text-muted">Founder &amp; CEO</div>
+                        <img class="img-fluid rounded-circle mb-4 px-4"src="<?= PUBLIC_PATH ?>img/<?= $colegio['logo'] ?>" alt="Imagen de <?= $colegio['nombre'] ?>" />
+                        <h5 class="fw-bolder"><?= $colegio['nombre'] ?></h5>
                     </div>
                 </div>
-                <div class="col mb-5 mb-5 mb-xl-0">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" src="https://dummyimage.com/150x150/ced4da/6c757d" alt="..." />
-                        <h5 class="fw-bolder">Arden Vasek</h5>
-                        <div class="fst-italic text-muted">CFO</div>
-                    </div>
-                </div>
-                <div class="col mb-5 mb-5 mb-sm-0">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" src="https://dummyimage.com/150x150/ced4da/6c757d" alt="..." />
-                        <h5 class="fw-bolder">Toribio Nerthus</h5>
-                        <div class="fst-italic text-muted">Operations Manager</div>
-                    </div>
-                </div>
-                <div class="col mb-5">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" src="https://dummyimage.com/150x150/ced4da/6c757d" alt="..." />
-                        <h5 class="fw-bolder">Malvina Cilla</h5>
-                        <div class="fst-italic text-muted">CTO</div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
