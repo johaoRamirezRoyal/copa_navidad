@@ -3,8 +3,8 @@
         <div class="row align-items-center justify-content-between flex-column flex-sm-row">
             <div class="col-auto">
                 <div class="small m-0 text-white">Copyright &copy; Colegio Real Royal School <?php $anio = new DateTime();
-                                                                    $anio->setTimestamp(time());
-                                                                    echo $anio->format('Y'); ?></div>
+                                                                                                $anio->setTimestamp(time());
+                                                                                                echo $anio->format('Y'); ?></div>
             </div>
             <div class="col-auto">
                 <!-- <a class="link-light small" href="#!">Privacy</a>
@@ -16,3 +16,4 @@
         </div>
     </div>
 </footer>
+</body>

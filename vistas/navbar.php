@@ -29,13 +29,3 @@
         </div>
     </div>
 </nav>
-<!--<nav class="navbar border-bottom border-body">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="<?= PUBLIC_PATH ?>img/copa_navidad_icono.ico" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      Copa Navidad <?php $anio = new DateTime();
-                    $anio->setTimestamp(time());
-                    echo $anio->format('Y'); ?>
-    </a>
-  </div>
-</nav>
