@@ -40,6 +40,8 @@
 }
 
 .loader {
+    
+    display: none !important;
 
     position: fixed;
 
