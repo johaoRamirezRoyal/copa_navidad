@@ -56,23 +56,37 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
             </div>
         </div>
     </section>
-    <section class="py-5 bg-light">
-        <div class="container px-5 my-5">
-            <div class="text-center">
-                <h2 class="fw-bolder mb-5">participating schools</h2>
-            </div>
-            <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <?php foreach($info_colegios as $colegio):?>
+<section class="py-5 bg-light">
+    <style>
+        .logo-img {
+            width: 250px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 100%;
+        }
+    </style>
+
+    <div class="container px-5 my-5">
+        <div class="text-center">
+            <h2 class="fw-bolder mb-5">participating schools</h2>
+        </div>
+
+        <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <?php foreach($info_colegios as $colegio): ?>
                 <div class="col mb-5 mb-5 mb-xl-0">
                     <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4"src="<?= PUBLIC_PATH ?>img/<?= $colegio['logo'] ?>" alt="Imagen de <?= $colegio['nombre'] ?>" />
+                        <img 
+                            class="img-fluid mb-4 px-4 logo-img" 
+                            src="<?= PUBLIC_PATH ?>img/<?= $colegio['logo'] ?>" 
+                            alt="Imagen de <?= $colegio['nombre'] ?>" 
+                        />
                         <h5 class="fw-bolder"><?= $colegio['nombre'] ?></h5>
                     </div>
                 </div>
-                <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
         </div>
-    </section>
+    </div>
+</section>
 </div>
 <!-- Footer-->
 <?php
