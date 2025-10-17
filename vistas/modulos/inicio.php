@@ -26,7 +26,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                         <h1 class="display-5 fw-bolder text-black mb-2">WELCOME TO CHRISTMAS CUP</h1>
                         <p class="lead fw-normal text-black-50 mb-4">For 21 years, the Christmas Cup has been more than just a tournament, it’s a tradition that brings together passion for sports, teamwork, and friendship. Every match is a chance to celebrate our values of respect, unity, and fair play, while creating memories that last a lifetime.</p>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                            <a class="btn btn-danger btn-lg px-4 me-sm-3" href="#features">Get Started</a>
+                            <a class="btn btn-outline-danger btn-lg px-4 me-sm-3" href="#features">Get Started</a>
                             <a class="btn btn-outline-success btn-lg px-4 " href="#!">Learn More</a>
                         </div>
                     </div>

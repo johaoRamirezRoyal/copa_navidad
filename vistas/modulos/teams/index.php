@@ -46,7 +46,6 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         <div class="text-center">
             <h2 class="fw-bolder mb-5">Teams</h2>
         </div>
-
         <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <?php foreach ($info_colegios as $colegio): ?>
                 <?php $id = $colegio['id']; ?>
@@ -62,17 +61,14 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                         <h5 class="fw-bolder"><?= $colegio['nombre'] ?></h5>
                     </div>
                 </div>
-
                 <!-- Modal del colegio -->
                 <div class="modal fade" id="modalColegio<?= $id ?>" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
-
                             <div class="modal-header">
                                 <h5 class="modal-title"><?= $colegio['nombre'] ?></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-5 text-center">
@@ -83,26 +79,15 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                                             style="max-width: 400px;"
                                         />
                                     </div>
-
                                     <div class="col-md-7">
                                         <h1 class="h4 mb-3">Deportes:</h1>
-                                        
                                         <ul class="list-group">
-
                                             <?php 
                                             // Listado de deportes (para evitar repetir código)
-                                            $deportes_lista = [
-                                                "futbol" => "⚽ Fútbol",
-                                                "baloncesto" => "🏀 Baloncesto",
-                                                "voleibol" => "🏐 Voleibol",
-                                                "padel" => "🎾 Pádel",
-                                                "tenis-mesa" => "🏓 Tenis de mesa",
-                                                "tenis" => "🎾 Tenis"
-                                            ];
-
+                                            $deportes_lista = ["futbol" => "⚽ Fútbol","baloncesto" => "🏀 Baloncesto","voleibol" => "🏐 Voleibol","padel" => "🎾 Pádel","tenis-mesa" => "🏓 Tenis de mesa","tenis" => "🎾 Tenis"];
                                             foreach ($deportes_lista as $slug => $nombre): 
                                             ?>
-                                                <div class="mb-4">
+                                                <div class="mb-1">
                                                     <select class="form-select form-select-lg mb-3 select-deporte" 
                                                             data-deporte="<?= $slug ?>" 
                                                             data-idcolegio="<?= $id ?>">
@@ -117,16 +102,13 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                                                     <div id="equipos-<?= $slug ?>-<?= $id ?>" class="p-3 border rounded bg-light" style="display:none;"></div>
                                                 </div>
                                             <?php endforeach; ?>
-
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -134,6 +116,10 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         </div>
     </div>
 </section>
+
+<?php
+include_once VISTA_PATH . 'footer.php'
+?>
 
 <!-- ====================== SCRIPT ====================== -->
 <script>
