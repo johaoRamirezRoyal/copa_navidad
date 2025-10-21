@@ -23,7 +23,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/index">Teams</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>404">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table">Table</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>pricing">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>faq">Rules</a></li>
 
