@@ -22,95 +22,58 @@ $categorias = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $disciplinas = $instancia_disciplinas->obtenerTodosLosDisciplinasControl();
 
 /* -------------------- Helpers -------------------- */
-function slugify($text) {
-    $text = iconv('UTF-8','ASCII//TRANSLIT',$text);
-    $text = preg_replace('/[^a-z0-9]+/i','-',$text);
-    return trim(strtolower($text), '-');
-}
-
-/**
- * Construye árbol top-level => children.
- * Mantiene categorías sueltas como nodo virtual si es necesario.
- */
 function buildCategoryTree(array $cats) {
-    $byId = [];
-    foreach ($cats as $c) $byId[(int)$c['id']] = $c;
-
+    $byId = array_column($cats, null, 'id');
     $tree = [];
     foreach ($cats as $c) {
         if ((int)$c['subcategoria'] === 0) {
             $tree[(int)$c['id']] = ['data' => $c, 'children' => []];
         }
     }
-
     foreach ($cats as $c) {
         $parent = (int)$c['subcategoria'];
         if ($parent === 0) continue;
-
-        // Buscar ancestro top-level
         $anc = $parent;
         while (isset($byId[$anc]) && (int)$byId[$anc]['subcategoria'] !== 0) {
             $anc = (int)$byId[$anc]['subcategoria'];
-            if ($anc === 0) break;
         }
-
-        if ($anc !== 0 && isset($tree[$anc])) {
-            $tree[$anc]['children'][] = $c;
-        } elseif (isset($tree[$parent])) {
-            $tree[$parent]['children'][] = $c;
-        } else {
-            if (!isset($tree[$parent])) {
-                $tree[$parent] = [
-                    'data' => ['id' => $parent, 'nombre' => 'Categoría ' . $parent, 'subcategoria' => 0],
-                    'children' => []
-                ];
-            }
-            $tree[$parent]['children'][] = $c;
+        $target = ($anc !== 0 && isset($tree[$anc])) ? $anc : $parent;
+        if (!isset($tree[$target])) {
+            $tree[$target] = [
+                'data' => ['id' => $target, 'nombre' => 'Categoría ' . $target, 'subcategoria' => 0],
+                'children' => []
+            ];
         }
+        $tree[$target]['children'][] = $c;
     }
-
     return $tree;
+}
+
+function slugify($text) {
+    $text = iconv('UTF-8','ASCII//TRANSLIT',$text);
+    $text = preg_replace('/[^a-z0-9]+/i','-',$text);
+    return trim(strtolower($text), '-');
 }
 
 function disciplinesToList($disciplinas) {
     $out = [];
-    if (!empty($disciplinas) && is_array($disciplinas)) {
-        foreach ($disciplinas as $d) {
-            $nombre = $d['nombre'] ?? $d['nombre_disciplina'] ?? 'Sin nombre';
-            $slug = !empty($d['slug']) ? $d['slug'] : slugify($nombre);
-            $icon = $d['icono'] ?? $d['emoji'] ?? '';
-            $out[$slug] = trim(($icon ? $icon . ' ' : '') . $nombre);
-        }
-    } else {
-        $out['futbol'] = '⚽ Fútbol';
+    foreach ($disciplinas as $d) {
+        $nombre = $d['nombre'] ?? $d['nombre_disciplina'] ?? 'Sin nombre';
+        $slug = !empty($d['slug']) ? $d['slug'] : slugify($nombre);
+        $icon = $d['icono'] ?? $d['emoji'] ?? '';
+        $out[$slug] = trim(($icon ? $icon . ' ' : '') . $nombre);
     }
-    return $out;
+    return $out ?: ['futbol' => '⚽ Fútbol'];
 }
 
-/**
- * Obtiene lista de equipos desde la estructura $dataEquipos (fallback compactado)
- */
 function getEquiposFromData(array $dataEquipos, string $slug, int $catId, int $subId) : array {
-    $equipos = [];
-    if (!isset($dataEquipos[$slug])) return $equipos;
-    $sport = $dataEquipos[$slug];
-
-    if (isset($sport[$catId])) {
-        if (isset($sport[$catId][$subId]) && is_array($sport[$catId][$subId])) {
-            $equipos = $sport[$catId][$subId];
-        } else {
-            // juntar todas las subcategorías bajo catId
-            foreach ($sport[$catId] as $arr) {
-                if (is_array($arr)) $equipos = array_merge($equipos, $arr);
-            }
-        }
-    } else {
-        // fallback juntar todo el deporte
-        foreach ($sport as $catObj2) {
-            foreach ($catObj2 as $subArr) if (is_array($subArr)) $equipos = array_merge($equipos, $subArr);
-        }
-    }
-    return $equipos;
+    $slugNorm = strtolower($slug);
+    $slugNorm = $dataEquipos[$slugNorm] ?? $dataEquipos[ucfirst($slugNorm)] ?? null;
+    if (!$slugNorm || !isset($slugNorm[$catId])) return [];
+    $cat = $slugNorm[$catId];
+    if (isset($cat[$subId]) && is_array($cat[$subId])) return $cat[$subId];
+    if ($subId === 0) return array_merge(...array_filter($cat, 'is_array'));
+    return [];
 }
 
 /* -------------------- Preparar datos -------------------- */
@@ -128,9 +91,9 @@ if (isset($categoriasTree[$templateId])) {
 
 $deportes_lista = disciplinesToList($disciplinas);
 
-// Estructura de ejemplo de equipos (podrías cargar desde BD o archivo)
+// Estructura de ejemplo de equipos (usa slugs en minúsculas)
 $dataEquipos = [
-    'Soccer' => [
+    'futbol' => [
         1 => [1 => ["Leones FC","Tigres Dorados","Águilas del Norte"], 2 => ["Equipo A Sub2"]],
         2 => [1 => ["Estrellas Femeninas","Las Panteras","Juvenil Rosa"], 2 => []],
         3 => [1 => ["Los Amigos","Furia Mixta","Los Cracks"], 2 => []],
@@ -245,6 +208,7 @@ $dataEquipos = [
                                                                             <?php foreach ($children as $child):
                                                                                 $subId = (int)$child['id'];
                                                                                 $tituloSub = htmlspecialchars($child['nombre'], ENT_QUOTES);
+                                                                                // Usa el slug original, NO el escapado
                                                                                 $equipos = getEquiposFromData($dataEquipos, $slug, (int)$catId, $subId);
                                                                             ?>
                                                                             <div class="accordion-item">
@@ -298,3 +262,11 @@ $dataEquipos = [
 </section>
 
 <?php include_once VISTA_PATH . 'footer.php' ?>
+
+<?php
+// Prueba rápida de la función getEquiposFromData
+echo '<pre>';
+print_r(getEquiposFromData($dataEquipos, 'futbol', 1, )); // Debería mostrar ["Leones FC","Tigres Dorados","Águilas del Norte"]
+print_r(getEquiposFromData($dataEquipos, 'voleibol', 2, 1)); // Debería mostrar ["Volley Queens","Power Smash","Jump Stars"]
+print_r(getEquiposFromData($dataEquipos, 'futbol', 1, 0)); // Debería mostrar todos los equipos de la categoría 1 de fútbol
+echo '</pre>';

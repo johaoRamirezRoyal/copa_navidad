@@ -98,7 +98,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                             <p>América de Cali</p>
                         </div>
                         <div>
-                            <p class="score mb-0">0 (8) - (7) 1</p>
+                            <p class="score mb-0">0 - 1</p>
                             <small>vs</small>
                         </div>
                         <div>
