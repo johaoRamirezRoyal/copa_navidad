@@ -1,60 +1,81 @@
 <?php
+// Activa la visualización de todos los errores PHP
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Incluye los controladores necesarios para manejar enlaces y entidades
 include_once CONTROL_PATH . 'EnlacesControl.php';
 require_once CONTROL_PATH . 'deportes' . DS . 'ControlDeportes.php';
 require_once CONTROL_PATH . 'colegios' . DS . 'ControlColegios.php';
 require_once CONTROL_PATH . 'categorias' . DS . 'ControlCategorias.php';
 require_once CONTROL_PATH . 'disciplinas' . DS . 'ControlDisciplinas.php';
+require_once CONTROL_PATH . 'equipos' . DS . 'ControlEquipos.php';
 
+// Incluye la cabecera y barra de navegación de la vista
 include_once VISTA_PATH . 'header.php';
 include_once VISTA_PATH . 'navbar.php';
 
+// Instancia los controladores usando el patrón singleton
 $instancia_deportes = ControlDeportes::singleton_deportes();
 $instancia_colegios = ControlColegios::singleton_colegios();
 $instancia_categorias = ControlCategorias::singleton_categorias();
 $instancia_disciplinas = ControlDisciplinas::singleton_disciplinas();
+$instancia_equipos = ControlEquipos::singleton_equipos();
 
+// Obtiene los datos de deportes, colegios, categorías, disciplinas y equipos
 $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
 $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
 $categorias = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $disciplinas = $instancia_disciplinas->obtenerTodosLosDisciplinasControl();
+$equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
+
+/* Muestra los datos de equipos en la consola del navegador y en formato legible en HTML 
+echo '<script>console.log(' . json_encode($equipos) . ');</script>';
+echo '<pre>';
+var_dump($equipos);
+echo '</pre>'; */
 
 /* -------------------- Helpers -------------------- */
+
+// Construye un árbol de categorías a partir de un array plano
 function buildCategoryTree(array $cats) {
-    $byId = array_column($cats, null, 'id');
+    $byId = array_column($cats, null, 'id'); // Indexa por id
     $tree = [];
     foreach ($cats as $c) {
-        if ((int)$c['subcategoria'] === 0) {
-            $tree[(int)$c['id']] = ['data' => $c, 'children' => []];
+        $subcat = isset($c['subcategoria']) ? (int)$c['subcategoria'] : 0;
+        if ($subcat === 0) {
+            $tree[(int)$c['id']] = ['data' => $c, 'children' => []]; // Categoría principal
         }
     }
     foreach ($cats as $c) {
-        $parent = (int)$c['subcategoria'];
-        if ($parent === 0) continue;
+        $parent = isset($c['subcategoria']) ? (int)$c['subcategoria'] : 0;
+        if ($parent === 0) continue; // Si no tiene padre, ya está en el árbol
         $anc = $parent;
-        while (isset($byId[$anc]) && (int)$byId[$anc]['subcategoria'] !== 0) {
+        // Busca el ancestro principal
+        while (isset($byId[$anc]) && (isset($byId[$anc]['subcategoria']) && (int)$byId[$anc]['subcategoria'] !== 0)) {
             $anc = (int)$byId[$anc]['subcategoria'];
         }
         $target = ($anc !== 0 && isset($tree[$anc])) ? $anc : $parent;
+        // Si el ancestro no existe, crea una categoría genérica
         if (!isset($tree[$target])) {
             $tree[$target] = [
                 'data' => ['id' => $target, 'nombre' => 'Categoría ' . $target, 'subcategoria' => 0],
                 'children' => []
             ];
         }
-        $tree[$target]['children'][] = $c;
+        $tree[$target]['children'][] = $c; // Añade como hijo
     }
     return $tree;
 }
 
+// Convierte un texto en un slug amigable para URLs
 function slugify($text) {
-    $text = iconv('UTF-8','ASCII//TRANSLIT',$text);
-    $text = preg_replace('/[^a-z0-9]+/i','-',$text);
-    return trim(strtolower($text), '-');
+    $text = iconv('UTF-8','ASCII//TRANSLIT',$text); // Elimina acentos
+    $text = preg_replace('/[^a-z0-9]+/i','-',$text); // Reemplaza caracteres no válidos por guiones
+    return trim(strtolower($text), '-'); // Minúsculas y sin guiones al inicio/fin
 }
 
+// Convierte las disciplinas en una lista asociativa slug => nombre
 function disciplinesToList($disciplinas) {
     $out = [];
     foreach ($disciplinas as $d) {
@@ -66,9 +87,10 @@ function disciplinesToList($disciplinas) {
     return $out ?: ['futbol' => '⚽ Fútbol'];
 }
 
-function getEquiposFromData(array $dataEquipos, string $slug, int $catId, int $subId) : array {
+// Obtiene los equipos según deporte, categoría y subcategoría
+function getEquiposFromData(array $equipos, string $slug, int $catId, int $subId) : array {
     $slugNorm = strtolower($slug);
-    $slugNorm = $dataEquipos[$slugNorm] ?? $dataEquipos[ucfirst($slugNorm)] ?? null;
+    $slugNorm = $equipos[$slugNorm] ?? $equipos[ucfirst($slugNorm)] ?? null;
     if (!$slugNorm || !isset($slugNorm[$catId])) return [];
     $cat = $slugNorm[$catId];
     if (isset($cat[$subId]) && is_array($cat[$subId])) return $cat[$subId];
@@ -77,9 +99,11 @@ function getEquiposFromData(array $dataEquipos, string $slug, int $catId, int $s
 }
 
 /* -------------------- Preparar datos -------------------- */
+
+// Construye el árbol de categorías
 $categoriasTree = buildCategoryTree($categorias);
 
-// Si quieres clonar hijos de plantilla a top-level vacíos (opcional, deja o cambia $templateId)
+// Clona los hijos de una plantilla a las categorías vacías (opcional)
 $templateId = 1;
 if (isset($categoriasTree[$templateId])) {
     $tplChildren = $categoriasTree[$templateId]['children'];
@@ -89,9 +113,10 @@ if (isset($categoriasTree[$templateId])) {
     unset($n);
 }
 
+// Convierte las disciplinas en una lista para mostrar
 $deportes_lista = disciplinesToList($disciplinas);
 
-// Estructura de ejemplo de equipos (usa slugs en minúsculas)
+// Estructura de ejemplo de equipos por deporte, categoría y subcategoría
 $dataEquipos = [
     'futbol' => [
         1 => [1 => ["Leones FC","Tigres Dorados","Águilas del Norte"], 2 => ["Equipo A Sub2"]],
@@ -133,6 +158,7 @@ $dataEquipos = [
 ?>
 <section class="py-5 bg-light">
     <style>
+        /* Estilos para los logos y nombres de colegios */
         .logo-img{width:150px;height:150px;object-fit:cover;border-radius:100%;transition:transform .2s,box-shadow .2s;cursor:pointer}
         .logo-img:hover{transform:scale(1.05);box-shadow:0 0 10px rgba(0,0,0,.3) }
         .school-name{color:inherit;text-decoration:none}
@@ -143,17 +169,19 @@ $dataEquipos = [
         <div class="text-center"><h2 class="fw-bolder mb-5">Teams</h2></div>
         <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <?php foreach ($info_colegios as $colegio): 
-                $id = (int)$colegio['id'];
-                $logo = htmlspecialchars($colegio['logo'] ?? 'no-image.png', ENT_QUOTES);
-                $nombreCole = htmlspecialchars($colegio['nombre'] ?? 'Colegio', ENT_QUOTES);
+                $id = (int)$colegio['id']; // ID del colegio
+                $logo = htmlspecialchars($colegio['logo'] ?? 'no-image.png', ENT_QUOTES); // Logo del colegio
+                $nombreCole = htmlspecialchars($colegio['nombre'] ?? 'Colegio', ENT_QUOTES); // Nombre del colegio
             ?>
             <div class="col mb-5 mb-xl-0">
                 <div class="text-center">
+                    <!-- Imagen del colegio, abre modal al hacer clic -->
                     <img class="img-fluid logo-img" src="<?= PUBLIC_PATH ?>img/<?= $logo ?>" alt="Imagen de <?= $nombreCole ?>" data-bs-toggle="modal" data-bs-target="#modalColegio<?= $id ?>" />
                     <h5 class="fw-bolder"><?= $nombreCole ?></h5>
                 </div>
             </div>
 
+            <!-- Modal con información detallada del colegio -->
             <div class="modal fade" id="modalColegio<?= $id ?>" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -168,87 +196,44 @@ $dataEquipos = [
                                 </div>
                                 <div class="col-md-7">
                                     <h1 class="h4 mb-3">Deportes:</h1>
-                                    <div class="list-group">
-                                        <div class="accordion" id="accordion-sports-<?= $id ?>">
-                                            <?php foreach ($deportes_lista as $slug => $display): 
-                                                $slugEsc = htmlspecialchars($slug, ENT_QUOTES);
-                                                $displayEsc = htmlspecialchars($display, ENT_QUOTES);
-                                            ?>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed" type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#collapseSport-<?= $slugEsc ?>-<?= $id ?>"
-                                                        aria-expanded="false"
-                                                        aria-controls="collapseSport-<?= $slugEsc ?>-<?= $id ?>">
-                                                        <?= $displayEsc ?>
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseSport-<?= $slugEsc ?>-<?= $id ?>" class="accordion-collapse collapse" data-bs-parent="#accordion-sports-<?= $id ?>">
-                                                    <div class="accordion-body p-0">
-                                                        <div class="accordion" id="accordion-inner-<?= $slugEsc ?>-<?= $id ?>">
-                                                            <?php foreach ($categoriasTree as $catId => $catObj):
-                                                                $tituloCat = htmlspecialchars($catObj['data']['nombre'], ENT_QUOTES);
-                                                                $children = $catObj['children'];
-                                                                if (empty($children)) $children = [['id'=>0,'nombre'=>'General']];
-                                                            ?>
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header">
-                                                                    <button class="accordion-button collapsed" type="button"
-                                                                        data-bs-toggle="collapse"
-                                                                        data-bs-target="#cat-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="cat-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>">
-                                                                        <?= $tituloCat ?>
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="cat-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>" class="accordion-collapse collapse" data-bs-parent="#accordion-inner-<?= $slugEsc ?>-<?= $id ?>">
-                                                                    <div class="accordion-body p-2">
-                                                                        <div class="accordion" id="accordion-sub-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>">
-                                                                            <?php foreach ($children as $child):
-                                                                                $subId = (int)$child['id'];
-                                                                                $tituloSub = htmlspecialchars($child['nombre'], ENT_QUOTES);
-                                                                                // Usa el slug original, NO el escapado
-                                                                                $equipos = getEquiposFromData($dataEquipos, $slug, (int)$catId, $subId);
-                                                                            ?>
-                                                                            <div class="accordion-item">
-                                                                                <h2 class="accordion-header">
-                                                                                    <button class="accordion-button collapsed" type="button"
-                                                                                        data-bs-toggle="collapse"
-                                                                                        data-bs-target="#sub-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>-<?= $subId ?>"
-                                                                                        aria-expanded="false"
-                                                                                        aria-controls="sub-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>-<?= $subId ?>">
-                                                                                        <?= $tituloSub ?>
-                                                                                    </button>
-                                                                                </h2>
-                                                                                <div id="sub-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>-<?= $subId ?>" class="accordion-collapse collapse subcategory-collapse" data-bs-parent="#accordion-sub-<?= $slugEsc ?>-<?= $id ?>-<?= $catId ?>" data-deporte="<?= $slugEsc ?>" data-idcolegio="<?= $id ?>" data-categoria="<?= $catId ?>" data-subcategoria="<?= $subId ?>">
-                                                                                    <div class="accordion-body p-3 bg-light border rounded">
-                                                                                        <?php if (!empty($equipos)): ?>
-                                                                                            <h6 class="fw-bold mb-2">Equipos:</h6>
-                                                                                            <ul class="mb-0">
-                                                                                                <?php foreach ($equipos as $eq): ?>
-                                                                                                    <li><?= htmlspecialchars($eq, ENT_QUOTES) ?></li>
-                                                                                                <?php endforeach; ?>
-                                                                                            </ul>
-                                                                                        <?php else: ?>
-                                                                                            <p class="mb-0 text-muted">No hay equipos inscritos.</p>
-                                                                                        <?php endif; ?>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <?php endforeach; // children ?>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <?php endforeach; // categoriasTree ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php endforeach; // deportes_lista ?>
-                                        </div>
-                                    </div>
+                                    <ul class="list-group">
+                                        <?php foreach ($deportes_lista as $slug => $display): ?>
+                                            <li class="list-group-item">
+                                                <strong><?= htmlspecialchars($display, ENT_QUOTES) ?></strong>
+                                                <ul>
+                                                    <?php foreach ($categoriasTree as $catId => $catObj):
+                                                        $tituloCat = htmlspecialchars($catObj['data']['nombre'], ENT_QUOTES);
+                                                        $children = $catObj['children'];
+                                                        if (empty($children)) $children = [['id'=>0,'nombre'=>'General']];
+                                                    ?>
+                                                        <li>
+                                                            <?= $tituloCat ?>
+                                                            <ul>
+                                                                <?php foreach ($children as $child):
+                                                                    $subId = (int)$child['id'];
+                                                                    $tituloSub = htmlspecialchars($child['nombre'], ENT_QUOTES);
+                                                                    $equipos = getEquiposFromData($dataEquipos, $slug, (int)$catId, $subId);
+                                                                ?>
+                                                                    <li>
+                                                                        <?= $tituloSub ?>:
+                                                                        <?php if (!empty($equipos)): ?>
+                                                                            <ul>
+                                                                                <?php foreach ($equipos as $eq): ?>
+                                                                                    <li><?= htmlspecialchars($eq, ENT_QUOTES) ?></li>
+                                                                                <?php endforeach; ?>
+                                                                            </ul>
+                                                                        <?php else: ?>
+                                                                            <span class="text-muted">No hay equipos inscritos.</span>
+                                                                        <?php endif; ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -264,9 +249,9 @@ $dataEquipos = [
 <?php include_once VISTA_PATH . 'footer.php' ?>
 
 <?php
-// Prueba rápida de la función getEquiposFromData
+/*/ Pruebas rápidas de la función getEquiposFromData
 echo '<pre>';
-print_r(getEquiposFromData($dataEquipos, 'futbol', 1, )); // Debería mostrar ["Leones FC","Tigres Dorados","Águilas del Norte"]
-print_r(getEquiposFromData($dataEquipos, 'voleibol', 2, 1)); // Debería mostrar ["Volley Queens","Power Smash","Jump Stars"]
-print_r(getEquiposFromData($dataEquipos, 'futbol', 1, 0)); // Debería mostrar todos los equipos de la categoría 1 de fútbol
-echo '</pre>';
+print_r(getEquiposFromData($dataEquipos, 'futbol', 1, 2)); // Muestra equipos de fútbol, categoría 1, subcategoría 2
+print_r(getEquiposFromData($dataEquipos, 'voleibol', 2, 1)); // Muestra equipos de voleibol, categoría 2, subcategoría 1
+print_r(getEquiposFromData($dataEquipos, 'futbol', 1, 0)); // Muestra todos los equipos de la categoría 1 de fútbol
+echo '</pre>'; */
