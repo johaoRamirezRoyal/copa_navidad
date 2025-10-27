@@ -87,7 +87,7 @@ function disciplinesToList($disciplinas) {
     return $out ?: ['futbol' => '⚽ Fútbol'];
 }
 
-// Obtiene los equipos según deporte, categoría y subcategoría
+// Obtiene los equipos según deporte, categoría y subcategoría-------------------------------------------------------------------------------------
 function getEquiposFromData(array $equipos, string $slug, int $catId, int $subId) : array {
     $slugNorm = strtolower($slug);
     $slugNorm = $equipos[$slugNorm] ?? $equipos[ucfirst($slugNorm)] ?? null;
@@ -117,44 +117,7 @@ if (isset($categoriasTree[$templateId])) {
 $deportes_lista = disciplinesToList($disciplinas);
 
 // Estructura de ejemplo de equipos por deporte, categoría y subcategoría
-$dataEquipos = [
-    'futbol' => [
-        1 => [1 => ["Leones FC","Tigres Dorados","Águilas del Norte"], 2 => ["Equipo A Sub2"]],
-        2 => [1 => ["Estrellas Femeninas","Las Panteras","Juvenil Rosa"], 2 => []],
-        3 => [1 => ["Los Amigos","Furia Mixta","Los Cracks"], 2 => []],
-        4 => [1 => ["Chicas Power","Mini Reinas","Fénix Sub-13"], 2 => []],
-    ],
-    'baloncesto' => [
-        1 => [1 => ["Cestos Dorados","Raptors High","Dunk Masters"], 2 => []],
-        2 => [1 => ["Queens Team","Sky Girls","Basket Stars"], 2 => []],
-        3 => [1 => ["Los 3 puntos","Rebote Squad","Dream Mix"], 2 => []],
-        4 => [1 => ["Mini Queens","Ball Kids","New Generation"], 2 => []],
-    ],
-    'voleibol' => [
-        1 => [1 => ["Spike Warriors","Net Kings","Block Team"], 2 => []],
-        2 => [1 => ["Volley Queens","Power Smash","Jump Stars"], 2 => []],
-        3 => [1 => ["Los Mixtos","Team Volley","Golden Set"], 2 => []],
-        4 => [1 => ["Mini Volley","Smash Kids","Young Power"], 2 => []],
-    ],
-    'padel' => [
-        1 => [1 => ["Padel Force","Smash Bros","Ace Team"], 2 => []],
-        2 => [1 => ["Padel Queens","Doble Rosa","Court Girls"], 2 => []],
-        3 => [1 => ["Mix Power","Club Amigos","Padel All"], 2 => []],
-        4 => [1 => ["Mini Padel","Kids Set","Fast Shots"], 2 => []],
-    ],
-    'tenis-mesa' => [
-        1 => [1 => ["Ping Kings","Top Spin","Rally Masters"], 2 => []],
-        2 => [1 => ["Spin Queens","Net Roses","Serve Stars"], 2 => []],
-        3 => [1 => ["Recreo Team","Friendly Match","Loop Club"], 2 => []],
-        4 => [1 => ["Mini Ping","Baby Smash","New Spin"], 2 => []],
-    ],
-    'tenis' => [
-        1 => [1 => ["Ace Warriors","Top Serve","Court Lions"], 2 => []],
-        2 => [1 => ["Smash Queens","Tennis Girls","Grand Slam Team"], 2 => []],
-        3 => [1 => ["Recrea Mix","Match Point","Open Friends"], 2 => []],
-        4 => [1 => ["Mini Court","Kids Serve","Little Stars"], 2 => []],
-    ],
-];
+$dataEquipos = []; // Tabla de equipos vacía
 ?>
 <section class="py-5 bg-light">
     <style>
@@ -249,9 +212,4 @@ $dataEquipos = [
 <?php include_once VISTA_PATH . 'footer.php' ?>
 
 <?php
-/*/ Pruebas rápidas de la función getEquiposFromData
-echo '<pre>';
-print_r(getEquiposFromData($dataEquipos, 'futbol', 1, 2)); // Muestra equipos de fútbol, categoría 1, subcategoría 2
-print_r(getEquiposFromData($dataEquipos, 'voleibol', 2, 1)); // Muestra equipos de voleibol, categoría 2, subcategoría 1
-print_r(getEquiposFromData($dataEquipos, 'futbol', 1, 0)); // Muestra todos los equipos de la categoría 1 de fútbol
-echo '</pre>'; */
+
