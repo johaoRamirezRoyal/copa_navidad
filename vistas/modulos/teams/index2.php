@@ -89,26 +89,26 @@ $equipos       = $instancia_equipos->obtenerTodosLosEquiposControl();
                                     </div>
                                     <div class="col-md-7">
                                         <h3 class="fw-bolder mb-3">Disciplinas</h3>
-                                        <div class="accordion" id="disciplinasAccordion<?= $colegio['id'] ?>">
+                                        <div class="accordion accordion-flush" id="disciplinasAccordion<?= $colegio['id'] ?>">
                                             <?php foreach($disciplinas as $i => $disciplina): ?>
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header" id="heading<?= $colegio['id'] . '_' . $i ?>">
-                                                        <button class="accordion-button <?= $i !== 0 ? 'collapsed' : '' ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $colegio['id'] . '_' . $i ?>" aria-expanded="<?= $i === 0 ? 'true' : 'false' ?>" aria-controls="collapse<?= $colegio['id'] . '_' . $i ?>">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $colegio['id'] . '_' . $i ?>" aria-expanded="false" aria-controls="collapse<?= $colegio['id'] . '_' . $i ?>">
                                                             <?= $disciplina['nombre'] ?>
                                                         </button>
                                                     </h2>
-                                                    <div id="collapse<?= $colegio['id'] . '_' . $i ?>" class="accordion-collapse collapse <?= $i === 0 ? 'show' : '' ?>" aria-labelledby="heading<?= $colegio['id'] . '_' . $i ?>" data-bs-parent="#disciplinasAccordion<?= $colegio['id'] ?>">
+                                                    <div id="collapse<?= $colegio['id'] . '_' . $i ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $colegio['id'] . '_' . $i ?>" data-bs-parent="#disciplinasAccordion<?= $colegio['id'] ?>">
                                                         <div class="accordion-body"> 
                                                             <h4 class="fw-bold mt-4">Categorías</h4>
-                                                            <div class="accordion" id="categoriasAccordion<?= $colegio['id'] . '_' . $i ?>">
+                                                            <div class="accordion accordion-flush" id="categoriasAccordion<?= $colegio['id'] . '_' . $i ?>">
                                                                 <?php foreach($categorias as $j => $categoria): ?>
                                                                     <div class="accordion-item">
                                                                         <h2 class="accordion-header" id="catHeading<?= $colegio['id'] . '_' . $i . '_' . $j ?>">
-                                                                            <button class="accordion-button <?= $j !== 0 ? 'collapsed' : '' ?>" type="button" data-bs-toggle="collapse" data-bs-target="#catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>" aria-expanded="<?= $j === 0 ? 'true' : 'false' ?>" aria-controls="catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>">
+                                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>" aria-expanded="false" aria-controls="catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>">
                                                                                 <?= $categoria['nombre'] ?>
                                                                             </button>
                                                                         </h2>
-                                                                        <div id="catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>" class="accordion-collapse collapse <?= $j === 0 ? 'show' : '' ?>" aria-labelledby="catHeading<?= $colegio['id'] . '_' . $i . '_' . $j ?>" data-bs-parent="#categoriasAccordion<?= $colegio['id'] . '_' . $i ?>">
+                                                                        <div id="catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>" class="accordion-collapse collapse" aria-labelledby="catHeading<?= $colegio['id'] . '_' . $i . '_' . $j ?>" data-bs-parent="#categoriasAccordion<?= $colegio['id'] . '_' . $i ?>">
                                                                             <div class="accordion-body">
                                                                                 <!-- Aquí puedes poner más información de la categoría si tienes -->
                                                                                 <?= !empty($categoria['descripcion']) ? $categoria['descripcion'] : 'Sin descripción.' ?>
