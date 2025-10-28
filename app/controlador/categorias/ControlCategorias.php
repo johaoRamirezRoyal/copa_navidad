@@ -1,6 +1,7 @@
 <?php 
 date_default_timezone_set('America/Bogota');
 require_once MODELO_PATH . DS . 'categorias' . DS . 'CategoriasModal.php';
+//require_once MODELO_PATH . DS . 'subcategorias' . DS . 'CategoriasModal.php';
 
 class ControlCategorias
 {
@@ -16,6 +17,11 @@ class ControlCategorias
 
     public function obtenerTodosLosCategoriasControl(){
         $mostrar = CategoriasModel::obtenerTodasLasCategoriasModel();
+        return $mostrar;
+    }
+
+    public function obtenerTodosLosSubcategoriasControl(){
+        $mostrar = SubcategoriasModel::obtenerTodasLasSubcategoriasModel();
         return $mostrar;
     }
 

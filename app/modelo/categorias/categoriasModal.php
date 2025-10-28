@@ -17,4 +17,20 @@ class CategoriasModel extends conexion {
             print "Error al traer las categorias: " . $e->getMessage();
         }
     }
+
+    public static function obtenerTodasLasSubcategoriasModel(){
+        $tabla = "subcategoria";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT * FROM $tabla";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if($preparado->execute()){
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al traer las subcategorias: " . $e->getMessage();
+        }
+    }
 }
