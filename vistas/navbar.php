@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
     <div class="container px-5">
         <!-- Navbar Brand -->
         <a class="navbar-brand custom-brand d-flex align-items-center" href="<?= BASE_URL ?>">
@@ -23,8 +23,8 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/index">Teams</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table_copy">Table</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>pricing">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table_copy">Tables</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>partidos/index">Matches</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>faq">Rules</a></li>
 
                 <li class="nav-item dropdown">
