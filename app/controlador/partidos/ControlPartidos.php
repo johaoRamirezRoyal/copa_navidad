@@ -22,7 +22,7 @@ class ControlPartidos {
         return $mostrar;
     }
 
-    public function crearPartidoControl($datos){
+    public function crearPartidoControl(){
         if(isset($_POST['crear_enfrentamiento'])){
             $datos = array(
                 'fecha' => $_POST['fecha'],
@@ -38,15 +38,20 @@ class ControlPartidos {
                 $crear_partido = PartidosModel::crearPartidoModel($datos);
                 if($crear_partido){
                     echo '
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert alert-success" role="alert">
                             <strong>Exito!</strong> El enfrentamiento se ha creado correctamente.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        setTimeout(recargarPagina,1050);
                         
-                        function recargarPagina(){
-                            window.location.replace("index");
-                        }
+                        <script>
+                            setTimeout(()=> {
+                                const alert = document.querySelector(".alert");
+                                if(alert) {
+                                    alert.classList.remove("show");
+                                    alert.classList.add("fade");
+                                }
+                                setTimeout(() => window.location.replace("index"), 200);
+                            }, 2050)
+                        </script>
                     ';
                 }else{
                     echo '
@@ -58,6 +63,40 @@ class ControlPartidos {
                 }
             }else{
                 return "No se enviaron los suficientes datos al servidor"; 
+            }
+        }
+    }
+
+    public function eliminarPartidoControl(){
+        if(isset($_POST['eliminar_partido'])){
+            $id = $_POST['id'];
+
+            $eliminar = PartidosModel::eliminarPartidoModel($id);
+
+            if($eliminar){
+                echo '
+                        <div class="alert alert-success" role="alert">
+                            <strong>Exito!</strong> El enfrentamiento se ha eliminado.
+                        </div>
+                        
+                        <script>
+                            setTimeout(()=> {
+                                const alert = document.querySelector(".alert");
+                                if(alert) {
+                                    alert.classList.remove("show");
+                                    alert.classList.add("fade");
+                                }
+                                setTimeout(() => window.location.replace("index"), 200);
+                            }, 2050)
+                        </script>
+                    ';
+            }else{
+                echo '
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> No se ha podido eliminar este enfrentamiento.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    ';
             }
         }
     }

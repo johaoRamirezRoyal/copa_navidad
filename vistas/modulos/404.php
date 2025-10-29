@@ -18,4 +18,5 @@ include_once VISTA_PATH . 'header.php';
       </div>
   </div>
 </body>
+<?php include_once VISTA_PATH . 'script_and_final.php'; ?>
 </html>

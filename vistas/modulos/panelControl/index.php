@@ -22,7 +22,7 @@ include_once VISTA_PATH . 'navbar.php';
             </a>
         </div>
         <div class="col-lg-4">
-            <a href="<?= BASE_URL?>/panelControl/enfrentamientos/index" class="btn btn-primary w-100">
+            <a href="<?= BASE_URL?>panelControl/enfrentamientos/index" class="btn btn-primary w-100">
                 Agregar Enfrentamiento <span class="badge text-bg-secondary">4</span>
             </a>
         </div>
@@ -33,3 +33,6 @@ include_once VISTA_PATH . 'navbar.php';
         </div>
     </div>
 </div>
+
+<?php 
+include_once VISTA_PATH . 'script_and_final.php';

@@ -21,7 +21,7 @@ class ControlCategorias
     }
 
     public function obtenerTodosLosSubcategoriasControl(){
-        $mostrar = SubcategoriasModel::obtenerTodasLasSubcategoriasModel();
+        $mostrar = categoriasModel::obtenerTodasLasSubcategoriasModel();
         return $mostrar;
     }
 

@@ -18,7 +18,7 @@ if(isset($_POST['partidos_hoy'])){
 
 ?>
 
-<div class="container-fluid pt-3 mt-4 min-vh-100">
+<div class="container-fluid pt-3 min-vh-100">
     <div class="py-5">
         <h1 class="text-black text-lg-center"><b><?=$label?></b>
             <p class="fw-lighter"><?= (isset($_POST['partidos_hoy'])) ? '(' . date('Y-m-d') . ')' : '' ?></p>
@@ -35,16 +35,16 @@ if(isset($_POST['partidos_hoy'])){
         </form>
         <div class="row">
             <?php foreach ($partidos as $partido):
-                $deporte = $partido['disciplina'];
-                $categoria = $partido['categoria'];
-                $subcategoria = $partido['subcategoria'];
-                $equipo1 = $partido['equipo1'];
-                $equipo2 = $partido['equipo2'];
+                $deporte = $partido['disciplina_nom'];
+                $categoria = $partido['categoria_nom'];
+                $subcategoria = $partido['subcategoria_nom'];
+                $equipo1 = $partido['equipo1_nom'];
+                $equipo2 = $partido['equipo2_nom'];
                 $lugar = $partido['lugar'];
                 $fecha_hora = $partido['fecha'];
                 list($fecha, $hora) = explode(' ', $fecha_hora);
-                $colegio1 = $partido['colegio_equipo1'];
-                $colegio2 = $partido['colegio_equipo2'];
+                $colegio1 = $partido['colegio_equipo1_nom'];
+                $colegio2 = $partido['colegio_equipo2_nom'];
                 $inicio = new DateTime($fecha_hora);
                 $fin = (clone $inicio)->modify('+3 hours');
                 $ahora = new DateTime();

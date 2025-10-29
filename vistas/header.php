@@ -24,38 +24,61 @@
     <!-- 🔹 Colores y manifest -->
     <meta name="theme-color" content="#fff999">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <link rel="manifest" href="<?=PUBLIC_PATH?>manifest.json">
+    <link rel="manifest" href="<?= PUBLIC_PATH ?>manifest.json">
 
     <!-- 🔹 Favicon e íconos -->
-    <link rel="icon" type="image/x-icon" href="<?=PUBLIC_PATH?>img/copa_navidad_icono.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?=PUBLIC_PATH?>img/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" href="<?= PUBLIC_PATH ?>img/copa_navidad_icono.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= PUBLIC_PATH ?>img/apple-touch-icon.png">
 
     <!-- 🔹 Open Graph (para Facebook, WhatsApp, LinkedIn) -->
     <meta property="og:title" content="Copa Navidad">
     <meta property="og:description" content="Disfruta del torneo navideño más esperado. Vive la emoción del deporte y la alegría de la Navidad.">
-    <meta property="og:image" content="<?=PUBLIC_PATH?>img/og_copa_navidad.jpg">
-    <meta property="og:url" content="<?=BASE_URL?>">
+    <meta property="og:image" content="<?= PUBLIC_PATH ?>img/og_copa_navidad.jpg">
+    <meta property="og:url" content="<?= BASE_URL ?>">
     <meta property="og:type" content="website">
 
     <!-- 🔹 Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Copa Navidad">
     <meta name="twitter:description" content="El torneo navideño donde el deporte y la alegría se unen.">
-    <meta name="twitter:image" content="<?=PUBLIC_PATH?>img/og_copa_navidad.jpg">
+    <meta name="twitter:image" content="<?= PUBLIC_PATH ?>img/og_copa_navidad.jpg">
 
     <!-- 🔹 Tipografías -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
     <!-- 🔹 Estilos -->
-    <link rel="stylesheet" href="<?=PUBLIC_PATH?>css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?=PUBLIC_PATH?>css/bootstrap-select.css">
-    <link rel="stylesheet" href="<?=PUBLIC_PATH?>css/main.css">
-    <script src="<?=PUBLIC_PATH?>js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="<?= PUBLIC_PATH ?>css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= PUBLIC_PATH ?>css/bootstrap-select.css">
+    <link rel="stylesheet" href="<?= PUBLIC_PATH ?>css/main.css">
+    <script src="<?= PUBLIC_PATH ?>js/bootstrap.bundle.min.js"></script>
 </head>
 
 
 <body class="bg-image">
-    <div class="loader"></div>
-    <div id="ohsnap"></div> <!-- Hacer un toast de bootstrap reutilizable --> 
+    <div id="loader" class="loader-overlay">
+        <div class="spinner-grow text-danger" role="status" style="width: 5rem; height: 5rem;">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+    <div id="ohsnap"></div> <!-- Hacer un toast de bootstrap reutilizable -->
     <div id="wrapper">
+        <style>
+            .loader-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(255, 255, 255, 0.9);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                transition: opacity 0.5s ease;
+            }
 
+            .loader-overlay.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+        </style>
