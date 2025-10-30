@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('America/Bogota');
 
-class ControlDeportes
+class ControlArchivos
 {
     private static $instancia;
 
@@ -48,7 +48,7 @@ class ControlDeportes
         $ext_arch     = ($ext_arch == 'jpg') ? 'jpeg' : $ext_arch;
         $fecha_arch   = date('YmdHis');
         $nombre_archivo = strtolower(md5(rand(5, 9999) . '_' . $fecha_arch)) . '.' . $ext_arch;
-        $carp_destino = PUBLIC_PATH_ARCH . 'upload' . DS . $nombre_directorio . DS;
+        $carp_destino = PUBLIC_PATH_ARCH . 'img' . DS . $nombre_directorio . DS;
         $ruta_img     = $carp_destino . $nombre_archivo;
 
         if ($ext_arch == 'png' || $ext_arch == 'jpeg') {
@@ -63,17 +63,26 @@ class ControlDeportes
 
     function eliminarArchivo($archivo, $dir = "")
     {
-        $ruta = PUBLIC_PATH_ARCH . 'upload' . DS . $dir . DS . $archivo;
+        $ruta = PUBLIC_PATH_ARCH . 'img' . DS . $dir . DS . $archivo;
 
         // Verifica si el archivo existe antes de intentar eliminarlo
         if (file_exists($ruta)) {
             if (unlink($ruta)) {
-                return true; // El archivo se eliminó correctamente
+                return array(
+                    'error' => '',
+                    'estado' => true
+                ); // El archivo se eliminó correctamente
             } else {
-                return false; // Hubo un error al intentar eliminar el archivo
+                return array(
+                    'error' => 'Error al intentar eliminar el archivo',
+                    'estado' => false
+                ); // Hubo un error al intentar eliminar el archivo
             }
         } else {
-            return false; // El archivo no existe
+            return array(
+                'error' => 'Archivo no encontrado',
+                'estado' => false
+            ); // El archivo no existe
         }
     }
 }

@@ -12,7 +12,7 @@ include_once VISTA_PATH . 'navbar.php';
             </a>
         </div>
         <div class="col-lg-4">
-            <a href="#" class="btn btn-primary w-100">
+            <a href="<?=BASE_URL?>panelControl/colegios/index" class="btn btn-primary w-100">
                 Agregar Colegio Participante <span class="badge text-bg-secondary">2</span>
             </a>
         </div>

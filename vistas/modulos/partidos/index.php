@@ -2,9 +2,10 @@
 date_default_timezone_set('America/Bogota');
 include_once CONTROL_PATH . 'EnlacesControl.php';
 
-require_once CONTROL_PATH . 'partidos' . DS . 'ControlPartidos.php';
 include_once VISTA_PATH . 'header.php';
 include_once VISTA_PATH . 'navbar.php';
+
+require_once CONTROL_PATH . 'partidos' . DS . 'ControlPartidos.php';
 
 $instancia_partidos = ControlPartidos::singleton_partidos();
 
