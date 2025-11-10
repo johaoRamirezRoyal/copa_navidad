@@ -164,7 +164,7 @@ if (isset($_POST['buscar'])) {
                                             <div class="col-lg-6">
                                                 <select name="disciplina" class="form-select">
                                                     <option value="" selected disabled>Seleccione una disciplina</option>
-                                                    <?php foreach ($deportes_lista as $deporte):
+                                                    <?php foreach ($deportes as $deporte):
                                                         $selected = ($deporte['id'] == $partido['disciplina']) ? 'selected' : '';
                                                     ?>
                                                         <option value="<?= $deporte['id'] ?>" <?= $selected ?>><?= $deporte['nombre'] ?></option>
@@ -197,7 +197,7 @@ if (isset($_POST['buscar'])) {
                                                     <?php foreach ($equipos as $equipo):
                                                         $selected = ($equipo['id'] == $partido['equipo1']) ? 'selected' : '';
                                                     ?>
-                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?>><?= $equipo['nombre'] ?></option>
+                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?>><?= $equipo['nombre_equipo'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -207,7 +207,7 @@ if (isset($_POST['buscar'])) {
                                                     <?php foreach ($equipos as $equipo):
                                                         $selected = ($equipo['id'] == $partido['equipo2']) ? 'selected' : '';
                                                     ?>
-                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?>> <?= $equipo['nombre'] ?> </option>
+                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?>> <?= $equipo['nombre_equipo'] ?> </option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
