@@ -37,6 +37,39 @@ class PartidosModel extends conexion
         }
     }
 
+    public static function obtenerEnfrentamientoID($id){
+        $tabla = "partidos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT
+                        p.*,
+                        d.nombre AS disciplina_nom,
+                        c.nombre AS categoria_nom,
+                        s.nombre AS subcategoria_nom,
+                        e1.nombre AS equipo1_nom,
+                        e2.nombre AS equipo2_nom,
+                        cp1.nombre AS colegio_equipo1_nom, 
+                        cp2.nombre AS colegio_equipo2_nom
+                    FROM $tabla p
+                    LEFT JOIN disciplinas d ON p.disciplina = d.id
+                    LEFT JOIN categorias c ON p.categoria = c.id
+                    LEFT JOIN subcategoria s ON p.subcategoria = s.id
+                    LEFT JOIN equipos e1 ON e1.id = p.equipo1
+                    LEFT JOIN equipos e2 ON e2.id = p.equipo2
+                    LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
+                    LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
+                    WHERE p.id = $id";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            if($preparado->execute()){
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al obtener información del enfrentamiento: " . $e;
+        }
+    }
+
     public static function obtenerPartidosEnBaseAlDiaModel($fecha)
     {
         $tabla = "partidos";
@@ -140,4 +173,61 @@ class PartidosModel extends conexion
             print "Error al actualizar el enfrentamiento: " . $e->getMessage();
         }
     }
+    // =========== LÓGICA PARA LOS RESULTADOS DE LOS ENFRENTAMIENTOS ================== // 
+    public static function definirResultadoDeEnfrentamientoModel($datos){
+        $tabla = "resultado_enfrentamiento";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "INSERT INTO $tabla (id_equipo1, id_equipo2, pts_equipo1, pts_equipo2, ganador, id_enfrentamiento, id_deporte) 
+                    VALUES ( :id_equipo1, :id_equipo2, :pts_equipo1, :pts_equipo2, :ganador, :id_enfrentamiento, :id_deporte )";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":id_equipo1", $datos['id_equipo1']);
+            $preparado->bindParam(":id_equipo2", $datos['id_equipo2']);
+            $preparado->bindParam(":pts_equipo1", $datos['pts_equipo1']);
+            $preparado->bindParam(":pts_equipo2", $datos['pts_equipo2']);
+            $preparado->bindParam(":ganador", $datos['ganador']);
+            $preparado->bindParam(":id_enfrentamiento", $datos['id_enfrentamiento']);
+            $preparado->bindParam(":id_deporte", $datos['id_deporte']);
+            if($preparado->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al guardar el resultado del enfrentamiento" . $e;
+        }
+    }
+
+    public static function eliminarResultadoDeEnfrentamientoModel($id_enfrentamiento){
+        $tabla = "resultado_enfrentamiento";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "DELETE FROM $tabla WHERE id_enfrentamiento = $id_enfrentamiento";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            if($preparado->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al eliminar el resultado del enfrentamiento" . $e;
+        }
+    }
+
+    public static function obtenerResultadoDeEnfrentamiento($id_enfrentamiento){
+        $tabla = "resultado_enfrentamiento";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT * FROM $tabla WHERE id_enfrentamiento = $id_enfrentamiento";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            if($preparado->execute()){
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al obtener el resultado del enfrentamiento" . $e;
+        }
+    }
+
 }

@@ -7,8 +7,8 @@ include_once VISTA_PATH . 'navbar.php';
 <div class="container-fluid pt-3 mt-4 min-vh-100">
     <div class="row g-5 justify-content-center">
         <div class="col-lg-4">
-            <a href="#" class="btn btn-primary w-100">
-                Creación de equipos <span class="badge text-bg-secondary">1</span>
+            <a href="<?=BASE_URL?>panelControl/equipos/index" class="btn btn-primary w-100">
+                Administración de equipos <span class="badge text-bg-secondary">1</span>
             </a>
         </div>
         <div class="col-lg-4">
@@ -27,7 +27,7 @@ include_once VISTA_PATH . 'navbar.php';
             </a>
         </div>
         <div class="col-lg-4">
-            <a href="#" class="btn btn-primary w-100">
+            <a href="<?=BASE_URL?>panelControl/resultados/index" class="btn btn-primary w-100">
                 Definir Resultados <span class="badge text-bg-secondary">5</span>
             </a>
         </div>

@@ -10,14 +10,40 @@ require_once CONTROL_PATH . 'equipos' . DS . 'ControlEquipos.php';
 
 $instancia_partidos = ControlPartidos::singleton_partidos();
 $instancia_categorias = ControlCategorias::singleton_categorias();
-$intancia_deportes = ControlDeportes::singleton_deportes();
+$instancia_deportes = ControlDeportes::singleton_deportes();
 $instancia_equipos = ControlEquipos::singleton_equipos();
 
 $partidos = $instancia_partidos->obtenerTodosLosPartidosControl();
 $categorias = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $subcategorias = $instancia_categorias->obtenerTodosLosSubcategoriasControl();
-$deportes_lista = $intancia_deportes->obtenerTodosLosDeportesControl();
-$equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
+$deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
+
+if (isset($_POST['buscar'])) {
+    $datos = array(
+        'categoria' => $_POST['categoria'],
+        'subcategoria' => $_POST['subcategoria'],
+        'deporte' => $_POST['deporte']
+    );
+
+    $faltan_datos = false; 
+
+    foreach ($datos as $clave => $valor) {
+        if ($valor === NULL || $valor === '') {
+            echo '
+                <div class="alert alert-red alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> El valor de ' . $clave . ' es nulo, debes ingresarlo
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            ';
+            $faltan_datos = true;
+        }
+    }
+
+    $equipos = $instancia_equipos->obtenerEquiposFiltradoControl($datos);
+} else {
+    $equipos = $instancia_equipos->obtenerEquiposInformacionControl();
+}
+
 
 ?>
 <div class="container-fluid pt-3 mt-4 min-vh-100">
@@ -26,11 +52,49 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
             <h1>Administrar Enfrentamientos</h1>
             <hr>
         </div>
-        <div class="mt-4 align-items-start">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarEnfrentamiento">
-                Agregar enfrentamiento
-            </button>
-        </div>
+        <form method="POST">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <select class="form-select form-select" name="categoria" aria-label="Categoria Busqueda">
+                            <option selected disabled>Selecciona una categoria</option>
+                            <?php foreach ($categorias as $categoria): ?>
+                                <option value="<?= $categoria['id'] ?>"><?= $categoria['nombre'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-select form-select" name="subcategoria" aria-label="Categoria Busqueda">
+                            <option selected disabled>Selecciona una subcategoria</option>
+                            <?php foreach ($subcategorias as $subcategoria): ?>
+                                <option value="<?= $subcategoria['id'] ?>"><?= ucfirst($subcategoria['nombre']) ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-select form-select" name="deporte" aria-label="Categoria Busqueda">
+                            <option selected disabled>Selecciona un deporte</option>
+                            <?php foreach ($deportes as $deporte): ?>
+                                <option value="<?= $deporte['id'] ?>"><?= ucfirst($deporte['nombre']) ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <button type="submit" class="btn btn-success btn-md" name="buscar">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+                <p class="badge text-bg-warning p-3 mt-3 align-self-center">Debe llenar completamente el formulario de filtrado: categoria, subcategoria y Deporte. De no hacerlo puede haber error al generar el enfrentamiento</p>
+            </div>
+        </form>
+        <?php if (isset($_POST['buscar']) && $faltan_datos != true): ?>
+            <div class="mt-4 align-items-start">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarEnfrentamiento">
+                    Agregar enfrentamiento
+                </button>
+            </div>
+        <?php endif; ?>
         <table class="table table-striped-columns mt-5">
             <thead>
                 <tr class="text-center">
@@ -61,7 +125,7 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                         <td><?= $partido['id'] ?></td>
                         <td><?= $deporte ?></td>
                         <td><?= $categoria ?></td>
-                        <td><?= $subcategoria ?></td>
+                        <td><?= ucfirst($subcategoria) ?></td>
                         <td><?= $equipo1 ?> VS <?= $equipo2 ?></td>
                         <td><?= $colegio1 ?> VS <?= $colegio2 ?></td>
                         <td><?= $fecha_hora ?></td>
@@ -76,15 +140,18 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                                         </button>
                                     </form>
                                     <input type="hidden" value="<?= $partido['id'] ?>" name="id">
-                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarEnfrentamiento_<?=$partido['id']?>">
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarEnfrentamiento_<?= $partido['id'] ?>">
                                         Editar
                                     </button>
+                                    <a href="<?= BASE_URL ?>panelControl/resultados/index?enfrentamiento=<?= $partido['id'] ?>" class="btn btn-info btn-sm">
+                                        Resultados
+                                    </a>
                                 </div>
                             </div>
                         </td>
                     </tr>
                     <!-- Modal -->
-                    <div class="modal fade modal-xl" id="editarEnfrentamiento_<?=$partido['id']?>" tabindex="-1" aria-labelledby="editarEnfrentamiento_<?=$partido['id']?>" aria-hidden="true">
+                    <div class="modal fade modal-xl" id="editarEnfrentamiento_<?= $partido['id'] ?>" tabindex="-1" aria-labelledby="editarEnfrentamiento_<?= $partido['id'] ?>" aria-hidden="true">
                         <div class="modal-dialog">
                             <form method="POST">
                                 <div class="modal-content">
@@ -97,9 +164,9 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                                             <div class="col-lg-6">
                                                 <select name="disciplina" class="form-select">
                                                     <option value="" selected disabled>Seleccione una disciplina</option>
-                                                    <?php foreach ($deportes_lista as $deporte): 
+                                                    <?php foreach ($deportes_lista as $deporte):
                                                         $selected = ($deporte['id'] == $partido['disciplina']) ? 'selected' : '';
-                                                        ?>
+                                                    ?>
                                                         <option value="<?= $deporte['id'] ?>" <?= $selected ?>><?= $deporte['nombre'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -107,9 +174,9 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                                             <div class="col-lg-6">
                                                 <select name="categoria" id="categoria" class="form-select">
                                                     <option value="" selected disabled>Seleccione la categoria</option>
-                                                    <?php foreach ($categorias as $categoria): 
+                                                    <?php foreach ($categorias as $categoria):
                                                         $selected = ($categoria['id'] == $partido['categoria']) ? 'selected' : '';
-                                                        ?>
+                                                    ?>
                                                         <option value="<?= $categoria['id'] ?>" <?= $selected ?>><?= $categoria['nombre'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -117,30 +184,30 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                                             <div class="col-lg-6">
                                                 <select name="subcategoria" id="subcategoria" class="form-select">
                                                     <option value="" selected disabled>Seleccione la subcategoria</option>
-                                                    <?php foreach ($subcategorias as $subcategoria): 
+                                                    <?php foreach ($subcategorias as $subcategoria):
                                                         $selected = ($subcategoria['id'] == $partido['subcategoria']) ? 'selected' : '';
-                                                        ?>
-                                                        <option value="<?= $subcategoria['id'] ?>" <?= $selected ?> ><?= $subcategoria['nombre'] ?></option>
+                                                    ?>
+                                                        <option value="<?= $subcategoria['id'] ?>" <?= $selected ?>><?= $subcategoria['nombre'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
                                                 <select name="equipo1" id="equipo1" class="form-select">
                                                     <option value="" selected disabled>Seleccione el primer equipo</option>
-                                                    <?php foreach ($equipos as $equipo): 
+                                                    <?php foreach ($equipos as $equipo):
                                                         $selected = ($equipo['id'] == $partido['equipo1']) ? 'selected' : '';
-                                                        ?>
-                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?> ><?= $equipo['nombre'] ?></option>
+                                                    ?>
+                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?>><?= $equipo['nombre'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
                                                 <select name="equipo2" id="equipo2" class="form-select">
                                                     <option value="" selected disabled>Seleccione el primer equipo</option>
-                                                    <?php foreach ($equipos as $equipo): 
+                                                    <?php foreach ($equipos as $equipo):
                                                         $selected = ($equipo['id'] == $partido['equipo2']) ? 'selected' : '';
-                                                        ?>
-                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?> > <?= $equipo['nombre'] ?> </option>
+                                                    ?>
+                                                        <option value="<?= $equipo['id'] ?>" <?= $selected ?>> <?= $equipo['nombre'] ?> </option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -176,6 +243,9 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
         <div class="modal fade modal-xl" id="agregarEnfrentamiento" tabindex="-1" aria-labelledby="agregarEnfrentamiento" aria-hidden="true">
             <div class="modal-dialog">
                 <form method="POST">
+                    <input type="hidden" name="disciplina" value="<?= $_POST['deporte'] ?>">
+                    <input type="hidden" name="categoria" value="<?= $_POST['categoria'] ?>">
+                    <input type="hidden" name="subcategoria" value="<?= $_POST['subcategoria'] ?>">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5 text-center" id="agregarEnfrentamiento"><b>Crear enfrentamiento</b></h1>
@@ -186,24 +256,29 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                                 <div class="col-lg-6">
                                     <select name="disciplina" class="form-select">
                                         <option value="" selected disabled>Seleccione una disciplina</option>
-                                        <?php foreach ($deportes_lista as $deporte): ?>
-                                            <option value="<?= $deporte['id'] ?>"><?= $deporte['nombre'] ?></option>
+                                        <?php foreach ($deportes as $deporte):
+                                            $selected = ($deporte['id'] == $_POST['deporte']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?= $deporte['id'] ?>" <?= $selected ?> disabled><?= $deporte['nombre'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-lg-6">
                                     <select name="categoria" id="categoria" class="form-select">
                                         <option value="" selected disabled>Seleccione la categoria</option>
-                                        <?php foreach ($categorias as $categoria): ?>
-                                            <option value="<?= $categoria['id'] ?>"><?= $categoria['nombre'] ?></option>
+                                        <?php foreach ($categorias as $categoria):
+                                            $selected = ($categoria['id'] == $_POST['categoria']) ? 'selected' : ''; ?>
+                                            ?>
+                                            <option value="<?= $categoria['id'] ?>" <?= $selected ?> disabled><?= $categoria['nombre'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-lg-6">
                                     <select name="subcategoria" id="subcategoria" class="form-select">
                                         <option value="" selected disabled>Seleccione la subcategoria</option>
-                                        <?php foreach ($subcategorias as $subcategoria): ?>
-                                            <option value="<?= $subcategoria['id'] ?>"><?= $subcategoria['nombre'] ?></option>
+                                        <?php foreach ($subcategorias as $subcategoria):
+                                            $selected = ($subcategoria['id'] == $_POST['subcategoria']) ? 'selected' : ''; ?>
+                                            <option value="<?= $subcategoria['id'] ?>" <?= $selected ?> disabled><?= $subcategoria['nombre'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -211,15 +286,15 @@ $equipos = $instancia_equipos->obtenerTodosLosEquiposControl();
                                     <select name="equipo1" id="equipo1" class="form-select">
                                         <option value="" selected disabled>Seleccione el primer equipo</option>
                                         <?php foreach ($equipos as $equipo): ?>
-                                            <option value="<?= $equipo['id'] ?>"><?= $equipo['nombre'] ?></option>
+                                            <option value="<?= $equipo['id'] ?>"><?= $equipo['nombre_equipo'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-lg-6">
                                     <select name="equipo2" id="equipo2" class="form-select">
-                                        <option value="" selected disabled>Seleccione el primer equipo</option>
+                                        <option value="" selected disabled>Seleccione el segundo equipo</option>
                                         <?php foreach ($equipos as $equipo): ?>
-                                            <option value="<?= $equipo['id'] ?>"><?= $equipo['nombre'] ?></option>
+                                            <option value="<?= $equipo['id'] ?>"><?= $equipo['nombre_equipo'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

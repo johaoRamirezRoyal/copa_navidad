@@ -69,6 +69,41 @@ class ControlColegios
         }
     }
 
+    public function activarColegioParticipanteControl()
+    {
+        if (isset($_POST['activar'])) {
+            $id = $_POST['id'];
+
+            $eliminar = ColegiosModel::activarColegioParticipanteModel($id);
+
+            if ($eliminar) {
+                echo '
+                        <div class="alert alert-green" role="alert">
+                            <strong>Exito!</strong> El colegio se ha ingresado correctamente.
+                        </div>
+                        
+                        <script>
+                            setTimeout(()=> {
+                                const alert = document.querySelector(".alert");
+                                if(alert) {
+                                    alert.classList.remove("show");
+                                    alert.classList.add("fade");
+                                }
+                                setTimeout(() => window.location.replace("index"), 200);
+                            }, 2050)
+                        </script>
+                    ';
+            } else {
+                echo '
+                        <div class="alert alert-red alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> No se ha podido ingresar este colegio.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    ';
+            }
+        }
+    }
+
     public function eliminarRegistroColegioParticipanteControl()
     {
         if (isset($_POST['eliminar_colegio'])) {

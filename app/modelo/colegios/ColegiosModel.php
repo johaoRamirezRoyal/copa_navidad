@@ -51,6 +51,23 @@ class ColegiosModel extends conexion {
         }
     }
 
+    public static function activarColegioParticipanteModel($id){
+        $tabla = "colegios_participantes";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "UPDATE $tabla SET activo = 1 WHERE id = :id AND activo = 0";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(':id', $id);
+            if($preparado->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print 'Error al eliminar el colegio' . $e->getMessage();
+        }
+    }
+
     public static function eliminarRegistroColegioParticipanteModel($id){
         $tabla = "colegios_participantes";
         $cnx = conexion::singleton_conexion();

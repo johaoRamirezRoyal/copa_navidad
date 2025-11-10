@@ -53,10 +53,22 @@ $colegios = $instancia_colegios->obtenerTodosLosColegiosRegistrosControl();
                                     <td><?= $estado ?></td>
                                     <td>
                                         <div class="btn-group" rule="group" >
+
+                                            <?php
+                                                if($colegio['activo'] == 1):
+                                            ?>
                                             <form method="POST" style="display: inline" class="m-2">
                                                 <input type="hidden" name="id" value="<?= $id ?>">
                                                 <button type="submit" name="desactivar" class="btn btn-warning btn-sm">Cancelar participación</button>
                                             </form>
+                                            <?php endif ?>
+
+                                            <?php if($colegio['activo'] == 0): ?>
+                                            <form method="POST" style="display: inline" class="m-2">
+                                                <input type="hidden" name="id" value="<?= $id ?>">
+                                                <button type="submit" name="activar" class="btn btn-success btn-sm">Renovar participación</button>
+                                            </form>
+                                            <?php endif ?>
 
                                             <form method="POST" style="display:inline;" class="m-2">
                                                 <input type="hidden" name="id" value="<?= $id ?>">
@@ -102,6 +114,10 @@ if(isset($_POST['desactivar'])){
 
 if(isset($_POST['eliminar_colegio'])){
     $instancia_colegios->eliminarRegistroColegioParticipanteControl();
+}
+
+if(isset($_POST['activar'])){
+    $instancia_colegios->activarColegioParticipanteControl();
 }
 
 include_once VISTA_PATH . 'script_and_final.php';
