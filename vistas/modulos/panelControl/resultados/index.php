@@ -17,7 +17,7 @@ $id_enfrentamiento = $_GET['enfrentamiento'];
 $datos_enfrentamiento = $instancia_partidos->obtenerEnfrentamientoIDControl($id_enfrentamiento);
 $datos_resultado = $instancia_partidos->obtenerResultadoDeEnfrentamiento($id_enfrentamiento);
 ?>
-<div class="container-fluid pt-3 mt-4 min-vh-100">
+<div class="container" style="margin-top: 120px; padding-top: 18px;">
     <div class="container-xxl bg-light w-100 p-2">
         <div class="text-center">
             <h1>
@@ -120,7 +120,9 @@ $datos_resultado = $instancia_partidos->obtenerResultadoDeEnfrentamiento($id_enf
     </div>
 </div>
 
-
+<?php
+include_once VISTA_PATH . 'footer.php'
+?>
 
 
 

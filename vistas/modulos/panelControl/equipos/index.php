@@ -36,7 +36,7 @@ if (isset($_POST['buscar'])) {
 
 ?>
 
-<div class="container-fluid pt-3 mt-4 min-vh-100">
+<div class="container" style="margin-top: 120px; padding-top: 18px;">
     <div class="card text-center">
         <div class="card-header">
 
@@ -306,4 +306,6 @@ if (isset($_POST['actualizar_equipo'])) {
     $instancia_equipos->actualizarEquipoControl();
 }
 
+
 include_once VISTA_PATH . 'script_and_final.php';
+include_once VISTA_PATH . 'footer.php';

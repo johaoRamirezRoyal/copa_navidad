@@ -4,35 +4,67 @@ include_once VISTA_PATH . 'header.php';
 include_once VISTA_PATH . 'navbar.php';
 ?>
 
-<div class="container-fluid pt-3 mt-4 min-vh-100">
-    <div class="row g-5 justify-content-center">
-        <div class="col-lg-4">
-            <a href="<?=BASE_URL?>panelControl/equipos/index" class="btn btn-primary w-100">
-                Administración de equipos <span class="badge text-bg-secondary">1</span>
-            </a>
+<div class="container" style="margin-top: 120px; padding-top: 18px;">
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Equipos&font=roboto" class="card-img-top" alt="Equipos">
+                <div class="card-body">
+                    <h5 class="card-title">Administración de equipos</h5>
+                    <a href="<?=BASE_URL?>panelControl/equipos/index" class="btn btn-outline-primary w-100">
+                        Ir a equipos
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4">
-            <a href="<?=BASE_URL?>panelControl/colegios/index" class="btn btn-primary w-100">
-                Agregar Colegio Participante <span class="badge text-bg-secondary">2</span>
-            </a>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Colegios&font=roboto" class="card-img-top" alt="Colegios">
+                <div class="card-body">
+                    <h5 class="card-title">Agregar Colegio Participante</h5>
+                    <a href="<?=BASE_URL?>panelControl/colegios/index" class="btn btn-outline-primary w-100">
+                        Ir a colegios
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4">
-            <a href="#" class="btn btn-primary w-100">
-                Agregar Categoria / Subcategoria <span class="badge text-bg-secondary">3</span>
-            </a>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Categorías&font=roboto" class="card-img-top" alt="Categorías">
+                <div class="card-body">
+                    <h5 class="card-title">Agregar Categoría / Subcategoría</h5>
+                    <a href="#" class="btn btn-outline-primary w-100">
+                        Ir a categorías
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4">
-            <a href="<?= BASE_URL?>panelControl/enfrentamientos/index" class="btn btn-primary w-100">
-                Agregar Enfrentamiento <span class="badge text-bg-secondary">4</span>
-            </a>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Enfrentamientos&font=roboto" class="card-img-top" alt="Enfrentamientos">
+                <div class="card-body">
+                    <h5 class="card-title">Agregar Enfrentamiento</h5>
+                    <a href="<?= BASE_URL?>panelControl/enfrentamientos/index" class="btn btn-outline-primary w-100">
+                        Ir a enfrentamientos
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4">
-            <a href="<?=BASE_URL?>panelControl/resultados/index" class="btn btn-primary w-100">
-                Definir Resultados <span class="badge text-bg-secondary">5</span>
-            </a>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Resultados&font=roboto" class="card-img-top" alt="Resultados">
+                <div class="card-body">
+                    <h5 class="card-title">Definir Resultados</h5>
+                    <a href="<?=BASE_URL?>panelControl/resultados/index" class="btn btn-outline-primary w-100">
+                        Ir a resultados
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
+<?php
+include_once VISTA_PATH . 'footer.php'
+?>
 <?php 
 include_once VISTA_PATH . 'script_and_final.php';

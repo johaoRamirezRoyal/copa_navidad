@@ -46,7 +46,7 @@ if (isset($_POST['buscar'])) {
 
 
 ?>
-<div class="container-fluid pt-3 mt-4 min-vh-100">
+<div class="container" style="margin-top: 120px; padding-top: 18px;">
     <div class="container-xxl bg-light w-100 p-2">
         <div class="text-center">
             <h1>Administrar Enfrentamientos</h1>
