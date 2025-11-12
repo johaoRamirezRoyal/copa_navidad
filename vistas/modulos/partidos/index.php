@@ -31,9 +31,9 @@ if(isset($_POST['partidos_hoy'])){
     box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10), 0 2px 8px rgba(0,0,0,0.06);
     padding: 0;
     overflow: hidden;
-    min-width: 700px;      /* antes: 440px */
-    max-width: 1000px;      /* antes: 640px */
-    width: 100%;
+    width: auto;
+    min-width: 340px;    /* Opcional */
+    max-width: none;     /* Elimina el límite máximo */
     border: none;
     position: relative;
     transition: transform 0.22s cubic-bezier(.25,.8,.25,1), box-shadow 0.22s;
@@ -236,10 +236,34 @@ if(isset($_POST['partidos_hoy'])){
     70% { box-shadow: 0 0 0 10px rgba(255,88,88,0);}
     100% { box-shadow: 0 0 0 0 rgba(255,88,88,0.4);}
 }
-@media (max-width: 991px) {
-    .sports-card {
-        min-width: 95vw;
+
+/* NUEVO: Layout de las cards sin Bootstrap */
+.cards-flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem 2rem; /* Espacio entre cards: vertical y horizontal */
+    padding: 0.5rem 0;
+}
+
+.card-flex-item {
+    flex: 0 1 auto;      /* El ancho depende del contenido */
+    width: auto;
+    min-width: 340px;    /* Opcional: mínimo para buena visualización */
+    display: flex;
+    align-items: stretch;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 600px) {
+    .cards-flex-container {
+        flex-direction: column;
+        gap: 2rem 0;
+        align-items: center;
+    }
+    .card-flex-item {
         max-width: 99vw;
+        min-width: 90vw;
     }
 }
 </style>
@@ -259,7 +283,8 @@ if(isset($_POST['partidos_hoy'])){
                 </span>
             </button>
         </form>
-        <div class="row g-4">
+        <!-- NUEVO: Flexbox para las cards -->
+        <div class="cards-flex-container">
             <?php foreach ($partidos as $partido):
                 $deporte = $partido['disciplina_nom'];
                 $categoria = $partido['categoria_nom'];
@@ -283,9 +308,9 @@ if(isset($_POST['partidos_hoy'])){
                 $minuto = $directo ? rand(1,90) : '00';
                 $periodo = $directo ? ($minuto > 45 ? '2H' : '1H') : '';
             ?>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="sports-card-wrapper">
-                    <div class="sports-card">
+            <div class="card-flex-item">
+                <div class="sports-card-wrapper w-100">
+                    <div class="sports-card h-100">
                         <!-- NUEVA CABECERA CON DEPORTE, CATEGORÍA Y EN VIVO -->
                         <div class="meta-info" style="border-radius:2.2rem 2.2rem 0 0; border-bottom: 1px solid #e2eafc; background: #eaf3ff;">
                             <span>

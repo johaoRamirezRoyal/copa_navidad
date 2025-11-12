@@ -1,139 +1,156 @@
 <?php
-// Mostrar todos los errores PHP
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Controladores
-include_once CONTROL_PATH . 'EnlacesControl.php';
-require_once CONTROL_PATH . 'deportes' . DS . 'ControlDeportes.php';
-require_once CONTROL_PATH . 'colegios' . DS . 'ControlColegios.php';
-require_once CONTROL_PATH . 'categorias' . DS . 'ControlCategorias.php';
-require_once CONTROL_PATH . 'disciplinas' . DS . 'ControlDisciplinas.php';
-require_once CONTROL_PATH . 'equipos' . DS . 'ControlEquipos.php';
-
-// Vistas
 include_once VISTA_PATH . 'header.php';
 include_once VISTA_PATH . 'navbar.php';
-
-// Instancias
-$instancia_deportes   = ControlDeportes::singleton_deportes();
-$instancia_colegios   = ControlColegios::singleton_colegios();
-$instancia_categorias = ControlCategorias::singleton_categorias();
-$instancia_disciplinas= ControlDisciplinas::singleton_disciplinas();
-$instancia_equipos    = ControlEquipos::singleton_equipos();
-
-// Datos
-$deportes      = $instancia_deportes->obtenerTodosLosDeportesControl();
-$info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
-$categorias    = $instancia_categorias->obtenerTodosLosCategoriasControl();
-$disciplinas   = $instancia_disciplinas->obtenerTodosLosDisciplinasControl();
-$equipos       = $instancia_equipos->obtenerTodosLosEquiposControl();
 ?>
 
 <style>
-.logo-img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 100%;
-    transition: transform .2s, box-shadow .2s;
-    cursor: pointer;
-}
-.logo-img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0,0,0,.3);
-}
-.school-name {
-    color: inherit;
-    text-decoration: none;
-}
-.school-name:hover {
-    color: #007bff;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #1f2937;
+        background: linear-gradient(180deg, rgba(240,242,245,1) 0%, rgba(230,232,236,1) 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    header {
+        background: linear-gradient(135deg, #4f46e5, #3b82f6);
+        color: #fff;
+        padding: 50px 10px;
+        text-align: center;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+    }
+    header h1 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    .galeria {
+        column-count: 4;
+        column-gap: 20px;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
+    .card {
+        display: inline-block;
+        margin-bottom: 20px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        break-inside: avoid;
+        transition: all 0.4s ease;
+        cursor: zoom-in;
+        width: 100%;
+    }
+    .card img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 16px;
+    }
+    .lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+        z-index: 999;
+        backdrop-filter: blur(10px);
+    }
+    .lightbox.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .lightbox img {
+        max-width: 95vw;
+        max-height: 80vh;
+        border-radius: 12px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        transform: scale(0.8);
+        opacity: 0;
+        transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .lightbox.active img {
+        transform: scale(1);
+        opacity: 1;
+    }
+    @media (max-width: 1200px) { .galeria { column-count: 3; } }
+    @media (max-width: 900px) { .galeria { column-count: 2; } }
+    @media (max-width: 600px) {
+        .galeria { column-count: 1; }
+        header h1 { font-size: 1.4rem; }
+        .card { border-radius: 10px; }
+        .lightbox img { max-width: 98vw; max-height: 70vh; }
+    }
+    .navbar-hide { display: none !important; }
 </style>
 
-<!-- Listado de colegios y equipos -->
-<div class="container px-5 my-5">
-    <div class="text-center">
-        <h2 class="fw-bolder mb-5">Teams</h2>
+<body>
+    <div class="container" style="margin-top: 100px; padding-top: 20px;">
+        <div class="galeria">
+            <?php
+            $imagenes = [
+                ['url'=>'https://images.pexels.com/photos/34950/pexels-photo.jpg', 'alto'=>260],
+                ['url'=>'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg', 'alto'=>340],
+                ['url'=>'https://images.pexels.com/photos/210186/pexels-photo-210186.jpeg', 'alto'=>280],
+                ['url'=>'https://images.pexels.com/photos/417142/pexels-photo-417142.jpeg', 'alto'=>250],
+                ['url'=>'https://images.pexels.com/photos/355465/pexels-photo-355465.jpeg', 'alto'=>270],
+                ['url'=>'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg', 'alto'=>240],
+                ['url'=>'https://images.pexels.com/photos/417106/pexels-photo-417106.jpeg', 'alto'=>290],
+                ['url'=>'https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg', 'alto'=>260],
+                ['url'=>'https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg', 'alto'=>320],
+                ['url'=>'https://images.pexels.com/photos/325807/pexels-photo-325807.jpeg', 'alto'=>270],
+                ['url'=>'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg', 'alto'=>250],
+                ['url'=>'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg', 'alto'=>300],
+                ['url'=>'https://images.pexels.com/photos/733857/pexels-photo-733857.jpeg', 'alto'=>240],
+                ['url'=>'https://images.pexels.com/photos/1022923/pexels-photo-1022923.jpeg', 'alto'=>290],
+                ['url'=>'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg', 'alto'=>280],
+                ['url'=>'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg', 'alto'=>210],
+                ['url'=>'https://images.pexels.com/photos/1470770/pexels-photo-1470770.jpeg', 'alto'=>300],
+                ['url'=>'https://images.pexels.com/photos/1438761/pexels-photo-1438761.jpeg', 'alto'=>220],
+                ['url'=>'https://images.pexels.com/photos/1707828/pexels-photo-1707828.jpeg', 'alto'=>250],
+                ['url'=>'https://images.pexels.com/photos/1809644/pexels-photo-1809644.jpeg', 'alto'=>300],
+            ];
+            $imagenes = array_merge($imagenes, $imagenes, $imagenes);
+            foreach ($imagenes as $img) {
+                echo "<div class='card'><img src='{$img['url']}' alt='Imagen' data-src='{$img['url']}' style='height:{$img['alto']}px;'></div>";
+            }
+            ?>
+        </div>
     </div>
-    <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        <?php foreach($info_colegios as $colegio): ?>
-            <?php $modalId = 'logoModal' . $colegio['id']; ?>
-            <div class="col mb-5 mb-xl-0">
-                <div class="text-center">
-                    <img 
-                        class="img-fluid logo-img" 
-                        src="<?= PUBLIC_PATH ?>img/<?= $colegio['logo'] ?>" 
-                        alt="Imagen de <?= $colegio['nombre'] ?>" 
-                        data-bs-toggle="modal"
-                        data-bs-target="#<?= $modalId ?>"
-                    />
-                    <h5 class="fw-bolder"><?= $colegio['nombre'] ?></h5>
-                </div>
-            </div>
 
-            <!-- Modal Bootstrap para cada colegio -->
-            <div class="modal fade" id="<?= $modalId ?>" tabindex="-1" aria-labelledby="<?= $modalId ?>Label" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="<?= $modalId ?>Label"><?= $colegio['nombre'] ?></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container my-4">
-                                <div class="row align-items-center">
-                                    <div class="col-md-5 text-center mb-3 mb-md-0">
-                                        <img src="<?= PUBLIC_PATH ?>img/<?= $colegio['logo'] ?>" alt="Logo de <?= $colegio['nombre'] ?>" style="max-width:100%;height:auto;border-radius:100%;">
-                                    </div>
-                                    <div class="col-md-7">
-                                        <h3 class="fw-bolder mb-3">Disciplinas</h3>
-                                        <div class="accordion accordion-flush" id="disciplinasAccordion<?= $colegio['id'] ?>">
-                                            <?php foreach($disciplinas as $i => $disciplina): ?>
-                                                <div class="accordion-item">
-                                                    <h2 class="accordion-header" id="heading<?= $colegio['id'] . '_' . $i ?>">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $colegio['id'] . '_' . $i ?>" aria-expanded="false" aria-controls="collapse<?= $colegio['id'] . '_' . $i ?>">
-                                                            <?= $disciplina['nombre'] ?>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="collapse<?= $colegio['id'] . '_' . $i ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $colegio['id'] . '_' . $i ?>" data-bs-parent="#disciplinasAccordion<?= $colegio['id'] ?>">
-                                                        <div class="accordion-body"> 
-                                                            <h4 class="fw-bold mt-4">Categorías</h4>
-                                                            <div class="accordion accordion-flush" id="categoriasAccordion<?= $colegio['id'] . '_' . $i ?>">
-                                                                <?php foreach($categorias as $j => $categoria): ?>
-                                                                    <div class="accordion-item">
-                                                                        <h2 class="accordion-header" id="catHeading<?= $colegio['id'] . '_' . $i . '_' . $j ?>">
-                                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>" aria-expanded="false" aria-controls="catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>">
-                                                                                <?= $categoria['nombre'] ?>
-                                                                            </button>
-                                                                        </h2>
-                                                                        <div id="catCollapse<?= $colegio['id'] . '_' . $i . '_' . $j ?>" class="accordion-collapse collapse" aria-labelledby="catHeading<?= $colegio['id'] . '_' . $i . '_' . $j ?>" data-bs-parent="#categoriasAccordion<?= $colegio['id'] . '_' . $i ?>">
-                                                                            <div class="accordion-body">
-                                                                                <!-- Aquí puedes poner más información de la categoría si tienes -->
-                                                                                <?= !empty($categoria['descripcion']) ? $categoria['descripcion'] : 'Sin descripción.' ?>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php endforeach; ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
+    <div class="lightbox" id="lightbox">
+        <img src="" alt="Imagen ampliada">
     </div>
-</div>
 
-<!-- Footer-->
-<?php include_once VISTA_PATH . 'footer.php'; ?>
-<?php include_once VISTA_PATH . 'script_and_final.php'; ?>
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const navbar = document.querySelector('.navbar');
+        document.querySelectorAll('.card img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.getAttribute('data-src');
+                lightbox.classList.add('active');
+                if (navbar) navbar.classList.add('navbar-hide');
+            });
+        });
+        lightbox.addEventListener('click', e => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                setTimeout(() => { lightboxImg.src = ''; }, 400);
+                if (navbar) navbar.classList.remove('navbar-hide');
+            }
+        });
+    </script>
+</body>
+</html>
+<?php
+include_once VISTA_PATH . 'footer.php';
+include_once VISTA_PATH . 'script_and_final.php';
+?>

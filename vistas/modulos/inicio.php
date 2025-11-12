@@ -78,7 +78,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
             <div class="row mb-4">
                 <div class="text-center">
                     <div class="styled-title">
-                        <span class="title-text">Sports you can watch.</span>
+                        <span class="title-text">Sports disciplines to watch.</span>
                     </div>
                 </div>
             </div>
@@ -474,23 +474,51 @@ body {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     AOS.init({ once: false, duration: 2000 });
+
     const scrollContainer = document.querySelector('.sports-scroll-container');
-    const speed = 2; // Ajusta la velocidad aquí
+    const cardsRow = document.querySelector('.sports-cards-row');
+    const speed = 2;
+    let running = true;
+
     function isMobile() {
         return window.innerWidth < 992;
     }
+
+    // Duplica los elementos para crear el efecto de bucle infinito
+    if (cardsRow && !isMobile()) {
+        cardsRow.innerHTML += cardsRow.innerHTML;
+    }
+
     function autoScroll() {
-        if (!scrollContainer || isMobile()) return;
-        if (scrollContainer.scrollWidth <= scrollContainer.offsetWidth) return;
-        if (scrollContainer.scrollLeft + scrollContainer.offsetWidth >= scrollContainer.scrollWidth - 1) {
+        if (!scrollContainer || isMobile() || !running) return;
+
+        const scrollWidth = scrollContainer.scrollWidth / 2;
+        if (scrollContainer.scrollLeft >= scrollWidth) {
             scrollContainer.scrollLeft = 0;
         } else {
             scrollContainer.scrollLeft += speed;
         }
         requestAnimationFrame(autoScroll);
     }
+
+    scrollContainer.addEventListener('mouseenter', () => { running = false; });
+    scrollContainer.addEventListener('mouseleave', () => { 
+        if (!isMobile()) {
+            running = true; 
+            autoScroll();
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        running = !isMobile();
+        if (running) autoScroll();
+    });
+
+    scrollContainer.style.scrollBehavior = 'auto';
+
     autoScroll();
 });
 </script>
+
 
 
