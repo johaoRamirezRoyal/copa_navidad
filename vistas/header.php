@@ -27,7 +27,7 @@
     <link rel="manifest" href="<?= PUBLIC_PATH ?>manifest.json">
 
     <!-- 🔹 Favicon e íconos -->
-    <link rel="icon" type="image/x-icon" href="<?= PUBLIC_PATH ?>img/copa_navidad_icono.ico">
+    <link rel="icon" type="image/x-icon" href="<?= PUBLIC_PATH ?>img/logoroyalicon.webp">
     <link rel="apple-touch-icon" sizes="180x180" href="<?= PUBLIC_PATH ?>img/apple-touch-icon.png">
 
     <!-- 🔹 Open Graph (para Facebook, WhatsApp, LinkedIn) -->

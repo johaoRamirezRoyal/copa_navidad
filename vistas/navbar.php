@@ -26,14 +26,8 @@
     <div class="container px-4">
         <!-- Navbar Brand -->
         <a class="navbar-brand custom-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>">
-            <span class="brand-icon">🎅</span>
-            <span class="brand-title">CHRISTMAS CUP</span>
-            <span class="brand-year">
-                <?php 
-                    $anio = new DateTime();
-                    $anio->setTimestamp(time());
-                    echo $anio->format('Y'); 
-                ?>
+            <span class="brand-icon">
+                <img src="<?= BASE_URL ?>public/img/disiplinas/logoroyal.webp" alt="Logo" style="height:3.2rem; width:auto; margin-right:10px;">
             </span>
         </a>
 
@@ -128,8 +122,8 @@
 }
 
 .brand-icon {
-    font-size: 2.2rem;
-    margin-right: 10px;
+    font-size: 2.1rem;
+    margin-right: 9px;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
 }
 
@@ -138,16 +132,7 @@
     letter-spacing: 1.7px;
 }
 
-.brand-year {
-    color: #107725ff;
-    font-weight: 700;
-    margin-left: 12px;
-    font-size: 1.25rem;
-    background: transparent; /* Igual de transparente que el navbar */
-    padding: 3px 12px;
-    border-radius: 10px;
-    box-shadow: none; /* Sin sombra */
-}
+
 
 .navbar-nav .nav-link {
     font-size: 1.12rem;

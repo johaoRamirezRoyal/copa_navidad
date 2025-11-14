@@ -266,6 +266,95 @@ if(isset($_POST['partidos_hoy'])){
         min-width: 90vw;
     }
 }
+
+/* From Uiverse.io by liceajj */
+.cta {
+  display: flex;
+  align-items: center;
+  padding: 11px 33px;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  color: white;
+  background: #ff2929;
+  transition: 1s;
+  box-shadow: 6px 6px 0 black;
+  transform: skewX(-15deg);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta:focus {
+  outline: none;
+}
+
+.cta:hover {
+  transition: 0.5s;
+  box-shadow: 10px 10px 0 #008b00d0;
+}
+
+.cta .second {
+  transition: 0.5s;
+  margin-right: 0px;
+}
+
+.cta:hover .second {
+  transition: 0.5s;
+  margin-right: 45px;
+}
+
+.span {
+  transform: skewX(15deg);
+}
+
+.second {
+  width: 40px;           /* Aumenta el ancho del contenedor */
+  margin-left: 30px;
+  position: relative;
+  top: 12%;
+  display: flex;
+}
+.second svg {
+  width: 40px !important;   /* Fuerza el tamaño de los SVG */
+  height: 40px !important;
+}
+
+.one {
+  transition: 0.4s;
+  transform: translateX(-60%);
+}
+
+.two {
+  transition: 0.5s;
+  transform: translateX(-30%);
+}
+
+.cta:hover .three {
+  animation: color_anim 1s infinite 0.2s;
+}
+
+.cta:hover .one {
+  transform: translateX(0%);
+  animation: color_anim 1s infinite 0.6s;
+}
+
+.cta:hover .two {
+  transform: translateX(0%);
+  animation: color_anim 1s infinite 0.4s;
+}
+
+@keyframes color_anim {
+  0% {
+    fill: white;
+  }
+  50% {
+    fill: #ff2929;
+  }
+  100% {
+    fill: white;
+  }
+}
 </style>
 <div class="container-fluid pt-5 min-vh-100 bg-gradient" style="background: linear-gradient(135deg, #f8fafc 0%, #e2eafc 100%);">
     <div class="py-5">
@@ -276,12 +365,16 @@ if(isset($_POST['partidos_hoy'])){
     </div>
     <div class="container-fluid bg-white rounded-4 shadow-lg py-5">
         <form method="POST" class="mb-4 text-start">
-            <button type="submit" class="btn btn-primary btn-lg px-4 position-relative" name="partidos_hoy">
-                Today's Matches
-                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                    <span class="visually-hidden">Today's Matches</span>
-                </span>
-            </button>
+            <button type="submit" class="cta" name="partidos_hoy">
+    <span class="span">
+        <!-- Ícono de deportes (balón de fútbol) -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 24 24" style="vertical-align:middle; margin-right:10px;">
+            <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2" fill="#ff2929"/>
+            <path d="M12 7l2 3h-4l2-3zm0 10l-2-3h4l-2 3zm-5-5l3-2v4l-3-2zm10 0l-3 2v-4l3 2z" fill="white"/>
+        </svg>
+        Today's Matches
+    </span>
+</button>
         </form>
         <!-- NUEVO: Flexbox para las cards -->
         <div class="cards-flex-container">

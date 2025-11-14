@@ -90,14 +90,18 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                                 <div class="card">
                                     <div class="img-content">
                                         <?php if (!empty($deporte['imagen'])): ?>
-                                            <img src="<?= PUBLIC_PATH ?>img/<?= $deporte['imagen'] ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
+                                            <img src="<?= PUBLIC_PATH ?>img/disiplinas/<?= $deporte['imagen'] ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
                                         <?php else: ?>
                                             <img src="https://dummyimage.com/380x500/198754/fff&text=<?= urlencode($deporte['nombre']) ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
                                         <?php endif; ?>
                                     </div>
                                     <div class="content">
                                         <p class="heading"><?= $deporte['nombre'] ?></p>
-                                        <p><?= $deporte['descripcion'] ?></p>
+                                        <p class="mt-2">
+                                          <a href="#" class="btn custom-animated-btn btn-sm">
+                                            <span>Ver más</span>
+                                          </a>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -197,7 +201,8 @@ include_once VISTA_PATH . 'script_and_final.php';
   pointer-events: none;
   transform: translateY(50px);
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.42); /* Fondo semitransparente */
+  backdrop-filter: blur(8px);       /* Desenfoque */
 }
 .card .content .heading {
   font-size: 32px;

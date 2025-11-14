@@ -108,7 +108,14 @@ $dataEquipos = []; // Tabla de equipos vacía
 <section class="py-5 bg-light">
     <style>
         /* Estilos para los logos y nombres de colegios */
-        .logo-img{width:150px;height:150px;object-fit:cover;border-radius:100%;transition:transform .2s,box-shadow .2s;cursor:pointer}
+        .logo-img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 100%;
+            transition: transform .2s, box-shadow .2s;
+            cursor: pointer;
+        }
         .logo-img:hover{transform:scale(1.05);box-shadow:0 0 10px rgba(0,0,0,.3) }
         .school-name{color:inherit;text-decoration:none}
         .school-name:hover{color:#007bff}

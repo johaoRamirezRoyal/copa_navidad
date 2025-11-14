@@ -14,17 +14,14 @@ include_once VISTA_PATH . 'navbar.php';
         min-height: 100vh;
         overflow-x: hidden;
     }
-    header {
-        background: linear-gradient(135deg, #4f46e5, #3b82f6);
-        color: #fff;
-        padding: 50px 10px;
+    .gallery-title {
         text-align: center;
-        box-shadow: 0 4px 25px rgba(0,0,0,0.15);
-    }
-    header h1 {
         font-size: 2.2rem;
-        font-weight: 600;
-        margin: 0;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-top: 120px;
+        margin-bottom: 5px;
+        letter-spacing: 2px;
     }
     .galeria {
         column-count: 4;
@@ -84,15 +81,42 @@ include_once VISTA_PATH . 'navbar.php';
     @media (max-width: 900px) { .galeria { column-count: 2; } }
     @media (max-width: 600px) {
         .galeria { column-count: 1; }
-        header h1 { font-size: 1.4rem; }
+        .gallery-title { font-size: 1.4rem; }
         .card { border-radius: 10px; }
         .lightbox img { max-width: 98vw; max-height: 70vh; }
     }
     .navbar-hide { display: none !important; }
+    .styled-title {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(90deg, #d90429 0%, #ff595e 100%);
+      padding: 12px 38px;
+      box-shadow: 6px 6px 0 #22222244;
+      transform: skewX(-20deg);
+      position: relative;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 5px;
+      margin-bottom: 2.5rem;
+      transition: box-shadow 0.4s;
+    }
+    .styled-title:hover {
+      box-shadow: 20px 20px 0 #008106ff;
+    }
+    .title-text {
+      transform: skewX(10deg);
+      text-shadow: 0 2px 8px #0002;
+    }
 </style>
 
 <body>
-    <div class="container" style="margin-top: 100px; padding-top: 20px;">
+    <div class="container" style="margin-top: 100px; padding-top: 50px;">
+        <div class="text-center">
+          <div class="styled-title">
+            <span class="title-text">Gallery</span>
+          </div>
+        </div>
         <div class="galeria">
             <?php
             $imagenes = [
@@ -117,7 +141,7 @@ include_once VISTA_PATH . 'navbar.php';
                 ['url'=>'https://images.pexels.com/photos/1707828/pexels-photo-1707828.jpeg', 'alto'=>250],
                 ['url'=>'https://images.pexels.com/photos/1809644/pexels-photo-1809644.jpeg', 'alto'=>300],
             ];
-            $imagenes = array_merge($imagenes, $imagenes, $imagenes);
+            // $imagenes = array_merge($imagenes, $imagenes, $imagenes);
             foreach ($imagenes as $img) {
                 echo "<div class='card'><img src='{$img['url']}' alt='Imagen' data-src='{$img['url']}' style='height:{$img['alto']}px;'></div>";
             }
