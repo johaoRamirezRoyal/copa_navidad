@@ -46,7 +46,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>partidos/index">Matches</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>faq">Rules</a></li>
 
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Blog
                     </a>
@@ -64,7 +64,7 @@
                         <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
                         <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
