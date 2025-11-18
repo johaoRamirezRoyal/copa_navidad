@@ -355,10 +355,43 @@ if(isset($_POST['partidos_hoy'])){
     fill: white;
   }
 }
+
+.styled-title {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(90deg, #b60220ff 0%, #d13a3fff 100%);
+  padding: 12px 38px;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 #22222244;
+  transform: skewX(-20deg);
+  position: relative;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 5px;
+  margin-bottom: 2.5rem;
+  transition: box-shadow 0.4s;
+}
+.styled-title:hover {
+  box-shadow: 20px 20px 0 #1417a8ff;
+}
+.title-text {
+  transform: skewX(10deg);
+  text-shadow:
+    0 2px 16px #fff,
+    0 0px 8px #fff,
+    0 1px 0 #fff,
+    0 4px 24px #fff,
+    0 4px 16px #0004;
+}
 </style>
 <div class="container-fluid pt-5 min-vh-100 bg-gradient" style="background: linear-gradient(135deg, #f8fafc 0%, #e2eafc 100%);">
     <div class="py-5">
-        <h1 class="text-black text-lg-center display-5 fw-bold"><?=$label?></h1>
+        <div class="text-center">
+          <div class="styled-title">
+            <span class="title-text"><?= $label ?></span>
+          </div>
+        </div>
         <?php if (isset($_POST['partidos_hoy'])): ?>
             <p class="fw-light text-center text-secondary fs-5"><?= date('Y-m-d') ?></p>
         <?php endif; ?>
@@ -366,15 +399,11 @@ if(isset($_POST['partidos_hoy'])){
     <div class="container-fluid bg-white rounded-4 shadow-lg py-5">
         <form method="POST" class="mb-4 text-start">
             <button type="submit" class="cta" name="partidos_hoy">
-    <span class="span">
-        <!-- Ícono de deportes (balón de fútbol) -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 24 24" style="vertical-align:middle; margin-right:10px;">
-            <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2" fill="#ff2929"/>
-            <path d="M12 7l2 3h-4l2-3zm0 10l-2-3h4l-2 3zm-5-5l3-2v4l-3-2zm10 0l-3 2v-4l3 2z" fill="white"/>
-        </svg>
-        Today's Matches
-    </span>
-</button>
+              <span class="span">
+                <!-- Ícono SVG -->
+                Today's Matches
+              </span>
+            </button>
         </form>
         <!-- NUEVO: Flexbox para las cards -->
         <div class="cards-flex-container">

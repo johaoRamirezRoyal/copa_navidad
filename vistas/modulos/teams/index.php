@@ -124,8 +124,9 @@ $dataEquipos = []; // Tabla de equipos vacía
         .styled-title {
           display: inline-flex;
           align-items: center;
-          background: linear-gradient(90deg, rgba(201, 0, 27, 0.82) 0%, #ff595e 100%);
+          background: linear-gradient(90deg, #b60220ff 0%, #d13a3fff 100%);
           padding: 12px 38px;
+          border-radius: 8px;
           box-shadow: 6px 6px 0 #22222244;
           transform: skewX(-20deg);
           position: relative;
@@ -137,25 +138,31 @@ $dataEquipos = []; // Tabla de equipos vacía
           transition: box-shadow 0.4s;
         }
         .styled-title:hover {
-          box-shadow: 20px 20px 0 #008106ff;
+          box-shadow: 20px 20px 0 #1417a8ff;
         }
         .title-text {
           transform: skewX(10deg);
-          text-shadow: 0 2px 8px #0002;
+          text-shadow:
+            0 2px 16px #fff,
+            0 0px 8px #fff,
+            0 1px 0 #fff,
+            0 4px 24px #fff,
+            0 4px 16px #0004;
         }
         .animate-title {
-          display: inline-block;
-          animation: popIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-          background: linear-gradient(90deg, #cc393eff 0%, #868686ff 100%);
-          background-clip: text;
-          -webkit-background-clip: text;
-          color: transparent;
-          -webkit-text-fill-color: transparent;
-          text-shadow: 0 4px 24px #ff595e33, 0 1px 0 #fff;
-          letter-spacing: 6px;
-          position: relative;
-          overflow: hidden;
+            display: inline-block;
+            animation: popIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            background: linear-gradient(90deg, #cc393eff 0%, #868686ff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 24px #ff595e33, 0 1px 0 #fff;
+            letter-spacing: 6px;
+            position: relative;
+            overflow: hidden;
         }
+
         @keyframes popIn {
           0% {
             opacity: 0;
