@@ -148,6 +148,13 @@ $dataEquipos = []; // Tabla de equipos vacía
             0 1px 0 #fff,
             0 4px 24px #fff,
             0 4px 16px #0004;
+          transition: font-size 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                      transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .styled-title:hover .title-text {
+          font-size: 2.7rem;
+          transform: skewX(10deg) scale(1.15);
         }
         .animate-title {
             display: inline-block;

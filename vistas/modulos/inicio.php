@@ -111,11 +111,11 @@ include_once VISTA_PATH . 'script_and_final.php';
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
 .card-container {
-  width: 380px;
-  height: 500px;
+  width: 480px;    /* Antes: 380px */
+  height: 620px;   /* Antes: 500px */
   position: relative;
   transform: skewX(-10deg);
-  margin-bottom: 20px;
+  margin-bottom: 28px; /* Un poco más de margen */
 }
 .card-container::before {
   content: "";
@@ -304,7 +304,7 @@ include_once VISTA_PATH . 'script_and_final.php';
   scrollbar-width: none;
   -ms-overflow-style: none;
   margin-left: auto;
-  margin-right: auto;
+  margin-right
 }
 .sports-scroll-container::-webkit-scrollbar {
   display: none;
@@ -319,20 +319,20 @@ include_once VISTA_PATH . 'script_and_final.php';
 }
 
 .sports-cards-row .col {
-  min-width: 400px;
+  min-width: 500px; /* Antes: 400px */
   display: flex;
   justify-content: center;
 }
 
 @media (max-width: 991.98px) {
   .card-container {
-    width: 90vw;
-    max-width: 320px;
-    height: 340px;
-    margin-bottom: 16px;
+    width: 98vw;
+    max-width: 400px;   /* Antes: 320px */
+    height: 440px;      /* Antes: 340px */
+    margin-bottom: 18px;
   }
   .sports-cards-row .col {
-    min-width: 320px;
+    min-width: 400px;   /* Antes: 320px */
   }
   .sports-scroll-container {
     padding-left: 8px;
@@ -352,12 +352,12 @@ include_once VISTA_PATH . 'script_and_final.php';
 
 @media (max-width: 575.98px) {
   .card-container {
-    width: 96vw;
-    max-width: 98vw;
-    height: 240px;
+    width: 99vw;
+    max-width: 99vw;
+    height: 320px;      /* Antes: 240px */
   }
   .sports-cards-row .col {
-    min-width: 96vw;
+    min-width: 99vw;
   }
   .sports-cards-row {
     gap: 12px;
@@ -483,7 +483,6 @@ body {
 <!-- =================== SCRIPTS =================== -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-// Inicializa AOS para animaciones al hacer scroll
 document.addEventListener('DOMContentLoaded', function() {
     AOS.init({ once: false, duration: 2000 });
 
@@ -492,17 +491,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const speed = 2;
     let running = true;
 
-    // Detecta si es dispositivo móvil
     function isMobile() {
         return window.innerWidth < 992;
     }
 
-    // Duplica los elementos para efecto de scroll infinito solo en desktop
+    // Duplica los elementos para crear el efecto de bucle infinito
     if (cardsRow && !isMobile()) {
         cardsRow.innerHTML += cardsRow.innerHTML;
     }
 
-    // Función de auto-scroll horizontal infinito
     function autoScroll() {
         if (!scrollContainer || isMobile() || !running) return;
 
@@ -515,28 +512,25 @@ document.addEventListener('DOMContentLoaded', function() {
         requestAnimationFrame(autoScroll);
     }
 
-    // Pausa el auto-scroll al pasar el mouse
-    scrollContainer?.addEventListener('mouseenter', () => { running = false; });
-    scrollContainer?.addEventListener('mouseleave', () => { 
+    scrollContainer.addEventListener('mouseenter', () => { running = false; });
+    scrollContainer.addEventListener('mouseleave', () => { 
         if (!isMobile()) {
             running = true; 
             autoScroll();
         }
     });
 
-    // Ajusta el auto-scroll al cambiar el tamaño de la ventana
     window.addEventListener('resize', () => {
         running = !isMobile();
         if (running) autoScroll();
     });
 
-    // Desactiva la animación de scroll nativa para el efecto personalizado
-    if(scrollContainer) scrollContainer.style.scrollBehavior = 'auto';
+    scrollContainer.style.scrollBehavior = 'auto';
 
-    // Inicia el auto-scroll si corresponde
     autoScroll();
 });
 </script>
+
 
 
 
