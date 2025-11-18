@@ -27,10 +27,12 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         <div class="carousel-inner">
             <!-- Slide 1 -->
             <div class="carousel-item active">
-                <img src="https://dummyimage.com/900x400/343a40/fff&text=Welcome+to+Christmas+Cup" class="d-block w-100 animate__animated animate__zoomIn" alt="Welcome Slide">
+                <img src="public/img/banner/BANNERCOPANAVIDAD.png" class="d-block w-100 animate__animated animate__zoomIn" alt="Welcome Slide">
                 <div class="carousel-caption d-none d-md-block">
-                    <h2 class="fw-bold text-black mb-2 animate__animated animate__fadeInUp" style="font-size:2rem;">WELCOME TO CHRISTMAS CUP</h2>
-                    <p class="lead fw-normal text-black-50 mb-4 animate__animated animate__fadeInUp" style="font-size:1rem;">
+                    <h2 class="fw-bold mb-2 animate__animated animate__fadeInUp custom-title-blue" style="font-size:2rem;">
+                        WELCOME TO CHRISTMAS CUP
+                    </h2>
+                    <p class="lead fw-normal mb-4 animate__animated animate__fadeInUp custom-title-blue" style="font-size:1rem;">
                         For 21 years, the Christmas Cup has united sports passion, teamwork, and friendship. Celebrate respect, unity, and fair play—create memories for a lifetime!
                     </p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
@@ -471,6 +473,16 @@ body {
     width: 100%;
     margin: 0 auto;
     font-weight: 700;
+}
+
+.custom-title-blue {
+    color: #0a2342 !important;      /* Azul oscuro para la letra */
+    border-radius: 8px;
+    background: transparent;        /* Sin fondo */
+    padding: 2px 10px;
+    box-shadow: none;
+    text-shadow: 0 1px 0 #fff, 0 4px 16px #0002; /* Borde blanco sutil en la letra */
+    display: inline-block;
 }
 </style>
 
