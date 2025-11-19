@@ -249,7 +249,7 @@ class PartidosModel extends conexion
                     LEFT JOIN equipos e2 ON p.equipo2 = e2.id
                     LEFT JOIN categorias c ON p.categoria = c.id
                     LEFT JOIN subcategoria s ON p.subcategoria = s.id
-                    LEFT JOIN disciplinas d ON re.id_deporte = d.id
+                    LEFT JOIN disciplinas d ON p.disciplina = d.id
                     ORDER BY p.fecha DESC;";
         try{
             $preparado = $cnx->preparar($cmdsql);
@@ -282,7 +282,7 @@ class PartidosModel extends conexion
                     LEFT JOIN equipos e2 ON p.equipo2 = e2.id
                     LEFT JOIN categorias c ON p.categoria = c.id
                     LEFT JOIN subcategoria s ON p.subcategoria = s.id
-                    LEFT JOIN disciplinas d ON re.id_deporte = d.id
+                    LEFT JOIN disciplinas d ON p.disciplina = d.id
                     WHERE DATE(p.fecha) = '$fecha'
                     ORDER BY p.fecha DESC;";
         try{
