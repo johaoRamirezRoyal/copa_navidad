@@ -279,8 +279,9 @@ if(isset($_POST['partidos_hoy'])){
   color: white;
   background: #ff2929;
   transition: 1s;
-  box-shadow: 6px 6px 0 black;
+  box-shadow: 6px 6px 0 grey;
   transform: skewX(-15deg);
+  border-radius: 8px;
   border: none;
   position: relative;
   overflow: hidden;
@@ -386,7 +387,7 @@ if(isset($_POST['partidos_hoy'])){
     0 4px 16px #0004;
 }
 </style>
-<div class="container-fluid pt-5 min-vh-100 bg-gradient" style="background: linear-gradient(135deg, #f8fafc 0%, #e2eafc 100%);">
+<div class="container-fluid pt-5" style="background: linear-gradient(135deg, #f8fafc 0%, #e2eafc 100%); margin-top: 85px; padding-top: 18px;">
     <div class="py-5">
         <div class="text-center">
           <div class="styled-title">
