@@ -181,4 +181,14 @@ class ControlPartidos
         $datos = PartidosModel::obtenerResultadoDeEnfrentamiento($id_enfrentamiento);
         return $datos;
     }
+
+    public function obtenerInformacionResultadoEnfrentamientos(){
+        $datos = PartidosModel::obtenerInformacionResultadoEnfrentamientos();
+        return $datos;
+    }
+
+    public function obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha){
+        $datos = PartidosModel::obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha);
+        return $datos;
+    }
 }

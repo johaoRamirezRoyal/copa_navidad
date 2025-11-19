@@ -69,6 +69,10 @@ function slugify($text) {
 function disciplinesToList($disciplinas) {
     $out = [];
     foreach ($disciplinas as $d) {
+        // Si la columna 'activo' existe y no es 1, la disciplina se omite
+        if (array_key_exists('activo', $d) && (int)$d['activo'] !== 1) {
+            continue;
+        }
         $nombre = $d['nombre'] ?? $d['nombre_disciplina'] ?? 'Sin nombre';
         $slug = !empty($d['slug']) ? $d['slug'] : slugify($nombre);
         $icon = $d['icono'] ?? $d['emoji'] ?? '';

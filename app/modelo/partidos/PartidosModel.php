@@ -230,4 +230,71 @@ class PartidosModel extends conexion
         }
     }
 
+    public static function obtenerInformacionResultadoEnfrentamientos(){
+        $tabla = "resultado_enfrentamiento";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT
+                        re.*,
+                        p.lugar AS lugar,
+                        p.fecha AS fecha,
+                        e1.nombre AS colegio_equipo1_nom,
+                        e2.nombre AS colegio_equipo2_nom,
+                        p.fecha AS fecha_enfrentamiento,
+                        d.nombre AS disciplina_nom,
+                        c.nombre AS categoria_nom,
+                        s.nombre AS subcategoria_nom
+                    FROM partidos p
+                    LEFT JOIN resultado_enfrentamiento re ON re.id_enfrentamiento = p.id
+                    LEFT JOIN equipos e1 ON p.equipo1 = e1.id
+                    LEFT JOIN equipos e2 ON p.equipo2 = e2.id
+                    LEFT JOIN categorias c ON p.categoria = c.id
+                    LEFT JOIN subcategoria s ON p.subcategoria = s.id
+                    LEFT JOIN disciplinas d ON re.id_deporte = d.id
+                    ORDER BY p.fecha DESC;";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            if($preparado->execute()){
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al obtener la información de los resultados de los enfrentamientos: " . $e;
+        }
+    }
+
+        public static function obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha){
+        $tabla = "resultado_enfrentamiento";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT
+                        re.*,
+                        p.lugar AS lugar,
+                        p.fecha AS fecha,
+                        e1.nombre AS colegio_equipo1_nom,
+                        e2.nombre AS colegio_equipo2_nom,
+                        p.fecha AS fecha_enfrentamiento,
+                        d.nombre AS disciplina_nom,
+                        c.nombre AS categoria_nom,
+                        s.nombre AS subcategoria_nom
+                    FROM partidos p
+                    LEFT JOIN resultado_enfrentamiento re ON re.id_enfrentamiento = p.id
+                    LEFT JOIN equipos e1 ON p.equipo1 = e1.id
+                    LEFT JOIN equipos e2 ON p.equipo2 = e2.id
+                    LEFT JOIN categorias c ON p.categoria = c.id
+                    LEFT JOIN subcategoria s ON p.subcategoria = s.id
+                    LEFT JOIN disciplinas d ON re.id_deporte = d.id
+                    WHERE DATE(p.fecha) = '$fecha'
+                    ORDER BY p.fecha DESC;";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            if($preparado->execute()){
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al obtener la información de los resultados de los enfrentamientos: " . $e;
+        }
+    }
+
 }

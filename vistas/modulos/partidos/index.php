@@ -10,12 +10,13 @@ require_once CONTROL_PATH . 'partidos' . DS . 'ControlPartidos.php';
 $instancia_partidos = ControlPartidos::singleton_partidos();
 
 if(isset($_POST['partidos_hoy'])){
-    $partidos = $instancia_partidos->obtenerPartidosEnBaseAlDiaControl(date('Y-m-d'));
+    $partidos = $instancia_partidos->obtenerInformacionResultadoEnfrentamientosEnBaseAlDia(date('Y-m-d'));
     $label = "Today's matches";
 }else{
-    $partidos = $instancia_partidos->obtenerTodosLosPartidosControl();
+    $partidos = $instancia_partidos->obtenerInformacionResultadoEnfrentamientos();
     $label = "Matches";
 }
+
 ?>
 <style>
 /* Modern Sports Card - Light Version */
@@ -221,7 +222,7 @@ if(isset($_POST['partidos_hoy'])){
     margin-right: 0.4em;
 }
 .sports-card .badge-live {
-    background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
+    background: linear-gradient(90deg, #28a745 0%, #d9ff00ff 100%); /* verde a amarillo */
     color: #fff;
     font-weight: 700;
     font-size: 0.95em;
@@ -229,12 +230,12 @@ if(isset($_POST['partidos_hoy'])){
     padding: 0.3em 1em;
     margin-left: 0.5em;
     animation: pulseLive 1.2s infinite;
-    box-shadow: 0 2px 8px rgba(255,88,88,0.15);
+    box-shadow: 0 2px 8px rgba(40,167,69,0.18); /* sombra verdosa */
 }
 @keyframes pulseLive {
-    0% { box-shadow: 0 0 0 0 rgba(255,88,88,0.4);}
-    70% { box-shadow: 0 0 0 10px rgba(255,88,88,0);}
-    100% { box-shadow: 0 0 0 0 rgba(255,88,88,0.4);}
+    0% { box-shadow: 0 0 0 0 rgba(40,167,69,0.35); }
+    70% { box-shadow: 0 0 0 10px rgba(40,167,69,0); }
+    100% { box-shadow: 0 0 0 0 rgba(40,167,69,0.35); }
 }
 
 /* NUEVO: Layout de las cards sin Bootstrap */
@@ -411,8 +412,6 @@ if(isset($_POST['partidos_hoy'])){
                 $deporte = $partido['disciplina_nom'];
                 $categoria = $partido['categoria_nom'];
                 $subcategoria = $partido['subcategoria_nom'];
-                $equipo1 = $partido['equipo1_nom'];
-                $equipo2 = $partido['equipo2_nom'];
                 $lugar = $partido['lugar'];
                 $fecha_hora = $partido['fecha'];
                 list($fecha, $hora) = explode(' ', $fecha_hora);
@@ -423,12 +422,9 @@ if(isset($_POST['partidos_hoy'])){
                 $ahora = new DateTime();
 
                 $directo = ($ahora >= $inicio && $ahora <= $fin);
+                $score1 = ($partido['pts_equipo1'] === null) ? 0 : $partido['pts_equipo1'];
+                $score2 = ($partido['pts_equipo2'] === null) ? 0 : $partido['pts_equipo2'];
 
-                // Simulación de marcador y tiempo (ajusta según tu lógica real)
-                $score1 = isset($partido['marcador1']) ? $partido['marcador1'] : rand(0,5);
-                $score2 = isset($partido['marcador2']) ? $partido['marcador2'] : rand(0,5);
-                $minuto = $directo ? rand(1,90) : '00';
-                $periodo = $directo ? ($minuto > 45 ? '2H' : '1H') : '';
             ?>
             <div class="card-flex-item">
                 <div class="sports-card-wrapper w-100">
@@ -460,8 +456,6 @@ if(isset($_POST['partidos_hoy'])){
                                 <span class="event-score-container">
                                     <span class="current-time-container">
                                         <span class="event-current-time">
-                                            <span class="event-clock"><?= $directo ? $minuto."'" : '' ?></span>
-                                            <span class="current-part"><?= $directo ? $periodo : '' ?></span>
                                         </span>
                                         <?php if($directo): ?>
                                         <span class="progress-dots" data-progress="1S">

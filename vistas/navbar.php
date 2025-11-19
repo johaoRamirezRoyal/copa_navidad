@@ -127,6 +127,23 @@
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
 }
 
+/* Sombra para la imagen PNG (respeta transparencia) */
+.brand-icon img {
+    height: 3.2rem; /* mantiene la altura previa si la quitas del inline */
+    width: auto;
+    margin-right: 10px;
+    filter: drop-shadow(0 6px 12px rgba(255, 255, 255, 0.67));
+    -webkit-filter: drop-shadow(0 6px 12px rgba(255, 255, 255, 0.67));
+    transition: filter 0.18s ease, transform 0.18s ease;
+    will-change: filter, transform;
+}
+
+.brand-icon img:hover {
+    filter: drop-shadow(0 10px 18px rgba(255, 255, 255, 0.67));
+    -webkit-filter: drop-shadow(0 10px 18px rgba(255, 255, 255, 0.67));
+    transform: translateY(-2px);
+}
+
 .brand-title {
     font-weight: 900;
     letter-spacing: 1.7px;
@@ -141,13 +158,13 @@
     padding: 10px 18px;
     border-radius: 10px;
     background: transparent; /* Más transparente que el navbar */
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    backdrop-filter: none;
+    /*transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    backdrop-filter: none;*/
 }
 
 .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
     background: rgba(255,255,255,0.18);
-    color: #ffe066 !important;
+    color: #1417a8ff !important;
     box-shadow: 0 2px 8px rgba(255,224,102,0.12);
 }
 
