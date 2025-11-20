@@ -50,6 +50,20 @@ include_once VISTA_PATH . 'navbar.php';
                 </div>
             </div>
         </div>
+
+        <!-- Nuevo: Administrador de grupos -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Grupos&font=roboto" class="card-img-top" alt="Grupos">
+                <div class="card-body">
+                    <h5 class="card-title">Administrador de grupos</h5>
+                    <a href="<?= BASE_URL?>panelControl/grupos/index" class="btn btn-outline-primary w-100">
+                        Ir a grupos
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-4 col-md-6">
             <div class="card h-100 shadow-sm card-borde-gris">
                 <img src="https://placehold.co/400x200?text=Resultados&font=roboto" class="card-img-top" alt="Resultados">
