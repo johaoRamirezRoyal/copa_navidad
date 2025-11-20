@@ -50,8 +50,8 @@ class EquiposModel extends conexion {
     public static function agregarNuevoEquipoModel($datos){
         $tabla = "equipos";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "INSERT INTO $tabla (nombre, categoria, sub_categoria, colegio, diciplina) 
-                    VALUES (:nombre, :categoria, :sub_categoria, :colegio, :diciplina)";
+        $cmdsql = "INSERT INTO $tabla (nombre, categoria, sub_categoria, colegio, diciplina, id_grupo) 
+                    VALUES (:nombre, :categoria, :sub_categoria, :colegio, :diciplina, :grupo)";
         try{
             $preparado = $cnx->preparar($cmdsql);
             $preparado->bindParam(":nombre", $datos['nombre']);
@@ -59,6 +59,7 @@ class EquiposModel extends conexion {
             $preparado->bindParam(":sub_categoria", $datos['sub_categoria']);
             $preparado->bindParam(":colegio", $datos['colegio']);
             $preparado->bindParam(":diciplina", $datos['diciplina']);
+            $preparado->bindParam(":grupo", $datos['grupo']);
             if($preparado->execute()){
                 return true;
             }else{

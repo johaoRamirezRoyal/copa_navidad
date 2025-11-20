@@ -31,7 +31,8 @@ class ControlEquipos
                 'categoria' => $_POST['categoria'],
                 'sub_categoria' => $_POST['sub_categoria'],
                 'colegio' => $_POST['colegio'],
-                'diciplina' => $_POST['diciplina']
+                'diciplina' => $_POST['diciplina'],
+                'grupo' => $_POST['grupo']
             );
             
             $nuevo_equipo = EquiposModel::agregarNuevoEquipoModel($datos);
