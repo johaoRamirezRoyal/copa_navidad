@@ -122,16 +122,16 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
     </div>
 
     <!-- Carrusel de Escudos -->
-    <div id="carouselExampleFade" class="carousel slide carousel-fade mb-4 reveal" data-bs-ride="carousel">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade mb-4 reveal" data-bs-ride="carousel" data-bs-interval="3000">
       <div class="carousel-inner rounded">
         <div class="carousel-item active">
-          <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="d-block w-100" alt="Imagen equipo">
+          <img src="https://www.shutterstock.com/image-photo/textured-soccer-game-field-ball-600nw-2511518607.jpg" class="d-block w-100" alt="Imagen equipo">
         </div>
         <div class="carousel-item">
-          <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="d-block w-100" alt="Imagen equipo">
+          <img src="https://universidadeuropea.com/resources/media/images/scouting-futbol-800x450.width-640.jpg" class="d-block w-100" alt="Imagen equipo">
         </div>
         <div class="carousel-item">
-          <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="d-block w-100" alt="Imagen equipo">
+          <img src="https://statics.forbes.com.ec/2025/10/crop/68f93bc7be723__600x390.webp" class="d-block w-100" alt="Imagen equipo">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -155,7 +155,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                 <div class="card-body text-center">
                     <div class="d-flex justify-content-around align-items-center">
                         <div class="text-center">
-                            <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="team-logo" alt="América de Cali">
+                            <img src="https://yt3.googleusercontent.com/6oIvWUl3ulau_rlHeJkGmfQhfGKbtJXkxhhRGZLq-UOZappn98XsQ6nXuzh2YJCptdXrU5S6=s900-c-k-c0x00ffffff-no-rj" class="team-logo rounded-circle" alt="América de Cali">
                             <p class="mb-0 fw-semibold">América de Cali</p>
                             <small class="text-muted">Local</small>
                         </div>
@@ -164,7 +164,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                             <small class="d-block text-muted">vs</small>
                         </div>
                         <div class="text-center">
-                            <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="team-logo" alt="Rival">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/ESCUDO_JUNIOR.svg/250px-ESCUDO_JUNIOR.svg.png" class="team-logo rounded-circle" alt="Rival">
                             <p class="mb-0 fw-semibold">Junior</p>
                             <small class="text-muted">Visitante</small>
                         </div>
@@ -183,7 +183,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                     <p class="text-muted">Sábado, 18 de octubre de 2025</p>
                     <div class="d-flex justify-content-around align-items-center">
                         <div class="text-center">
-                            <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="team-logo" alt="Deportivo Cali">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Deportivo_Cali.svg/250px-Deportivo_Cali.svg.png" class="team-logo rounded-circle" alt="Deportivo Cali">
                             <p class="mb-0 fw-semibold">Deportivo Cali</p>
                         </div>
                         <div>
@@ -191,9 +191,8 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                             <p class="text-danger fw-bold mb-0">8:30 p.m.</p>
                         </div>
                         <div class="text-center">
-                            <img src="https://scontent.ftkd1-1.fna.fbcdn.net/v/t39.30808-6/467976516_10161791265482789_2266037144993234994_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=5Hz9s9c1Ct8Q7kNvwHgTHZs&_nc_oc=AdnizQveDflwdgbBA_JB-Q6e9DC3kfoqth6xNa8GpwHFplRhLjIYa67aEEHnVI1Gplc&_nc_zt=23&_nc_ht=scontent.ftkd1-1.fna&_nc_gid=WTtos2NTUMeYfpLTCf5ubw&oh=00_Afezahw7Q-Wa78ZBw2byEiU6HhFs1ku0Uuj-LGNvclMmzw&oe=68FC28F9" class="team-logo" alt="América de Cali">
+                            <img src="https://yt3.googleusercontent.com/6oIvWUl3ulau_rlHeJkGmfQhfGKbtJXkxhhRGZLq-UOZappn98XsQ6nXuzh2YJCptdXrU5S6=s900-c-k-c0x00ffffff-no-rj" class="team-logo rounded-circle" alt="América de Cali club crest in red and white, featuring a stylized devil mascot holding a trident. The crest is centered on a plain background, conveying a sense of pride and tradition. Text below reads América de Cali, the team's name.">
                             <p class="mb-0 fw-semibold">América de Cali</p>
-                        </div>
                     </div>
                 </div>
             </div>
