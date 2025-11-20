@@ -9,12 +9,14 @@ require_once CONTROL_PATH . DS . 'equipos' . DS . 'ControlEquipos.php';
 require_once CONTROL_PATH . DS . 'categorias' . DS . 'ControlCategorias.php';
 require_once CONTROL_PATH . DS . 'deportes' . DS . 'ControlDeportes.php';
 require_once CONTROL_PATH . DS . 'colegios' . DS . 'ControlColegios.php';
+require_once CONTROL_PATH . DS . 'grupos' . DS . 'ControlGrupos.php';
 
 
 $instancia_equipos = ControlEquipos::singleton_equipos();
 $instancia_categorias = ControlCategorias::singleton_categorias();
 $instancia_deportes = ControlDeportes::singleton_deportes();
 $instancia_colegios = ControlColegios::singleton_colegios();
+$instancia_grupos = ControlGrupos::singleton_grupos();
 
 $categorias = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $subcategorias = $instancia_categorias->obtenerTodosLosSubcategoriasControl();
@@ -24,16 +26,16 @@ $colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
 
 if (isset($_POST['buscar'])) {
     $datos = array(
-        'categoria' => $_POST['categoria'],
-        'subcategoria' => $_POST['subcategoria'],
-        'deporte' => $_POST['deporte']
-    );
+    'categoria' => $_POST['categoria'] ?? null,
+    'subcategoria' => $_POST['subcategoria'] ?? null,
+    'deporte' => $_POST['deporte'] ?? null
+);
 
-    $equipos = $instancia_equipos->obtenerEquiposFiltradoControl($datos);
+
+    $grupos = $instancia_grupos->obtenerGruposFiltradoControl($datos);
 } else {
-    $equipos = $instancia_equipos->obtenerEquiposInformacionControl();
+    $grupos = $instancia_grupos->obtenerTodosLosGruposControl();
 }
-
 ?>
 
 <div class="container" style="margin-top: 120px; padding-top: 18px;">
@@ -96,25 +98,22 @@ if (isset($_POST['buscar'])) {
                             <tr class="text-center">
                                 <th>Nombre</th>
                                 <th>Categoria</th>
-                                <th>Colegio</th>
                                 <th>Deporte</th>
                                 <th>Subcategoria</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($equipos as $equipo):
-                                $id = $equipo['id'];
-                                $nombre = $equipo['nombre_equipo'];
-                                $categoria = $equipo['categoria'];
-                                $colegio = $equipo['colegio_nombre'];
-                                $deporte = $equipo['deporte'];
-                                $subcategoria = $equipo['subcategoria']
+                            <?php foreach ($grupos as $grupo):
+                                $id = $grupo['id'];
+                                $nombre = $grupo['nombre'];
+                                $categoria = $grupo['categoria_nombre'];
+                                $deporte = $grupo['disciplina_nombre'];
+                                $subcategoria = $grupo['subcategoria_nombre'];
                             ?>
                                 <tr class="text-center">
                                     <td><?= $nombre ?></td>
                                     <td><?= $categoria ?></td>
-                                    <td><?= $colegio ?></td>
                                     <td><?= $deporte ?></td>
                                     <td><?= ucfirst($subcategoria) ?></td>
                                     <td>
@@ -126,8 +125,8 @@ if (isset($_POST['buscar'])) {
 
                                             <form method="POST">
                                                 <input type="hidden" value="<?= $id ?>" name="id">
-                                                <button type="submit" class="btn btn-danger btn-sm " name="eliminar_equipo">
-                                                    Eliminar equipo
+                                                <button type="submit" class="btn btn-danger btn-sm " name="eliminar_grupo">
+                                                    Eliminar grupo
                                                 </button>
                                             </form>
 
@@ -179,19 +178,7 @@ if (isset($_POST['buscar'])) {
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-3 text-start">
-                                                                    <label for="colegio" class="form-label"><b>Seleccione la institución del cual hace parte el equipo<span class="text-danger">*</span></b></label>
-                                                                    <select name="colegio" id="colegio" class="form-select" aria-label="colegio" required>
-                                                                        <option selected disabled>Selecciona un colegio</option>
-                                                                        <?php foreach ($colegios as $colegio):
-                                                                            $select = ($colegio['id'] == $equipo['id_colegio']) ? 'selected' : '';
-                                                                        ?>
-                                                                            <option value="<?= $colegio['id'] ?>" <?= $select ?>><?= $colegio['nombre'] ?></option>
-                                                                        <?php endforeach ?>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                            
                                                             <div class="col-lg-4">
                                                                 <div class="mb-3 text-start">
                                                                     <label for="deporte" class="form-label"><b>Selecciona el deporte del equipo <span class="text-danger">*</span></b></label>
@@ -210,7 +197,7 @@ if (isset($_POST['buscar'])) {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="btn btn-primary" name="actualizar_equipo">Actualizar</button>
+                                                    <button type="submit" class="btn btn-primary" name="actualizar_grupo">Actualizar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -254,21 +241,11 @@ if (isset($_POST['buscar'])) {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-3 text-start">
-                                        <label for="colegio" class="form-label"><b>Seleccione la institución del cual hace parte el equipo<span class="text-danger">*</span></b></label>
-                                        <select name="colegio" id="colegio" class="form-select" aria-label="colegio" required>
-                                            <option selected disabled>Selecciona un colegio</option>
-                                            <?php foreach ($colegios as $colegio): ?>
-                                                <option value="<?= $colegio['id'] ?>"><?= $colegio['nombre'] ?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-lg-4">
                                     <div class="mb-3 text-start">
                                         <label for="deporte" class="form-label"><b>Selecciona el deporte del equipo <span class="text-danger">*</span></b></label>
-                                        <select class="form-select form-select" name="diciplina" aria-label="Disciplina" required>
+                                        <select class="form-select form-select" name="disciplina" aria-label="Disciplina" required>
                                             <option selected disabled>Selecciona un deporte</option>
                                             <?php foreach ($deportes as $deporte): ?>
                                                 <option value="<?= $deporte['id'] ?>"><?= ucfirst($deporte['nombre']) ?></option>
@@ -278,8 +255,8 @@ if (isset($_POST['buscar'])) {
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3 text-end">
-                                        <button type="submit" name="agregar_equipo" class="btn btn-success btn-md">
-                                            Guardar Equipo
+                                        <button type="submit" name="agregar_grupo" class="btn btn-success btn-md">
+                                            Guardar grupo
                                         </button>
                                     </div>
                                 </div>
@@ -294,16 +271,16 @@ if (isset($_POST['buscar'])) {
 
 
 <?php
-if (isset($_POST['agregar_equipo'])) {
-    $instancia_equipos->agregarNuevoEquipoControl();
+if (isset($_POST['agregar_grupo'])) {
+    $instancia_grupos->crearGrupoControl();
 }
 
-if (isset($_POST['eliminar_equipo'])) {
-    $instancia_equipos->eliminarEquipoControl();
+if (isset($_POST['eliminar_grupo'])) {
+    $instancia_grupos->eliminarGrupoControl();
 }
 
-if (isset($_POST['actualizar_equipo'])) {
-    $instancia_equipos->actualizarEquipoControl();
+if (isset($_POST['actualizar_grupo'])) {
+    $instancia_grupos->actualizarGrupoControl();
 }
 
 

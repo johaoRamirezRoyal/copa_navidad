@@ -82,7 +82,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         .table tbody tr:hover {
             transform: translateY(-6px);
             /* antes: box-shadow: 0 8px 18px rgba(0,0,0,0.06); */
-            box-shadow: 0 8px 18px rgba(20, 22, 168, 0.66); /* azul #1417a8 con alpha similar */
+            box-shadow: 0 8px 18px rgba(20, 22, 168, 0.63); /* azul #1417a8 con alpha similar */
         }
         .badge-pos {
             min-width: 34px;
@@ -199,6 +199,65 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
             </div>
         </div>
     </div>
+
+    <!-- Card de Integrantes del Equipo Mejorada -->
+    <div class="card mb-4 reveal shadow-sm">
+        <div class="card-header text-center d-flex align-items-center justify-content-center gap-2">
+            <i class="bi bi-people-fill fs-4 me-2"></i>
+            <span>Integrantes del Equipo</span>
+        </div>
+        <div class="card-body">
+            <?php
+                $integrantes = [
+                    ["nombre" => "Juan Pérez", "posicion" => "Delantero"],
+                    ["nombre" => "Carlos Gómez", "posicion" => "Portero"],
+                    ["nombre" => "Luis Rodríguez", "posicion" => "Defensa"],
+                    ["nombre" => "Andrés Martínez", "posicion" => "Mediocampista"],
+                    ["nombre" => "Pedro Sánchez", "posicion" => "Defensa"]
+                ];
+                $num_integrantes = count($integrantes);
+
+                // Función para generar avatar aleatorio usando ui-avatars.com
+                function avatar_url($nombre) {
+                    $nombre_url = urlencode($nombre);
+                    return "https://ui-avatars.com/api/?name={$nombre_url}&background=1417a8&color=fff&size=64";
+                }
+            ?>
+            <p class="fw-bold mb-3">
+                <i class="bi bi-person-lines-fill me-1"></i>
+                Número de integrantes: <?php echo $num_integrantes; ?>
+            </p>
+            <div class="row g-2">
+                <?php foreach ($integrantes as $jugador): ?>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-center p-2 rounded bg-light shadow-sm">
+                            <img src="<?php echo avatar_url($jugador["nombre"]); ?>" alt="Avatar" class="me-3 rounded-circle border" width="48" height="48">
+                            <div>
+                                <span class="fw-semibold"><?php echo htmlspecialchars($jugador["nombre"]); ?></span>
+                                <span 
+                                    class="badge bg-primary-subtle text-dark ms-2"
+                                    data-bs-toggle="tooltip"
+                                    title="Posición: <?php echo htmlspecialchars($jugador["posicion"]); ?>"
+                                >
+                                    <?php echo htmlspecialchars($jugador["posicion"]); ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializa tooltips de Bootstrap
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 
     <!-- Tabla de posiciones -->
     <div class="card reveal">
