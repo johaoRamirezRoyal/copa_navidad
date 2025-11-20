@@ -27,9 +27,11 @@ class ControlEquipos
     public function agregarNuevoEquipoControl(){
         if(isset($_POST['agregar_equipo'])){
             $datos = array(
-                'nombre' => trim($_POST['nombre']),
-                'colegio' => trim($_POST['colegio']),
-                'disciplina' => isset($_POST['disciplina']) ? trim($_POST['disciplina']) : ''
+                'nombre' => $_POST['nombre'],
+                'categoria' => $_POST['categoria'],
+                'sub_categoria' => $_POST['sub_categoria'],
+                'colegio' => $_POST['colegio'],
+                'diciplina' => $_POST['diciplina']
             );
             
             $nuevo_equipo = EquiposModel::agregarNuevoEquipoModel($datos);
@@ -64,9 +66,9 @@ class ControlEquipos
     }
 
     public function obtenerEquiposFiltradoControl($datos){
-        $categoria = ''; // categoría eliminada del filtro
-        $subcategoria = (isset($datos['subcategoria']) && $datos['subcategoria'] !== '' && is_numeric($datos['subcategoria'])) ? 'AND sc.id = ' . (int)$datos['subcategoria'] : '';
-        $deporte = (isset($datos['deporte']) && $datos['deporte'] !== '' && is_numeric($datos['deporte'])) ? 'AND d.id = ' . (int)$datos['deporte'] : '';
+        $categoria = (isset($datos['categoria'])) ? 'AND c.id = ' . $datos['categoria'] : '';
+        $subcategoria = (isset($datos['subcategoria'])) ? 'AND sc.id = ' . $datos['subcategoria'] : '';
+        $deporte = (isset($datos['deporte'])) ? 'AND d.id = ' . $datos['deporte'] : '';
 
         $equipos = EquiposModel::obtenerEquiposFiltradoModel($categoria, $subcategoria, $deporte);
 
@@ -75,12 +77,7 @@ class ControlEquipos
 
     public function eliminarEquipoControl(){
         if(isset($_POST['eliminar_equipo'])){
-            $id = isset($_POST['id']) && is_numeric($_POST['id']) ? (int)$_POST['id'] : 0;
-
-            if($id <= 0){
-                echo '<div class="alert alert-red">ID inválido</div>';
-                return;
-            }
+            $id = $_POST['id'];
 
             $eliminar = EquiposModel::eliminarEquipoModel($id);
 
@@ -115,10 +112,12 @@ class ControlEquipos
     public function actualizarEquipoControl(){
         if(isset($_POST['actualizar_equipo'])){
             $datos = array(
-                'nombre' => trim($_POST['nombre']),
-                'colegio' => trim($_POST['colegio']),
-                'disciplina' => isset($_POST['disciplina']) ? trim($_POST['disciplina']) : '',
-                'id' => isset($_POST['id']) && is_numeric($_POST['id']) ? (int)$_POST['id'] : 0
+                'nombre' => $_POST['nombre'],
+                'categoria' => $_POST['categoria'],
+                'sub_categoria' => $_POST['sub_categoria'],
+                'colegio' => $_POST['colegio'],
+                'diciplina' => $_POST['diciplina'],
+                'id' => $_POST['id']
             ); 
 
             $actualizar = EquiposModel::actualizarEquipoModel($datos);
