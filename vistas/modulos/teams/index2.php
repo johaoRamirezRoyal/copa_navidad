@@ -40,12 +40,48 @@ include_once VISTA_PATH . 'navbar.php';
         transition: all 0.4s ease;
         cursor: zoom-in;
         width: 100%;
+        will-change: transform, box-shadow;
     }
     .card img {
         width: 100%;
         height: auto;
         display: block;
         border-radius: 16px;
+        transition: transform 0.5s cubic-bezier(.2,.9,.2,1), filter 0.4s ease, box-shadow 0.4s ease;
+        transform-origin: center center;
+    }
+
+/* --- ANIMACIONES AL HACER HOVER --- */
+    .card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(15,23,42,0.12);
+        cursor: pointer;
+    }
+    .card:active {
+        transform: translateY(-4px) scale(0.995);
+    }
+    .card:hover img {
+        transform: scale(1.06) rotate(-0.5deg);
+        filter: brightness(1.02) saturate(1.05);
+    }
+    /* sutil overlay al hacer hover */
+    .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: 16px;
+        transition: background 0.35s ease, opacity 0.35s ease;
+        opacity: 0;
+    }
+    .card:hover::after {
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.04));
+        opacity: 1;
+    }
+    /* accesibilidad: foco por teclado */
+    .card:focus-within, .card:focus {
+        outline: 3px solid rgba(79,70,229,0.16);
+        transform: translateY(-8px) scale(1.01);
     }
     .lightbox {
         position: fixed;
@@ -77,6 +113,31 @@ include_once VISTA_PATH . 'navbar.php';
         transform: scale(1);
         opacity: 1;
     }
+
+/* --- lightbox nav buttons --- */
+    .lb-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.45);
+        color: #fff;
+        border: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        z-index: 1000;
+    }
+    .lb-btn:hover { background: rgba(0,0,0,0.6); transform: translateY(-50%) scale(1.05); }
+    .lb-prev { left: 28px; }
+    .lb-next { right: 28px; }
+    .lightbox[aria-hidden="true"] { pointer-events: none; }
+    .lightbox[aria-hidden="false"] { pointer-events: auto; }
     @media (max-width: 1200px) { .galeria { column-count: 3; } }
     @media (max-width: 900px) { .galeria { column-count: 2; } }
     @media (max-width: 600px) {
@@ -149,27 +210,62 @@ include_once VISTA_PATH . 'navbar.php';
         </div>
     </div>
 
-    <div class="lightbox" id="lightbox">
-        <img src="" alt="Imagen ampliada">
+    <div class="lightbox" id="lightbox" tabindex="0" aria-hidden="true">
+        <button class="lb-btn lb-prev" id="lbPrev" aria-label="Anterior">&larr;</button>
+        <img src="" alt="Imagen ampliada" id="lightboxImg">
+        <button class="lb-btn lb-next" id="lbNext" aria-label="Siguiente">&rarr;</button>
     </div>
 
     <script>
         const lightbox = document.getElementById('lightbox');
-        const lightboxImg = lightbox.querySelector('img');
+        const lightboxImg = document.getElementById('lightboxImg');
         const navbar = document.querySelector('.navbar');
-        document.querySelectorAll('.card img').forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.getAttribute('data-src');
-                lightbox.classList.add('active');
-                if (navbar) navbar.classList.add('navbar-hide');
-            });
+        const imgsEls = Array.from(document.querySelectorAll('.card img'));
+        const imgs = imgsEls.map(i => i.getAttribute('data-src'));
+        let currentIndex = -1;
+
+        function openLightbox(index) {
+            currentIndex = (index + imgs.length) % imgs.length;
+            lightboxImg.src = imgs[currentIndex];
+            lightbox.classList.add('active');
+            lightbox.setAttribute('aria-hidden','false');
+            if (navbar) navbar.classList.add('navbar-hide');
+            // focus to enable keyboard navigation
+            lightbox.focus();
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            lightbox.setAttribute('aria-hidden','true');
+            setTimeout(() => { lightboxImg.src = ''; }, 400);
+            if (navbar) navbar.classList.remove('navbar-hide');
+            currentIndex = -1;
+        }
+
+        imgsEls.forEach((imgEl, i) => {
+            imgEl.addEventListener('click', () => openLightbox(i));
         });
+
+        // Prev / Next buttons
+        document.getElementById('lbPrev').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openLightbox(currentIndex - 1);
+        });
+        document.getElementById('lbNext').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openLightbox(currentIndex + 1);
+        });
+
+        // close when clicking on backdrop
         lightbox.addEventListener('click', e => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-                setTimeout(() => { lightboxImg.src = ''; }, 400);
-                if (navbar) navbar.classList.remove('navbar-hide');
-            }
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // keyboard navigation
+        lightbox.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') openLightbox(currentIndex - 1);
+            if (e.key === 'ArrowRight') openLightbox(currentIndex + 1);
         });
     </script>
 </body>

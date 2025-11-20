@@ -19,68 +19,31 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
     <!-- =================== CAROUSEL =================== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
         <div class="carousel-inner">
             <!-- Slide 1 -->
             <div class="carousel-item active">
                 <img src="public/img/banner/BANNERCOPANAVIDAD.png" class="d-block w-100 animate__animated animate__zoomIn" alt="Welcome Slide">
                 <div class="carousel-caption d-none d-md-block">
-                    <h2 class="fw-bold mb-2 animate__animated animate__fadeInUp custom-title-blue" style="font-size:2rem;">
-                        WELCOME TO CHRISTMAS CUP
-                    </h2>
-                    <p class="lead fw-normal mb-4 animate__animated animate__fadeInUp custom-title-blue" style="font-size:1rem;">
-                        For 21 years, the Christmas Cup has united sports passion, teamwork, and friendship. Celebrate respect, unity, and fair play—create memories for a lifetime!
-                    </p>
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                        <button class="btn btn-outline-danger btn-lg px-4 me-sm-3 animate__animated animate__fadeIn custom-animated-btn" type="button">
-                            <span>Get Started</span>
-                        </button>
-                        <button class="btn btn-outline-success btn-lg px-4 animate__animated animate__fadeIn custom-animated-btn" type="button">
-                            <span>Learn More</span>
-                        </button>
+                    <div class="text-center">
+                        <h2 class="fw-bold mb-0 animate__animated animate__fadeInUp custom-title-blue blur-bg-caption" style="font-size:3rem; padding-bottom:0.05em; text-shadow: 0 0 4px #fff, 0 0 8px #fff;">
+                            WELCOME TO CHRISTMAS CUP
+                        </h2>
+                        <p class="lead fw-normal mt-0 mb-0 animate__animated animate__fadeInUp custom-title-blue blur-bg-caption" style="font-size:1.5em; padding-top:0.05em; text-shadow: 0 0 4px #fff, 0 0 8px #fff;">
+                            For 21 years, the Christmas Cup has united sports passion, teamwork, and friendship. Celebrate respect, unity, and fair play—create memories for a lifetime!
+                        </p>
                     </div>
                 </div>
             </div>
-            <!-- Slide 2 -->
-            <div class="carousel-item">
-                <img src="https://dummyimage.com/900x400/198754/fff&text=Sports" class="d-block w-100 animate__animated animate__zoomIn" alt="Sports Slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h2 class="fw-bold text-white mb-2 animate__animated animate__fadeInUp">Exciting Sports</h2>
-                    <p class="lead text-white-50 mb-4 animate__animated animate__fadeInUp">Watch football, basketball, volleyball, and more. Cheer for your favorite teams and enjoy the thrill!</p>
-                    <i class="bi bi-trophy animate__animated animate__fadeIn" style="font-size:2rem;color:gold;"></i>
-                </div>
-            </div>
-            <!-- Slide 3 -->
-            <div class="carousel-item">
-                <img src="https://dummyimage.com/900x400/d63384/fff&text=Schools" class="d-block w-100 animate__animated animate__zoomIn" alt="Schools Slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h2 class="fw-bold text-white mb-2 animate__animated animate__fadeInUp">Participating Schools</h2>
-                    <p class="lead text-white-50 mb-4 animate__animated animate__fadeInUp">Meet the schools that make this event possible. Celebrate unity and diversity in every match!</p>
-                    <i class="bi bi-people-fill animate__animated animate__fadeIn" style="font-size:2rem;color:white;"></i>
-                </div>
-            </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
 
     <!-- =================== SPORTS SECTION =================== -->
     <section class="py-5" id="features">
         <div class="container px-5 my-5">
             <div class="row mb-4">
-                <div class="text-center">
+                <div class="text-center" style="position: relative;">
                     <div class="styled-title">
-                        <span class="title-text">Sports disciplines to watch.</span>
+                        <span class="title-text">Sports Disciplines</span>
                     </div>
                 </div>
             </div>
@@ -117,7 +80,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
     <!-- =================== SCHOOLS SECTION =================== -->
     <section class="py-5 bg-light">
         <div class="container px-5 my-5">
-            <div class="text-center">
+            <div class="text-center" style="position: relative;">
                 <div class="styled-title">
                     <span class="title-text">Participating Schools</span>
                 </div>
@@ -148,11 +111,11 @@ include_once VISTA_PATH . 'script_and_final.php';
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
 .card-container {
-  width: 380px;
-  height: 500px;
+  width: 480px;    /* Antes: 380px */
+  height: 620px;   /* Antes: 500px */
   position: relative;
   transform: skewX(-10deg);
-  margin-bottom: 20px;
+  margin-bottom: 28px; /* Un poco más de margen */
 }
 .card-container::before {
   content: "";
@@ -287,8 +250,9 @@ include_once VISTA_PATH . 'script_and_final.php';
 .styled-title {
   display: inline-flex;
   align-items: center;
-  background: linear-gradient(90deg, #d90429 0%, #ff595e 100%);
+  background: linear-gradient(90deg, #b60220ff 0%, #d13a3fff 100%);
   padding: 12px 38px;
+  border-radius: 8px;
   box-shadow: 6px 6px 0 #22222244;
   transform: skewX(-20deg);
   position: relative;
@@ -301,12 +265,17 @@ include_once VISTA_PATH . 'script_and_final.php';
 }
 
 .styled-title:hover {
-  box-shadow: 20px 20px 0 #008106ff;
+  box-shadow: 20px 20px 0 #1417a8ff;
 }
 
 .title-text {
   transform: skewX(10deg);
-  text-shadow: 0 2px 8px #0002;
+  text-shadow:
+  0 2px 16px #fff,
+  0 0px 8px #fff,
+  0 1px 0 #fff,
+  0 4px 24px #fff,
+  0 4px 16px #0004; /* Sombra blanca muy notoria y sombra negra para profundidad */
 }
 
 .title-arrow {
@@ -335,7 +304,7 @@ include_once VISTA_PATH . 'script_and_final.php';
   scrollbar-width: none;
   -ms-overflow-style: none;
   margin-left: auto;
-  margin-right: auto;
+  margin-right
 }
 .sports-scroll-container::-webkit-scrollbar {
   display: none;
@@ -350,20 +319,20 @@ include_once VISTA_PATH . 'script_and_final.php';
 }
 
 .sports-cards-row .col {
-  min-width: 400px;
+  min-width: 500px; /* Antes: 400px */
   display: flex;
   justify-content: center;
 }
 
 @media (max-width: 991.98px) {
   .card-container {
-    width: 90vw;
-    max-width: 320px;
-    height: 340px;
-    margin-bottom: 16px;
+    width: 98vw;
+    max-width: 400px;   /* Antes: 320px */
+    height: 440px;      /* Antes: 340px */
+    margin-bottom: 18px;
   }
   .sports-cards-row .col {
-    min-width: 320px;
+    min-width: 400px;   /* Antes: 320px */
   }
   .sports-scroll-container {
     padding-left: 8px;
@@ -383,12 +352,12 @@ include_once VISTA_PATH . 'script_and_final.php';
 
 @media (max-width: 575.98px) {
   .card-container {
-    width: 96vw;
-    max-width: 98vw;
-    height: 240px;
+    width: 99vw;
+    max-width: 99vw;
+    height: 320px;      /* Antes: 240px */
   }
   .sports-cards-row .col {
-    min-width: 96vw;
+    min-width: 99vw;
   }
   .sports-cards-row {
     gap: 12px;
@@ -481,8 +450,33 @@ body {
     background: transparent;        /* Sin fondo */
     padding: 2px 10px;
     box-shadow: none;
-    text-shadow: 0 1px 0 #fff, 0 4px 16px #0002; /* Borde blanco sutil en la letra */
+    text-shadow:
+      0 0 24px #fff,
+      0 0 48px #fff,
+      0 0 96px #fff,
+      0 2px 48px #fff,
+      0 4px 64px #fff,
+      0 8px 128px #fff,
+      0 4px 48px #000a; /* Sombra blanca extremadamente notoria y sombra negra para profundidad */
     display: inline-block;
+}
+
+.styled-title .title-text {
+  transition: font-size 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.styled-title:hover .title-text {
+  font-size: 2.7rem;
+}
+
+.blur-bg-caption {
+    background: rgba(255, 255, 255, 0);
+    border-radius: 50px;
+    padding: 24px 32px;
+    display: inline-block;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
 }
 </style>
 
@@ -536,6 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
     autoScroll();
 });
 </script>
+
 
 
 
