@@ -37,7 +37,8 @@ class PartidosModel extends conexion
         }
     }
 
-    public static function obtenerEnfrentamientoID($id){
+    public static function obtenerEnfrentamientoID($id)
+    {
         $tabla = "partidos";
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT
@@ -58,14 +59,14 @@ class PartidosModel extends conexion
                     LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
                     LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
                     WHERE p.id = $id";
-        try{
+        try {
             $preparado = $cnx->preparar($cmdsql);
-            if($preparado->execute()){
+            if ($preparado->execute()) {
                 return $preparado->fetch(PDO::FETCH_ASSOC);
-            }else{
+            } else {
                 return false;
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print "Error al obtener información del enfrentamiento: " . $e;
         }
     }
@@ -174,12 +175,13 @@ class PartidosModel extends conexion
         }
     }
     // =========== LÓGICA PARA LOS RESULTADOS DE LOS ENFRENTAMIENTOS ================== // 
-    public static function definirResultadoDeEnfrentamientoModel($datos){
+    public static function definirResultadoDeEnfrentamientoModel($datos)
+    {
         $tabla = "resultado_enfrentamiento";
         $cnx = conexion::singleton_conexion();
         $cmdsql = "INSERT INTO $tabla (id_equipo1, id_equipo2, pts_equipo1, pts_equipo2, ganador, id_enfrentamiento, id_deporte) 
                     VALUES ( :id_equipo1, :id_equipo2, :pts_equipo1, :pts_equipo2, :ganador, :id_enfrentamiento, :id_deporte )";
-        try{
+        try {
             $preparado = $cnx->preparar($cmdsql);
             $preparado->bindParam(":id_equipo1", $datos['id_equipo1']);
             $preparado->bindParam(":id_equipo2", $datos['id_equipo2']);
@@ -188,44 +190,46 @@ class PartidosModel extends conexion
             $preparado->bindParam(":ganador", $datos['ganador']);
             $preparado->bindParam(":id_enfrentamiento", $datos['id_enfrentamiento']);
             $preparado->bindParam(":id_deporte", $datos['id_deporte']);
-            if($preparado->execute()){
+            if ($preparado->execute()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print "Error al guardar el resultado del enfrentamiento" . $e;
         }
     }
 
-    public static function eliminarResultadoDeEnfrentamientoModel($id_enfrentamiento){
+    public static function eliminarResultadoDeEnfrentamientoModel($id_enfrentamiento)
+    {
         $tabla = "resultado_enfrentamiento";
         $cnx = conexion::singleton_conexion();
         $cmdsql = "DELETE FROM $tabla WHERE id_enfrentamiento = $id_enfrentamiento";
-        try{
+        try {
             $preparado = $cnx->preparar($cmdsql);
-            if($preparado->execute()){
+            if ($preparado->execute()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print "Error al eliminar el resultado del enfrentamiento" . $e;
         }
     }
 
-    public static function obtenerResultadoDeEnfrentamiento($id_enfrentamiento){
+    public static function obtenerResultadoDeEnfrentamiento($id_enfrentamiento)
+    {
         $tabla = "resultado_enfrentamiento";
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT * FROM $tabla WHERE id_enfrentamiento = $id_enfrentamiento";
-        try{
+        try {
             $preparado = $cnx->preparar($cmdsql);
-            if($preparado->execute()){
+            if ($preparado->execute()) {
                 return $preparado->fetch(PDO::FETCH_ASSOC);
-            }else{
+            } else {
                 return false;
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print "Error al obtener el resultado del enfrentamiento" . $e;
         }
     }
@@ -297,4 +301,100 @@ class PartidosModel extends conexion
         }
     }
 
+    // =========== LÓGICA PARA LA TABLA DE POSICIONES ================== //
+
+    // SUPONIENDO QUE TODOS SE ENFRENTAN CONTRA TODOS EN BASE A LA CATEGORIA, SUBCATEGORIA Y DISCIPLINA
+    public static function obtenerTablaDePosiciones($categoria, $subcategoria, $disciplina)
+    {
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT 
+                        e.id,
+                        e.nombre,
+
+                        -- Partidos jugados
+                        COUNT(r.id) AS PJ,
+
+                        -- Partidos ganados
+                        SUM(CASE WHEN r.ganador = e.id THEN 1 ELSE 0 END) AS PG,
+
+                        -- Partidos perdidos
+                        SUM(
+                            CASE 
+                                WHEN r.ganador != e.id AND r.ganador != 0 THEN 1 
+                                ELSE 0 
+                            END
+                        ) AS PP,
+
+                        -- Partidos empatados
+                        SUM(CASE WHEN r.ganador = 0 THEN 1 ELSE 0 END) AS PE,
+
+                        -- Puntos a favor
+                        SUM(
+                            CASE 
+                                WHEN r.id_equipo1 = e.id THEN r.pts_equipo1
+                                WHEN r.id_equipo2 = e.id THEN r.pts_equipo2 
+                                ELSE 0 
+                            END
+                        ) AS GF,
+
+                        -- Puntos en contra
+                        SUM(
+                            CASE 
+                                WHEN r.id_equipo1 = e.id THEN r.pts_equipo2
+                                WHEN r.id_equipo2 = e.id THEN r.pts_equipo1 
+                                ELSE 0 
+                            END
+                        ) AS GC,
+
+                        -- Diferencia de goles
+                        (
+                            SUM(
+                                CASE 
+                                    WHEN r.id_equipo1 = e.id THEN r.pts_equipo1
+                                    WHEN r.id_equipo2 = e.id THEN r.pts_equipo2 
+                                    ELSE 0 
+                                END
+                            )
+                            -
+                            SUM(
+                                CASE 
+                                    WHEN r.id_equipo1 = e.id THEN r.pts_equipo2
+                                    WHEN r.id_equipo2 = e.id THEN r.pts_equipo1 
+                                    ELSE 0 
+                                END
+                            )
+                        ) AS DG,
+
+                        -- Puntos totales: 3 victoria, 1 empate
+                        SUM(
+                            CASE 
+                                WHEN r.ganador = e.id THEN 3
+                                WHEN r.ganador = 0 THEN 1
+                                ELSE 0 
+                            END
+                        ) AS PTS
+
+                    FROM equipos e
+                    LEFT JOIN resultado_enfrentamiento r 
+                        ON e.id IN (r.id_equipo1, r.id_equipo2)
+
+                    -- FILTROS OPCIONALES:
+                    WHERE e.categoria       = $categoria
+                        AND e.sub_categoria = $subcategoria
+                        AND e.diciplina     = $disciplina
+
+                    GROUP BY e.id
+                    ORDER BY PTS DESC, DG DESC, GF DESC;";
+
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al obtener la tabla de posiciones: " . $e;
+        }
+    }
 }
