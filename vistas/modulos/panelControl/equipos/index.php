@@ -9,17 +9,20 @@ require_once CONTROL_PATH . DS . 'equipos' . DS . 'ControlEquipos.php';
 require_once CONTROL_PATH . DS . 'categorias' . DS . 'ControlCategorias.php';
 require_once CONTROL_PATH . DS . 'deportes' . DS . 'ControlDeportes.php';
 require_once CONTROL_PATH . DS . 'colegios' . DS . 'ControlColegios.php';
+require_once CONTROL_PATH . DS . 'grupos' . DS . 'ControlGrupos.php';
 
 
 $instancia_equipos = ControlEquipos::singleton_equipos();
 $instancia_categorias = ControlCategorias::singleton_categorias();
 $instancia_deportes = ControlDeportes::singleton_deportes();
 $instancia_colegios = ControlColegios::singleton_colegios();
+$instancia_grupos = ControlGrupos::singleton_grupos();
 
 $categorias = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $subcategorias = $instancia_categorias->obtenerTodosLosSubcategoriasControl();
 $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
 $colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
+$grupos = $instancia_grupos->obtenerTodosLosGruposControl();
 
 
 if (isset($_POST['buscar'])) {
@@ -250,6 +253,17 @@ if (isset($_POST['buscar'])) {
                                             <option selected disabled>Selecciona una subcategoria</option>
                                             <?php foreach ($subcategorias as $subcategoria): ?>
                                                 <option value="<?= $subcategoria['id'] ?>"><?= ucfirst($subcategoria['nombre']) ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-3 text-start">
+                                        <label for="grupo" class="form-label"><b>Seleccione el grupo al que pertenece el equipo<span class="text-danger">*</span></b></label>
+                                        <select class="form-select form-select" name="grupo" aria-label="Grupo Busqueda" required>
+                                            <option selected disabled>Selecciona un grupo</option>
+                                            <?php foreach ($grupos as $grupo): ?>
+                                                <option value="<?= $grupo['id'] ?>"><?= $grupo['nombre'] ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>

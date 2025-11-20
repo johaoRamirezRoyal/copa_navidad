@@ -19,6 +19,11 @@ class ControlGrupos
         return $mostrar;
     }
 
+    public function obtenerGrupoPorIdControl($id){
+        $mostrar = GruposModel::obtenerGrupoPorIdModel($id);
+        return $mostrar;
+    }
+
     public function crearGrupoControl(){
         if(isset($_POST['crear_grupo'])){
             $datos = array(

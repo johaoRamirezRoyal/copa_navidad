@@ -1,6 +1,7 @@
 <?php 
 date_default_timezone_set('America/Bogota');
 require_once MODELO_PATH . DS . 'equipos' . DS . 'EquiposModel.php';
+require_once MODELO_PATH . DS . 'grupos' . DS . 'GruposModel.php';
 
 class ControlEquipos
 {
@@ -35,6 +36,20 @@ class ControlEquipos
                 'grupo' => $_POST['grupo']
             );
             
+            $datos_grupo = GruposModel::obtenerGrupoPorIdModel($_POST['grupo']);
+
+            if($datos_grupo['disciplina'] != $_POST['diciplina'] ||
+               $datos_grupo['categoria'] != $_POST['categoria'] ||
+               $datos_grupo['subcategoria'] != $_POST['sub_categoria']) {
+                echo '
+                    <div class="alert alert-red alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> Los datos del grupo no coinciden con los del equipo(Deporte, Categoria, Subcategoria).
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                ';
+                return;
+            }
+
             $nuevo_equipo = EquiposModel::agregarNuevoEquipoModel($datos);
 
             if($nuevo_equipo){

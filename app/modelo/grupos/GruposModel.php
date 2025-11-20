@@ -7,7 +7,11 @@ class GruposModel extends conexion
     {
         $tabla = "grupos";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "SELECT * FROM $tabla";
+        $cmdsql = "SELECT g.*, d.nombre AS disciplina_nombre, c.nombre AS categoria_nombre, s.nombre AS subcategoria_nombre FROM $tabla g
+                    LEFT JOIN disciplinas d ON g.disciplina = d.id
+                    LEFT JOIN categorias c ON g.categoria = c.id
+                    LEFT JOIN subcategoria s ON g.sub_categoria = s.id
+        ";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
@@ -17,6 +21,24 @@ class GruposModel extends conexion
             }
         } catch (PDOException $e) {
             print "Error al traer los grupos: " . $e->getMessage();
+        }
+    }
+
+    public static function obtenerGrupoPorIdModel($id)
+    {
+        $tabla = "grupos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT * FROM $tabla WHERE id = :id";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":id", $id);
+            if ($preparado->execute()) {
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al traer el grupo por ID: " . $e->getMessage();
         }
     }
 
