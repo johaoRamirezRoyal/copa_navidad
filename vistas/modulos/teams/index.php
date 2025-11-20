@@ -92,6 +92,36 @@ function getEquiposFromData(array $equipos, string $slug, int $catId, int $subId
     return [];
 }
 
+// Nueva función para obtener equipos filtrados por colegio y deporte
+function getTeamsForColegio(array $equiposList, int $coleId, string $slug): array {
+    $out = [];
+    $slug = strtolower($slug);
+    foreach ($equiposList as $e) {
+        // detectar campo colegio
+        $teamCole = null;
+        if (isset($e['colegio_id'])) $teamCole = (int)$e['colegio_id'];
+        elseif (isset($e['id_colegio'])) $teamCole = (int)$e['id_colegio'];
+        elseif (isset($e['colegio'])) $teamCole = (int)$e['colegio'];
+
+        // detectar campo deporte/slug
+        $teamSlug = null;
+        if (isset($e['slug'])) $teamSlug = strtolower($e['slug']);
+        elseif (isset($e['deporte'])) $teamSlug = strtolower($e['deporte']);
+        elseif (isset($e['disciplina'])) $teamSlug = strtolower($e['disciplina']);
+        elseif (isset($e['deporte_slug'])) $teamSlug = strtolower($e['deporte_slug']);
+
+        // nombre del equipo
+        $teamName = $e['nombre'] ?? $e['nombre_equipo'] ?? $e['team_name'] ?? null;
+        if ($teamName === null) continue;
+
+        // filtrar por colegio y deporte (coincidencia parcial en slug permitida)
+        if ($teamCole === $coleId && ($teamSlug === $slug || ($teamSlug !== null && strpos($teamSlug, $slug) !== false))) {
+            $out[] = $teamName;
+        }
+    }
+    return $out;
+}
+
 // -------------------- Preparar datos --------------------
 $categoriasTree = buildCategoryTree($categorias);
 

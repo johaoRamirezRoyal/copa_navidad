@@ -40,7 +40,8 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         .card {
             border: none;
             border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(17,17,17,0.08);
+            /* antes: box-shadow: 0 6px 20px rgba(17,17,17,0.08); */
+            box-shadow: 0 6px 20px rgba(20, 22, 168, 0.64); /* azul #1417a8 con alpha similar */
             overflow: hidden;
             transform-origin: center;
         }
@@ -80,7 +81,8 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         }
         .table tbody tr:hover {
             transform: translateY(-6px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+            /* antes: box-shadow: 0 8px 18px rgba(0,0,0,0.06); */
+            box-shadow: 0 8px 18px rgba(20, 22, 168, 0.66); /* azul #1417a8 con alpha similar */
         }
         .badge-pos {
             min-width: 34px;
