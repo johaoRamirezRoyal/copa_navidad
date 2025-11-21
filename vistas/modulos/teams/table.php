@@ -6,7 +6,7 @@ include_once CONTROL_PATH . 'EnlacesControl.php';
 
 
 include_once VISTA_PATH . 'header.php';
-//include_once VISTA_PATH . 'navbar.php';
+include_once VISTA_PATH . 'navbar.php';
 
 include_once CONTROL_PATH . 'equipos' . DS . 'ControlEquipos.php';
 include_once CONTROL_PATH . 'jugadores' . DS . 'ControlJugadores.php';
@@ -30,7 +30,7 @@ if ($id_equipo == null) {
     exit();
 }
 $info_equipo = $instancia_equipos->obtenerEquipoPorIdControl($id_equipo);
-var_dump($info_equipo);
+
 if (!$info_equipo) {
     header("Location: " . BASE_URL . "404");
     exit();
@@ -170,7 +170,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
     }
 </style>
 
-<div class="container py-4" style="margin-top: 50px; padding-top: 18px;">
+<div class="container py-4" style="margin-top: 150px; padding-top: 18px;">
 
     <!-- Encabezado -->
     <div class="text-center mb-4 reveal">
@@ -238,6 +238,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                 <div class="card-header text-center">
                     Próximo Partido
                 </div>
+                <?php if($proximo_partido): ?>
                 <div class="card-body text-center">
                     <p class="text-muted"><?= $proximo_partido['fecha'] ?></p>
                     <div class="d-flex justify-content-around align-items-center">
@@ -253,6 +254,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -317,29 +319,152 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
             <div class="card-body">
                 <table class="table table-bordered table-striped align-middle">
                     <thead>
+                        <?php 
+                            $array_futbol = [2, 8]; 
+                            $array_basket = [1];
+                            $array_softball = [6];
+                            $array_volley = [3];
+                            $array_tenisMesa = [7];
+
+                            if(in_array($info_equipo['id_deporte'], $array_futbol) ){
+                                $cabezera ='<th>Posición</th>
+                                            <th>Club</th>
+                                            <th>Partidos Jugados</th>
+                                            <th>Partidos Ganados</th>
+                                            <th>Partidos Perdidos</th>
+                                            <th>Partidos Empatados</th>
+                                            <th>Goles a Favor</th>
+                                            <th>Goles en Contra</th>
+                                            <th>Diferencia de Goles</th>
+                                            <th>Puntos</th>
+                                            ';
+                                $deporte = "futbol";
+                            }else if(in_array($info_equipo['id_deporte'], $array_basket) ){
+                                $cabezera ='<th>Posición</th>
+                                            <th>Club</th>
+                                            <th>Partidos Jugados</th>
+                                            <th>Partidos Ganados</th>
+                                            <th>Partidos Perdidos</th>
+                                            <th>Cestas a Favor</th>
+                                            <th>Cestas en Contra</th>
+                                            <th>Diferencia de Cestas</th>
+                                            <th>Puntos</th>
+                                            ';
+                                            $deporte = "basket";
+                            }else if(in_array($info_equipo['id_deporte'], $array_softball) ){
+                                $cabezera ='<th>Posición</th>
+                                            <th>Club</th>
+                                            <th>Partidos Jugados</th>
+                                            <th>Partidos Ganados</th>
+                                            <th>Partidos Perdidos</th>
+                                            <th>Carreras a Favor</th>
+                                            <th>Carreras en Contra</th>
+                                            <th>Diferencia de Carreras</th>
+                                            <th>Puntos</th>
+                                            ';
+                                            $deporte = "softball";
+                            }else if(in_array($info_equipo['id_deporte'], $array_volley) ){
+                                $cabezera ='<th>Posición</th>
+                                            <th>Club</th>
+                                            <th>Partidos Jugados</th>
+                                            <th>Partidos Ganados</th>
+                                            <th>Partidos Perdidos</th>
+                                            <th>Sets a Favor</th>
+                                            <th>Sets en Contra</th>
+                                            <th>Diferencia de Sets</th>
+                                            <th>Puntos</th>
+                                            ';
+                                            $deporte = "volley";
+                            }else if(in_array($info_equipo['id_deporte'], $array_tenisMesa) ){
+                                $cabezera ='<th>Posición</th>
+                                            <th>Club</th>
+                                            <th>Partidos Jugados</th>
+                                            <th>Partidos Ganados</th>
+                                            <th>Partidos Perdidos</th>
+                                            <th>Puntos a Favor</th>
+                                            <th>Puntos en Contra</th>
+                                            <th>Diferencia de Puntos</th>
+                                            <th>Puntos</th>
+                                            ';
+                                            $deporte = "tenisMesa";
+                            }else{
+                                $cabezera ='<th>Posición</th>
+                                            <th>Club</th>
+                                            <th>J</th>
+                                            <th>Pts</th>
+                                            ';
+                                            $deporte = "default";
+                            }
+                        ?>
                         <tr>
-                            <th>Posición</th>
-                            <th>Club</th>
-                            <th>J</th>
-                            <th>Pts</th>
+                            <?php echo $cabezera; ?>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         //$tabla = [];
                         $tabla = $instancia_partidos->obtenerTablaDePosicionesControl($info_equipo['grupo']);
-                        var_dump($tabla);
+                        $posicion = 1;
                         foreach ($tabla as $idx => $fila) {
                             $delay = ($idx * 80);
 
                             echo "<tr style='transition-delay: {$delay}ms' class='reveal table-row'>";
 
-                            echo "<td><span class='badge badge-pos'>{$fila['id']}</span></td>";
-                            echo "<td class='text-start'>{$fila['nombre']}</td>";
-                            echo "<td>{$fila['PTS']}</td>";
-                            echo "<td class='fw-bold'>{$fila['DG']}</td>";
+                            if($deporte == "basket"){
+                                echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
+                                echo "<td class='text-start'>{$fila['nombre']}</td>";
+                                echo "<td>{$fila['PJ']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
+                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                            }else if($deporte == "futbol"){
+                                echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
+                                echo "<td class='text-start'>{$fila['nombre']}</td>";
+                                echo "<td>{$fila['PJ']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_EMPATADOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
+                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                            }else if($deporte == "softball"){
+                                echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
+                                echo "<td class='text-start'>{$fila['nombre']}</td>";
+                                echo "<td>{$fila['PJ']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
+                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                            }else if($deporte == "volley"){
+                                echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
+                                echo "<td class='text-start'>{$fila['nombre']}</td>";
+                                echo "<td>{$fila['PJ']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
+                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                            }else{
+                                echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
+                                echo "<td class='text-start'>{$fila['nombre']}</td>";
+                                echo "<td>{$fila['PJ']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
+                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
+                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                            }
 
                             echo "</tr>";
+                        $posicion++;
                         }
                         ?>
                     </tbody>
