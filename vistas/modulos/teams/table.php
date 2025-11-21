@@ -172,11 +172,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
 
 <div class="container py-4" style="margin-top: 150px; padding-top: 18px;">
 
-    <!-- Encabezado -->
-    <div class="text-center mb-4 reveal">
-        <h2 class="fw-bold">Resultados - <?= $info_equipo['nombre_equipo'] ?> </h2>
-        <p class="text-muted mb-0">Últimos partidos, próximos encuentros y tabla de posiciones</p>
-    </div>
+    
 
     <!-- Carrusel de Escudos -->
     <div id="carouselExampleFade" class="carousel slide carousel-fade mb-4 reveal" data-bs-ride="carousel" data-bs-interval="3000">
@@ -185,6 +181,11 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
           <img src="https://www.shutterstock.com/image-photo/textured-soccer-game-field-ball-600nw-2511518607.jpg" class="d-block w-100" alt="Imagen equipo">
         </div>
       </div>
+    </div>
+    <!-- Encabezado -->
+    <div class="text-center mb-4 reveal">
+        <h2 class="fw-bold">Resultados - <?= $info_equipo['nombre_equipo'] ?> </h2>
+        <p class="text-muted mb-0">Últimos partidos, próximos encuentros y tabla de posiciones</p>
     </div>
 
     <!-- Último y próximo partido -->
