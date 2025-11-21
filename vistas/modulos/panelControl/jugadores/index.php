@@ -3,7 +3,7 @@ date_default_timezone_set('America/Bogota');
 include_once CONTROL_PATH . 'EnlacesControl.php';
 
 include_once VISTA_PATH . 'header.php';
-include_once VISTA_PATH . 'navbar.php';
+//include_once VISTA_PATH . 'navbar.php';
 
 require_once CONTROL_PATH . DS . 'jugadores' . DS . 'ControlJugadores.php';
 require_once CONTROL_PATH . DS . 'categorias' . DS . 'ControlCategorias.php';
@@ -33,18 +33,9 @@ if (isset($_POST['buscar_equipos'])) {
     $equipos = $instancia_equipos->obtenerEquiposFiltradoControl($datos);
 }
 
-if(isset($_POST['filtrar_jugadores'])){
-    $categoria = $_POST['categoria'];
-    $subcategoria = $_POST['subcategoria'];
-    $deporte = $_POST['deporte'];
-
-    $datos = array(
-        'categoria' => $categoria,
-        'subcategoria' => $subcategoria,
-        'deporte' => $deporte
-    );
-
-    $jugadores = $instancia_jugadores->obtenerJugadoresFiltradoControl($datos);
+if (isset($_POST['filtrar_jugadores'])) {
+    $nombre = $_POST['nombre'];
+    $jugadores = $instancia_jugadores->filtrarJugadoresPorNombreControl($nombre);
 } else {
     $jugadores = $instancia_jugadores->obtenerTodosLosJugadoresControl();
 }
@@ -68,6 +59,22 @@ if(isset($_POST['filtrar_jugadores'])){
             <div class="tab-content">
                 <div class="tab-pane fade <?= isset($_POST['buscar_equipos']) ? '' : 'show active' ?>" id="listado" role="tabpanel">
                     <h3 class="card-title text-success">Listado de jugadores</h3>
+                    <div class="col-lg-12 align-items-end d-flex justify-content-end">
+                        <form method="POST" class="d-flex gap-2 align-items-center">
+                            <div class="input-group mb-3">
+                                <div>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del jugador">
+                                </div>
+    
+                                <div>
+                                    <button type="submit" class="btn btn-success btn-md form-control" name="filtrar_jugadores">
+                                        Buscar Usuario
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
                     <div>
                         <table class="table table-hover table-responsive">
                             <thead class="text-center">
@@ -86,8 +93,68 @@ if(isset($_POST['filtrar_jugadores'])){
                                         <td><?= $jugador['edad'] ?></td>
                                         <td><?= $jugador['equipo_nombre'] ?></td>
                                         <td><?= ($jugador['activo'] == 1) ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-danger">Inactivo</span>' ?></td>
-                                        <td></td>
+                                        <td>
+                                            <div class="d-flex gap-4 align-items-center justify-content-center">
+                                                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="modal" data-bs-target="#editar_jugador<?= $jugador['id'] ?>">Editar</button>
+                                                <?php if ($jugador['activo'] == 1): ?>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="id_jugador" value="<?= $jugador['id'] ?>">
+                                                        <button type="submit" class="btn btn-sm btn-danger" name="desactivar_jugador" onclick="return confirm('¿Estás seguro de que deseas eliminar la participación de este jugador?');">Inactivar Participación</button>
+                                                    </form>
+                                                <?php else: ?>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="id_jugador" value="<?= $jugador['id'] ?>">
+                                                        <button type="submit" class="btn btn-sm btn-success" name="activar_jugador" onclick="return confirm('¿Estás seguro de que deseas confirmar la participación de este jugador?');">Reactivar Participación</button>
+                                                    </form>
+                                                <?php endif; ?>
+                                            </div>
+                                        </td>
                                     </tr>
+
+
+                                    <!-- Modal Editar Jugador -->
+                                    <div class="modal fade modal-xl" id="editar_jugador<?= $jugador['id'] ?>" tabindex="-1" aria-labelledby="editar_jugador" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Jugador <?= $jugador['nombre'] ?></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="POST">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="mb-3 text-start">
+                                                                    <label for="nombre" class="form-label"><b>Nombre del jugador<span class="text-danger">*</span></b></label>
+                                                                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?= $jugador['nombre'] ?>" required>
+                                                                </div>
+                                                                <div class="mb-3 text-start">
+                                                                    <label for="edad" class="form-label"><b>Edad del jugador<span class="text-danger">*</span></b></label>
+                                                                    <input type="number" class="form-control" id="edad" name="edad" value="<?= $jugador['edad'] ?>" required>
+                                                                </div>
+                                                                <div class="mb-3 text-start">
+                                                                    <label for="equipo" class="form-label"><b>Equipo del jugador<span class="text-danger">*</span></b></label>
+                                                                    <select class="form-select" id="equipo" name="id_equipo" required>
+                                                                        <option value="" disabled>Seleccione un equipo</option>
+                                                                        <?php
+                                                                        $equipos_disponibles = $instancia_equipos->obtenerTodosLosEquiposControl();
+                                                                        foreach ($equipos_disponibles as $equipo): ?>
+                                                                            <option value="<?= $equipo['id'] ?>" <?= ($equipo['id'] == $jugador['id_equipo']) ? 'selected' : '' ?>>
+                                                                                <?= $equipo['nombre'] ?>
+                                                                            </option>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <input type="hidden" name="id_jugador" value="<?= $jugador['id'] ?>">
+                                                                    <button type="submit" class="btn btn-primary" name="actualizar_jugador">Guardar cambios</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -199,8 +266,22 @@ if(isset($_POST['filtrar_jugadores'])){
 <?php
 include_once VISTA_PATH . 'footer.php';
 
-if(isset($_POST['guardar_jugador'])){
+if (isset($_POST['guardar_jugador'])) {
     $instancia_jugadores->agregarJugadorControl();
+}
+
+if (isset($_POST['actualizar_jugador'])) {
+    $instancia_jugadores->editarJugadorControl();
+}
+
+if (isset($_POST['desactivar_jugador'])) {
+    $id_jugador = $_POST['id_jugador'];
+    $desactivar = $instancia_jugadores->desactivarParticipacionJugadorControl($id_jugador);
+}
+
+if (isset($_POST['activar_jugador'])) {
+    $id_jugador = $_POST['id_jugador'];
+    $activar = $instancia_jugadores->desactivarParticipacionJugadorControl($id_jugador);
 }
 
 ?>

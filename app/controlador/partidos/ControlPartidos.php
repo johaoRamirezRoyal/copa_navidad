@@ -191,4 +191,22 @@ class ControlPartidos
         $datos = PartidosModel::obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha);
         return $datos;
     }
+
+    public function obtenerUltimoPartidoControl($id_equipo)
+    {
+        $datos = PartidosModel::obtenerUltimoPartidoModel($id_equipo);
+        return $datos;
+    }
+
+    public function obtenerProximoPartidoControl($id_equipo)
+    {
+        $datos = PartidosModel::obtenerProximoPartidoModel($id_equipo);
+        return $datos;
+    }
+
+    public function obtenerTablaDePosicionesControl($grupo)
+    {
+        $datos = PartidosModel::obtenerTablaDePosiciones($grupo);
+        return $datos;
+    }
 }

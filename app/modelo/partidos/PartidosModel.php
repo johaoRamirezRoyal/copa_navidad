@@ -234,7 +234,8 @@ class PartidosModel extends conexion
         }
     }
 
-    public static function obtenerInformacionResultadoEnfrentamientos(){
+    public static function obtenerInformacionResultadoEnfrentamientos()
+    {
         $tabla = "resultado_enfrentamiento";
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT
@@ -255,19 +256,20 @@ class PartidosModel extends conexion
                     LEFT JOIN subcategoria s ON p.subcategoria = s.id
                     LEFT JOIN disciplinas d ON p.disciplina = d.id
                     ORDER BY p.fecha DESC;";
-        try{
+        try {
             $preparado = $cnx->preparar($cmdsql);
-            if($preparado->execute()){
+            if ($preparado->execute()) {
                 return $preparado->fetchAll(PDO::FETCH_ASSOC);
-            }else{
+            } else {
                 return false;
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print "Error al obtener la información de los resultados de los enfrentamientos: " . $e;
         }
     }
 
-        public static function obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha){
+    public static function obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha)
+    {
         $tabla = "resultado_enfrentamiento";
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT
@@ -289,14 +291,14 @@ class PartidosModel extends conexion
                     LEFT JOIN disciplinas d ON p.disciplina = d.id
                     WHERE DATE(p.fecha) = '$fecha'
                     ORDER BY p.fecha DESC;";
-        try{
+        try {
             $preparado = $cnx->preparar($cmdsql);
-            if($preparado->execute()){
+            if ($preparado->execute()) {
                 return $preparado->fetchAll(PDO::FETCH_ASSOC);
-            }else{
+            } else {
                 return false;
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print "Error al obtener la información de los resultados de los enfrentamientos: " . $e;
         }
     }
@@ -304,49 +306,56 @@ class PartidosModel extends conexion
     // =========== LÓGICA PARA LA TABLA DE POSICIONES ================== //
 
     // SUPONIENDO QUE TODOS SE ENFRENTAN CONTRA TODOS EN BASE A LA CATEGORIA, SUBCATEGORIA Y DISCIPLINA
-    public static function obtenerTablaDePosiciones($categoria, $subcategoria, $disciplina)
+    public static function obtenerTablaDePosiciones($id_grupo)
     {
+
+        $grupo_info = GruposModel::obtenerGrupoPorIdModel($id_grupo);
+        $array_futbol = [2, 8]; // IDs de disciplinas que son futbol
+        $array_volley = [3]; // IDs de disciplinas que son volley
+        $array_softball = [6]; // IDs de disciplinas que son softball
+        $array_basket = [1]; // IDs de disciplinas que son basket
+
+        if (in_array($grupo_info['disciplina'], $array_futbol)) {
+            $pts_victoria = 3;
+            $pts_derrota = 0;
+            $pts_empate = 1;
+        } else if (in_array($grupo_info['disciplina'], $array_basket)) {
+            $pts_victoria = 2;
+            $pts_derrota = 1;
+            $pts_empate = 0;
+        } else if (in_array($grupo_info['disciplina'], $array_softball)) {
+            $pts_victoria = 2;
+            $pts_derrota = 1;
+            $pts_empate = 0;
+        } else {
+            $pts_victoria = 1;
+            $pts_derrota = 0;
+            $pts_empate = 0;
+        }
+
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT 
                         e.id,
                         e.nombre,
-
-                        -- Partidos jugados
+                        e.id_grupo,
                         COUNT(r.id) AS PJ,
-
-                        -- Partidos ganados
                         SUM(CASE WHEN r.ganador = e.id THEN 1 ELSE 0 END) AS PG,
-
-                        -- Partidos perdidos
-                        SUM(
-                            CASE 
-                                WHEN r.ganador != e.id AND r.ganador != 0 THEN 1 
-                                ELSE 0 
-                            END
-                        ) AS PP,
-
-                        -- Partidos empatados
+                        SUM(CASE WHEN r.ganador != e.id AND r.ganador != 0 THEN 1 ELSE 0 END) AS PP,
                         SUM(CASE WHEN r.ganador = 0 THEN 1 ELSE 0 END) AS PE,
-
-                        -- Puntos a favor
                         SUM(
                             CASE 
                                 WHEN r.id_equipo1 = e.id THEN r.pts_equipo1
-                                WHEN r.id_equipo2 = e.id THEN r.pts_equipo2 
-                                ELSE 0 
+                                WHEN r.id_equipo2 = e.id THEN r.pts_equipo2
+                                ELSE 0
                             END
-                        ) AS GF,
-
-                        -- Puntos en contra
+                        ) AS PUNTOS_FAVOR,
                         SUM(
                             CASE 
                                 WHEN r.id_equipo1 = e.id THEN r.pts_equipo2
-                                WHEN r.id_equipo2 = e.id THEN r.pts_equipo1 
-                                ELSE 0 
+                                WHEN r.id_equipo2 = e.id THEN r.pts_equipo1
+                                ELSE 0
                             END
-                        ) AS GC,
-
-                        -- Diferencia de goles
+                        ) AS PUNTOS_CONTRA,
                         (
                             SUM(
                                 CASE 
@@ -359,32 +368,64 @@ class PartidosModel extends conexion
                             SUM(
                                 CASE 
                                     WHEN r.id_equipo1 = e.id THEN r.pts_equipo2
-                                    WHEN r.id_equipo2 = e.id THEN r.pts_equipo1 
+                                    WHEN r.id_equipo2 = e.id THEN r.pts_equipo1
                                     ELSE 0 
                                 END
                             )
-                        ) AS DG,
-
-                        -- Puntos totales: 3 victoria, 1 empate
+                        ) AS DIFERENCIA_PUNTOS,
                         SUM(
                             CASE 
-                                WHEN r.ganador = e.id THEN 3
-                                WHEN r.ganador = 0 THEN 1
-                                ELSE 0 
-                            END
-                        ) AS PTS
+                                /** SI ES VOLEY (DISCIPLINA = 3) SE CALCULAN PUNTOS **/
+                                WHEN g.disciplina = 3 THEN 
+                                    CASE 
+                                        /** El equipo es id_equipo1 **/
+                                        WHEN r.id_equipo1 = e.id THEN
+                                            CASE 
+                                                WHEN r.pts_equipo1 = 2 AND r.pts_equipo2 = 0 THEN 4
+                                                WHEN r.pts_equipo1 = 2 AND r.pts_equipo2 = 1 THEN 3
+                                                WHEN r.pts_equipo1 = 1 AND r.pts_equipo2 = 2 THEN 2
+                                                WHEN r.pts_equipo1 = 0 AND r.pts_equipo2 = 2 THEN 1
+                                                ELSE 0
+                                            END
+                                        /** El equipo es id_equipo2 **/
+                                        WHEN r.id_equipo2 = e.id THEN
+                                            CASE 
+                                                WHEN r.pts_equipo2 = 2 AND r.pts_equipo1 = 0 THEN 4
+                                                WHEN r.pts_equipo2 = 2 AND r.pts_equipo1 = 1 THEN 3
+                                                WHEN r.pts_equipo2 = 1 AND r.pts_equipo1 = 2 THEN 2
+                                                WHEN r.pts_equipo2 = 0 AND r.pts_equipo1 = 2 THEN 1
+                                                ELSE 0
+                                            END
 
-                    FROM equipos e
-                    LEFT JOIN resultado_enfrentamiento r 
-                        ON e.id IN (r.id_equipo1, r.id_equipo2)
-
-                    -- FILTROS OPCIONALES:
-                    WHERE e.categoria       = $categoria
-                        AND e.sub_categoria = $subcategoria
-                        AND e.diciplina     = $disciplina
-
-                    GROUP BY e.id
-                    ORDER BY PTS DESC, DG DESC, GF DESC;";
+                                    END
+                                /** SI NO ES VOLEY USA TU LÓGICA NORMAL **/
+                                    ELSE
+                                        CASE
+                                            WHEN r.ganador = e.id THEN $pts_victoria
+                                            WHEN r.ganador = 0 THEN $pts_empate
+                                            ELSE $pts_derrota
+                                        END
+                                END
+                            ) AS PUNTOS
+                        FROM equipos e
+                        -- Trae los resultados donde participa el equipo
+                        LEFT JOIN resultado_enfrentamiento r
+                            ON e.id IN (r.id_equipo1, r.id_equipo2)
+                        -- Obtener datos del grupo para conocer la disciplina
+                        LEFT JOIN grupos g
+                            ON g.id = e.id_grupo
+                        -- Obtener rival para validar grupo
+                        LEFT JOIN equipos rival
+                            ON rival.id = 
+                                CASE 
+                                    WHEN r.id_equipo1 = e.id THEN r.id_equipo2
+                                    ELSE r.id_equipo1
+                                END
+                        -- Solo partidos entre el mismo grupo
+                        WHERE e.id_grupo = $id_grupo
+                        AND (rival.id_grupo = e.id_grupo OR rival.id IS NULL)
+                        GROUP BY e.id
+                        ORDER BY PUNTOS DESC, DIFERENCIA_PUNTOS DESC, PUNTOS_FAVOR DESC;";
 
         try {
             $preparado = $cnx->preparar($cmdsql);
@@ -395,6 +436,77 @@ class PartidosModel extends conexion
             }
         } catch (PDOException $e) {
             print "Error al obtener la tabla de posiciones: " . $e;
+        }
+    }
+
+    public static function obtenerUltimoPartidoModel($id_equipo)
+    {
+        $tabla = "partidos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT  p.*, 
+                            re.id AS resultado_id,
+                            re.pts_equipo1,
+                            re.pts_equipo2,
+                            e1.id AS equipo1_id,
+                            e1.nombre AS equipo1_nombre,
+                            e2.id AS equipo2_id,
+                            e2.nombre AS equipo2_nombre,
+                            CASE 
+                                WHEN p.equipo1 = $id_equipo THEN e2.nombre
+                                WHEN p.equipo2 = $id_equipo THEN e1.nombre
+                            END AS rival_nombre
+                    FROM partidos p
+                    INNER JOIN resultado_enfrentamiento re 
+                            ON re.id_enfrentamiento = p.id
+                    INNER JOIN equipos e1 ON e1.id = p.equipo1
+                    INNER JOIN equipos e2 ON e2.id = p.equipo2
+                    WHERE $id_equipo IN (p.equipo1, p.equipo2)
+                    ORDER BY p.fecha DESC
+                    LIMIT 2;";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al obtener el último partido y próximo enfrentamiento: " . $e;
+        }
+    }
+
+    public static function obtenerProximoPartidoModel($id_equipo)
+    {
+        $tabla = "partidos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT  p.*, 
+                            e1.id AS equipo1_id,
+                            e1.nombre AS equipo1_nombre,
+                            e2.id AS equipo2_id,
+                            e2.nombre AS equipo2_nombre,
+                            CASE 
+                                WHEN p.equipo1 = $id_equipo THEN e2.nombre
+                                WHEN p.equipo2 = $id_equipo THEN e1.nombre
+                            END AS rival_nombre
+                    FROM partidos p
+                    LEFT JOIN resultado_enfrentamiento re 
+                        ON re.id_enfrentamiento = p.id
+                    INNER JOIN equipos e1 ON e1.id = p.equipo1
+                    INNER JOIN equipos e2 ON e2.id = p.equipo2
+                    WHERE $id_equipo IN (p.equipo1, p.equipo2)
+                    AND re.id IS NULL
+                    AND p.fecha >= CURDATE()
+                    ORDER BY p.fecha ASC
+                    LIMIT 1;";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al obtener el próximo enfrentamiento: " . $e;
         }
     }
 }

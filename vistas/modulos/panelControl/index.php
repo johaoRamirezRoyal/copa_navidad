@@ -19,6 +19,17 @@ include_once VISTA_PATH . 'navbar.php';
         </div>
         <div class="col-lg-4 col-md-6">
             <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Jugadores&font=roboto" class="card-img-top" alt="Jugadores">
+                <div class="card-body">
+                    <h5 class="card-title">Administración de jugadores (Participantes)</h5>
+                    <a href="<?=BASE_URL?>panelControl/jugadores/index" class="btn btn-outline-primary w-100">
+                        Ir a jugadores
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
                 <img src="https://placehold.co/400x200?text=Colegios&font=roboto" class="card-img-top" alt="Colegios">
                 <div class="card-body">
                     <h5 class="card-title">Agregar Colegio Participante</h5>

@@ -20,6 +20,11 @@ class ControlEquipos
         return $mostrar;
     }
 
+    public function obtenerEquipoPorIdControl($id){
+        $mostrar = EquiposModel::obtenerEquipoPorIdModel($id);
+        return $mostrar;
+    }
+
     public function obtenerEquiposInformacionControl(){
         $mostrar = EquiposModel::obtenerEquiposInformacionModel();
         return $mostrar;
@@ -133,9 +138,9 @@ class ControlEquipos
                 'sub_categoria' => $_POST['sub_categoria'],
                 'colegio' => $_POST['colegio'],
                 'diciplina' => $_POST['diciplina'],
-                'id' => $_POST['id']
-            ); 
-
+                'id' => $_POST['id'],
+                'grupo' => $_POST['grupo']
+            );
             $actualizar = EquiposModel::actualizarEquipoModel($datos);
 
             if($actualizar){
