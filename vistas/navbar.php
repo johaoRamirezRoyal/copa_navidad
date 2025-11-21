@@ -12,7 +12,8 @@
         strpos($uri, 'faq') !== false ||
         strpos($uri, 'blog') !== false ||
         strpos($uri, 'portfolio') !== false ||
-        strpos($uri, 'panelControl/jugadores/index') !== false
+        strpos($uri, 'panelControl/jugadores/index') !== false ||
+        strpos($uri, 'teams/table') !== false
     );
 ?>
 

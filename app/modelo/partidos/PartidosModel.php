@@ -339,9 +339,9 @@ class PartidosModel extends conexion
                         e.nombre,
                         e.id_grupo,
                         COUNT(r.id) AS PJ,
-                        SUM(CASE WHEN r.ganador = e.id THEN 1 ELSE 0 END) AS PG,
-                        SUM(CASE WHEN r.ganador != e.id AND r.ganador != 0 THEN 1 ELSE 0 END) AS PP,
-                        SUM(CASE WHEN r.ganador = 0 THEN 1 ELSE 0 END) AS PE,
+                        SUM(CASE WHEN r.ganador = e.id THEN 1 ELSE 0 END) AS PARTIDOS_GANADOS,
+                        SUM(CASE WHEN r.ganador != e.id AND r.ganador != 0 THEN 1 ELSE 0 END) AS PARTIDOS_PERDIDOS,
+                        SUM(CASE WHEN r.ganador = 0 THEN 1 ELSE 0 END) AS PARTIDOS_EMPATADOS,
                         SUM(
                             CASE 
                                 WHEN r.id_equipo1 = e.id THEN r.pts_equipo1
