@@ -25,7 +25,17 @@ $deportes      = $instancia_deportes->obtenerTodosLosDeportesControl();
 $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
 $categorias    = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $disciplinas   = $instancia_disciplinas->obtenerTodosLosDisciplinasControl();
-$equipos       = $instancia_equipos->obtenerTodosLosEquiposControl();
+
+// map slug -> id de disciplina para consultas eficientes
+$discSlugToId = [];
+foreach ($disciplinas as $d) {
+    $nombreD = $d['nombre'] ?? $d['nombre_disciplina'] ?? '';
+    $slugD = !empty($d['slug']) ? $d['slug'] : slugify($nombreD);
+    $discSlugToId[$slugD] = (int)($d['id'] ?? $d['disciplina_id'] ?? 0);
+}
+
+$equipos = []; // no cargamos globalmente: se obtiene por colegio+deporte cuando se abre el modal
+
 
 // -------------------- Helpers --------------------
 
@@ -117,6 +127,37 @@ function getTeamsForColegio(array $equiposList, int $coleId, string $slug): arra
         // filtrar por colegio y deporte (coincidencia parcial en slug permitida)
         if ($teamCole === $coleId && ($teamSlug === $slug || ($teamSlug !== null && strpos($teamSlug, $slug) !== false))) {
             $out[] = $teamName;
+        }
+    }
+    return $out;
+}
+
+// Nueva función: filtra filas de equipos por categoría/subcategoría y devuelve lista de nombres
+function filterEquiposRowsByCat(array $rows, int $catId, int $subId): array {
+    $out = [];
+    foreach ($rows as $r) {
+        $rowCat = null;
+        if (isset($r['categoria'])) $rowCat = (int)$r['categoria'];
+        elseif (isset($r['categoria_id'])) $rowCat = (int)$r['categoria_id'];
+        elseif (isset($r['id_categoria'])) $rowCat = (int)$r['id_categoria'];
+
+        $rowSub = null;
+        if (isset($r['subcategoria'])) $rowSub = (int)$r['subcategoria'];
+        elseif (isset($r['subcategoria_id'])) $rowSub = (int)$r['subcategoria_id'];
+        elseif (isset($r['id_subcategoria'])) $rowSub = (int)$r['id_subcategoria'];
+
+        $teamName = $r['nombre'] ?? $r['nombre_equipo'] ?? $r['team_name'] ?? null;
+        $teamId   = $r['id'] ?? $r['team_id'] ?? null;
+        if ($teamName === null) continue;
+
+        if ($catId === 0) {
+            if (($rowCat === 0 || $rowCat === null) && ($subId === 0 || $rowSub === $subId)) {
+                $out[] = ['id' => $teamId, 'nombre' => $teamName];
+            }
+        } else {
+            if ($rowCat === $catId && ($subId === 0 ? true : $rowSub === $subId)) {
+                $out[] = ['id' => $teamId, 'nombre' => $teamName];
+            }
         }
     }
     return $out;
@@ -358,6 +399,29 @@ $dataEquipos = []; // Tabla de equipos vacía
     background: #fff;
     border-radius: 0 0 16px 16px;
 }
+
+.team-link{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 10px;
+    border-radius:10px;
+    text-decoration:none;
+    color:inherit;
+    background: rgba(255,255,255,0.35); /* translúcido */
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+.team-link:hover{ transform: translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+.btn-translucent{
+    font-weight:600;
+    font-size:0.85em;
+    padding:4px 8px;
+    border-radius:8px;
+    background: rgba(255, 0, 0, 0.06);
+    color:#111;
+}
+.team-icon{ width:28px; height:28px; object-fit:cover; border-radius:6px; }
+.team-emoji{ font-size:1.05em; }
     </style>
 
     <div class="container" style="margin-top: 100px; padding-top: 18px;">
@@ -400,6 +464,9 @@ $dataEquipos = []; // Tabla de equipos vacía
                                     <div class="accordion" id="accordionDeportes<?= $id ?>">
                                         <?php $deporteIdx = 0; foreach ($deportes_lista as $slug => $display): 
                                             $collapseId = "collapseDep{$id}_{$deporteIdx}";
+                                        // obtener id de disciplina desde el slug y consultar equipos de este colegio+deporte
+                                        $discId = $discSlugToId[$slug] ?? 0;
+                                        $equiposColegio = ($discId > 0) ? $instancia_equipos->obtenerEquiposColegioDeporteControl($id, $discId) : [];
                                         ?>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingDep<?= $id ?>_<?= $deporteIdx ?>">
@@ -421,14 +488,23 @@ $dataEquipos = []; // Tabla de equipos vacía
                                                                     <?php foreach ($children as $child):
                                                                         $subId = (int)$child['id'];
                                                                         $tituloSub = htmlspecialchars($child['nombre'], ENT_QUOTES);
-                                                                        $equipos = getEquiposFromData($dataEquipos, $slug, (int)$catId, $subId);
+                                                                        // usar filas devueltas por la consulta y filtrarlas por categoría/subcategoría
+                                                                        $equipos = filterEquiposRowsByCat($equiposColegio ?: [], (int)$catId, $subId);
                                                                     ?>
                                                                         <li class="subcat-title">
                                                                             <?= $tituloSub ?>:
                                                                             <?php if (!empty($equipos)): ?>
                                                                                 <ul class="equipos-list">
-                                                                                    <?php foreach ($equipos as $eq): ?>
-                                                                                        <li>⚡ <?= htmlspecialchars($eq, ENT_QUOTES) ?></li>
+                                                                                    <?php foreach ($equipos as $eq):
+                                                                                        $teamName = htmlspecialchars($eq['nombre'], ENT_QUOTES);
+                                                                                        $teamId = intval($eq['id'] ?? 0);
+                                                                                        $teamUrl = PUBLIC_PATH . "teams/table" . ($teamId ? "?id_equipos={$teamId}" : "");
+                                                                                    ?>
+                                                                                        <li>
+                                                                                            <a class="team-link" href="<?= htmlspecialchars($teamUrl, ENT_QUOTES) ?>" target="_blank" rel="noopener noreferrer">
+                                                                                                <span class="team-name"><?= $teamName ?></span>
+                                                                                            </a>
+                                                                                        </li>
                                                                                     <?php endforeach; ?>
                                                                                 </ul>
                                                                             <?php else: ?>

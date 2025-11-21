@@ -87,8 +87,37 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         .badge-pos {
             min-width: 34px;
             font-weight: 700;
-            background: rgba(0,0,0,0.05);
             color: #111;
+        }
+
+        /* Resaltar fila del club propio (más contraste y borde) */
+        .highlight-row {
+            background: linear-gradient(90deg, rgba(179,0,0,0.06), rgba(20,22,168,0.04));
+            border-left: 4px solid var(--brand);
+            /* animación constante para localizar rápidamente */
+            animation: highlightGlow 2.2s ease-in-out infinite;
+        }
+        .highlight-row td { font-weight: 700; color: var(--brand); }
+        .highlight-row .badge-pos { background: var(--brand); color: #fff; box-shadow: 0 2px 8px rgba(179,0,0,0.18); animation: badgePulse 1.8s ease-in-out infinite; }
+        .highlight-row .club-name { text-decoration: underline; text-underline-offset: 4px; }
+
+        /* badge extra para clubs destacados */
+        .highlight-badge {
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: .95rem;
+        }
+
+        @keyframes highlightGlow {
+            0% { box-shadow: 0 0 0 rgba(179,0,0,0); transform: translateY(0); }
+            50% { box-shadow: 0 12px 30px rgba(20,22,168,0.18); transform: translateY(-3px); }
+            100% { box-shadow: 0 0 0 rgba(179,0,0,0); transform: translateY(0); }
+        }
+
+        @keyframes badgePulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.06); opacity: 0.95; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         /* Animaciones de entrada */
@@ -127,21 +156,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         <div class="carousel-item active">
           <img src="https://www.shutterstock.com/image-photo/textured-soccer-game-field-ball-600nw-2511518607.jpg" class="d-block w-100" alt="Imagen equipo">
         </div>
-        <div class="carousel-item">
-          <img src="https://universidadeuropea.com/resources/media/images/scouting-futbol-800x450.width-640.jpg" class="d-block w-100" alt="Imagen equipo">
-        </div>
-        <div class="carousel-item">
-          <img src="https://statics.forbes.com.ec/2025/10/crop/68f93bc7be723__600x390.webp" class="d-block w-100" alt="Imagen equipo">
-        </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Anterior</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Siguiente</span>
-      </button>
     </div>
 
     <!-- Último y próximo partido -->
@@ -200,8 +215,8 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
     </div>
 
     <!-- Card de Integrantes del Equipo Mejorada -->
-    <div class="card mb-4 reveal shadow-sm">
-        <div class="card-header text-center d-flex align-items-center justify-content-center gap-2">
+    <div class="card mb-4 reveal ">
+        <div class="card-header text-center d-flex align-items-center justify-content-center ">
             <i class="bi bi-people-fill fs-4 me-2"></i>
             <span>Integrantes del Equipo</span>
         </div>
@@ -222,7 +237,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                     return "https://ui-avatars.com/api/?name={$nombre_url}&background=1417a8&color=fff&size=64";
                 }
             ?>
-            <p class="fw-bold mb-3">
+            <p class=" fw-bold mb-3">
                 <i class="bi bi-person-lines-fill me-1"></i>
                 Número de integrantes: <?php echo $num_integrantes; ?>
             </p>
@@ -290,9 +305,15 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                         foreach ($tabla as $idx => $fila) {
                             // clase para animación escalonada
                             $delay = ($idx * 80);
-                            echo "<tr style='transition-delay: {$delay}ms' class='reveal table-row'>";
-                            // primera columna con badge
-                            echo "<td><span class='badge badge-pos'>{$fila[0]}</span></td>";
+
+                            // detecta si la fila corresponde a "América de Cali"
+                            $is_america = (stripos($fila[1], 'América de Cali') !== false);
+                            $rowClass = $is_america ? 'highlight-row' : 'table-row';
+
+                            echo "<tr style='transition-delay: {$delay}ms' class='reveal {$rowClass}'>";
+                            // primera columna con badge (aplica estilo distinto si es América)
+                            $badgeClass = $is_america ? 'badge-pos highlight-badge' : 'badge-pos';
+                            echo "<td><span class='{$badgeClass}'>{$fila[0]}</span></td>";
                             echo "<td class='text-start'>{$fila[1]}</td>";
                             echo "<td>{$fila[2]}</td>";
                             echo "<td class='fw-bold'>{$fila[3]}</td>";
