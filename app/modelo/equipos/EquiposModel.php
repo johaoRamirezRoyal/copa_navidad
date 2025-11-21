@@ -24,7 +24,8 @@ class EquiposModel extends conexion {
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT
                     e.id, e.categoria AS id_categoria, e.sub_categoria AS id_subcategoria, e.colegio AS id_colegio, e.diciplina AS id_deporte,
-                    e.nombre as nombre_equipo,  
+                    e.nombre as nombre_equipo,
+                    e.id_grupo AS grupo,
                     c.nombre as categoria, 
                     cp.nombre as colegio_nombre, 
                     d.nombre as deporte,
@@ -75,7 +76,8 @@ class EquiposModel extends conexion {
         $cnx = conexion::singleton_conexion();
         $cmdsql = "SELECT
                     e.id, e.categoria AS id_categoria, e.sub_categoria AS id_subcategoria, e.colegio AS id_colegio, e.diciplina AS id_deporte,
-                    e.nombre as nombre_equipo,  
+                    e.nombre as nombre_equipo, 
+                    e.id_grupo AS grupo, 
                     c.nombre as categoria, 
                     cp.nombre as colegio_nombre, 
                     d.nombre as deporte,
@@ -118,7 +120,7 @@ class EquiposModel extends conexion {
     public static function actualizarEquipoModel($datos){
         $tabla = "equipos";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "UPDATE $tabla SET nombre = :nombre, categoria = :categoria, sub_categoria = :sub_categoria, colegio = :colegio, diciplina = :diciplina WHERE id = :id";
+        $cmdsql = "UPDATE $tabla SET nombre = :nombre, categoria = :categoria, sub_categoria = :sub_categoria, colegio = :colegio, diciplina = :diciplina, id_grupo = :grupo WHERE id = :id";
         try{
             $preparado = $cnx->preparar($cmdsql);
             $preparado->bindParam(":nombre", $datos['nombre']);
@@ -126,6 +128,7 @@ class EquiposModel extends conexion {
             $preparado->bindParam(":sub_categoria", $datos['sub_categoria']);
             $preparado->bindParam(":colegio", $datos['colegio']);
             $preparado->bindParam(":diciplina", $datos['diciplina']);
+            $preparado->bindParam(":grupo", $datos['grupo']);
             $preparado->bindParam(":id", $datos['id']);
             if($preparado->execute()){
                 return true;
@@ -152,6 +155,35 @@ class EquiposModel extends conexion {
             }
         }catch(PDOException $e){
             print "Error al traer los equipos del colegio y deporte: " . $e->getMessage();
+        }
+    }
+
+    public static function obtenerEquipoPorIdModel($id){
+        $tabla = "equipos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT
+                    e.id, e.categoria AS id_categoria, e.sub_categoria AS id_subcategoria, e.colegio AS id_colegio, e.diciplina AS id_deporte,
+                    e.nombre as nombre_equipo, e.id_grupo AS grupo,  
+                    c.nombre as categoria, 
+                    cp.nombre as colegio_nombre, 
+                    d.nombre as deporte,
+                    sc.nombre as subcategoria
+                    FROM `equipos` e
+                        left join categorias c ON e.categoria = c.id
+                        left join colegios_participantes cp ON cp.id = e.colegio
+                        left join subcategoria sc on sc.id = e.sub_categoria
+                        left join disciplinas d ON d.id = e.diciplina
+                    WHERE e.activo = 1 AND e.id = :id";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":id", $id, PDO::PARAM_INT);
+            if($preparado->execute()){
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al traer el equipo por ID: " . $e->getMessage();
         }
     }
 }

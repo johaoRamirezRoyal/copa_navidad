@@ -208,6 +208,20 @@ if (isset($_POST['buscar'])) {
                                                                     </select>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-3 text-start">
+                                                                    <label for="grupo" class="form-label"><b>Selecciona el grupo del equipo <span class="text-danger">*</span></b></label>
+                                                                    <select class="form-select form-select" name="grupo" aria-label="Grupo" required>
+                                                                        <option selected disabled>Selecciona un grupo</option>
+                                                                        <?php foreach ($grupos as $grupo):
+                                                                            $select = ($grupo['id'] == $equipo['grupo']) ? 'selected' : '';
+                                                                        ?>
+                                                                            <option value="<?= $grupo['id'] ?>" <?= $select ?>><?= $grupo['nombre'] ?></option>
+                                                                        <?php endforeach ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

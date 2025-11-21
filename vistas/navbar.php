@@ -15,15 +15,7 @@
         strpos($uri, 'panelControl/jugadores/index') !== false
     );
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Christmas Cup</title>
-    <!-- Agrega aquí tus enlaces a CSS adicionales -->
-</head>
-<body>
+
 <nav class="navbar navbar-expand-lg navbar-dark nav-blur <?= $isColored ? 'nav-colored' : '' ?> shadow-lg py-2">
     <div class="container px-4">
         <!-- Navbar Brand -->
@@ -44,7 +36,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/index">Teams</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table_copy">Tables</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table">Tables</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>partidos/index">Matches</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>faq">Rules</a></li>
 
@@ -263,5 +255,3 @@ document.addEventListener('DOMContentLoaded', function() {
     <?php endif; ?>
 });
 </script>
-</body>
-</html>
