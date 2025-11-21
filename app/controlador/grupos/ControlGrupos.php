@@ -25,7 +25,7 @@ class ControlGrupos
     }
 
     public function crearGrupoControl(){
-        if(isset($_POST['crear_grupo'])){
+        if(isset($_POST['agregar_grupo'])){
             $datos = array(
                 'nombre' => $_POST['nombre'],
                 'disciplina' => $_POST['disciplina'],
@@ -65,7 +65,7 @@ class ControlGrupos
 
     public function eliminarGrupoControl(){
         if(isset($_POST['eliminar_grupo'])){
-            $id = $_POST['id_grupo'];
+            $id = $_POST['id'];
 
             $eliminar_grupo = GruposModel::eliminarGrupoModel($id);
 
@@ -95,5 +95,14 @@ class ControlGrupos
                     ';
             }
         }
+    }
+    public function obtenerGruposFiltradoControl($datos){
+        $categoria = (isset($datos['categoria'])) ? 'AND c.id = ' . $datos['categoria'] : '';
+        $subcategoria = (isset($datos['subcategoria'])) ? 'AND sc.id = ' . $datos['subcategoria'] : '';
+        $deporte = (isset($datos['deporte'])) ? 'AND d.id = ' . $datos['deporte'] : '';
+
+        $grupos = GruposModel::obtenerGruposFiltradoModel($categoria, $subcategoria, $deporte);
+
+        return $grupos; 
     }
 }

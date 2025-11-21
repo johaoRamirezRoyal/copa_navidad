@@ -46,7 +46,7 @@ class GruposModel extends conexion
     {
         $tabla = "grupos";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "INSERT INTO $tabla (nombre, disciplina, categoria, sub_categoria) 
+        $cmdsql = "INSERT INTO $tabla (nombre, disciplina, categoria, subcategoria) 
                     VALUES (:nombre, :disciplina, :categoria, :sub_categoria)";
         try {
             $preparado = $cnx->preparar($cmdsql);
@@ -81,6 +81,43 @@ class GruposModel extends conexion
             print "Error al eliminar el grupo: " . $e->getMessage();
         }
     }
+
+    public static function obtenerGruposFiltradoModel($categoria, $subcategoria, $deporte){
+    $tabla = "grupos";
+    $cnx = conexion::singleton_conexion();
+
+    $cmdsql = "SELECT
+                    g.id,
+                    g.categoria AS id_categoria,
+                    g.subcategoria AS id_subcategoria,
+                    g.disciplina AS id_disciplina,
+                    g.nombre AS nombre,
+
+                    c.nombre AS categoria_nombre,
+                    sc.nombre AS subcategoria_nombre,
+                    d.nombre AS disciplina_nombre
+
+                FROM grupos g
+                LEFT JOIN categorias c ON g.categoria = c.id
+                LEFT JOIN subcategoria sc ON g.subcategoria = sc.id
+                LEFT JOIN disciplinas d ON g.disciplina = d.id 
+                WHERE g.nombre IS NOT NULL
+                $categoria $subcategoria $deporte;";
+
+    try{
+        $preparado = $cnx->preparar($cmdsql);
+        if($preparado->execute()){
+            return $preparado->fetchAll(PDO::FETCH_ASSOC);
+        }else{
+            return false;
+        }
+    }catch(PDOException $e){
+        print "Error al traer los grupos por filtro: " . $e->getMessage();
+    }
+}
+
+
+
 
     function puntosVolley($setsEquipo, $setsRival)
     {
