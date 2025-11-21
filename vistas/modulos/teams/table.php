@@ -93,9 +93,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
         color: var(--brand);
         animation: pulse 1.6s infinite ease-in-out;
         display: inline-block;
-        padding: 4px 10px;
-        border-radius: 8px;
-        background: rgba(179, 0, 0, 0.05);
+        
     }
 
         .table thead {
@@ -234,7 +232,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                             <p class="mb-0 fw-semibold"><?= $proximo_partido['equipo1_nombre'] ?></p>
                         </div>
                         <div>
-                            <p class="mb-0">vs</p>
+                            <p class="score ">vs</p>
                             <p class="text-danger fw-bold mb-0 mt-4"><?= $proximo_partido['lugar'] ?></p>
                         </div>
                         <div class="text-center">

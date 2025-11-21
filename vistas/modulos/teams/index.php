@@ -498,7 +498,7 @@ $dataEquipos = []; // Tabla de equipos vacía
                                                                                     <?php foreach ($equipos as $eq):
                                                                                         $teamName = htmlspecialchars($eq['nombre'], ENT_QUOTES);
                                                                                         $teamId = intval($eq['id'] ?? 0);
-                                                                                        $teamUrl = PUBLIC_PATH . "teams/table" . ($teamId ? "?id_equipos={$teamId}" : "");
+                                                                                        $teamUrl = BASE_URL . "teams/table" . ($teamId ? "?id_equipo={$teamId}" : "");
                                                                                     ?>
                                                                                         <li>
                                                                                             <a class="team-link" href="<?= htmlspecialchars($teamUrl, ENT_QUOTES) ?>" target="_blank" rel="noopener noreferrer">
