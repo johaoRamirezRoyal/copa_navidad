@@ -86,7 +86,7 @@ class EquiposModel extends conexion {
                         left join subcategoria sc on sc.id = e.sub_categoria
                         left join disciplinas d ON d.id = e.diciplina
                     WHERE e.activo = 1 
-                    $categoria $subcategoria $deporte;";
+                    $categoria $subcategoria $deporte;";;
         try{
             $preparado = $cnx->preparar($cmdsql);
             if($preparado->execute()){
@@ -134,6 +134,24 @@ class EquiposModel extends conexion {
             }
         }catch(PDOException $e){
             print "Error al actualizar el equipo: " . $e->getMessage();
+        }
+    }
+
+    public static function obtenerEquiposColegioDeporte($id_colegio, $id_deporte){
+        $tabla = "equipos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT * FROM $tabla WHERE colegio = :id_colegio AND diciplina = :id_deporte AND activo = 1";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":id_colegio", $id_colegio, PDO::PARAM_INT);
+            $preparado->bindParam(":id_deporte", $id_deporte, PDO::PARAM_INT);
+            if($preparado->execute()){
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            print "Error al traer los equipos del colegio y deporte: " . $e->getMessage();
         }
     }
 }

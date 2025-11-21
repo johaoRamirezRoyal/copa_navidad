@@ -39,7 +39,7 @@ if (isset($_POST['buscar'])) {
 
 ?>
 
-<div class="container" style="margin-top: 120px; padding-top: 18px;">
+<div class="container mb-4" style="margin-top: 120px; padding-top: 18px;">
     <div class="card text-center">
         <div class="card-header">
 

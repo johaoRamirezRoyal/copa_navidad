@@ -82,9 +82,9 @@ class ControlEquipos
     }
 
     public function obtenerEquiposFiltradoControl($datos){
-        $categoria = (isset($datos['categoria'])) ? 'AND c.id = ' . $datos['categoria'] : '';
-        $subcategoria = (isset($datos['subcategoria'])) ? 'AND sc.id = ' . $datos['subcategoria'] : '';
-        $deporte = (isset($datos['deporte'])) ? 'AND d.id = ' . $datos['deporte'] : '';
+        $categoria = (!empty($datos['categoria'])) ? ' AND c.id = ' . $datos['categoria'] : '';
+        $subcategoria = (!empty($datos['subcategoria'])) ? ' AND sc.id = ' . $datos['subcategoria'] : '';
+        $deporte = (!empty($datos['deporte'])) ? ' AND d.id = ' . $datos['deporte'] : '';
 
         $equipos = EquiposModel::obtenerEquiposFiltradoModel($categoria, $subcategoria, $deporte);
 
@@ -164,6 +164,11 @@ class ControlEquipos
                     ';
             }
         }
+    }
+
+    public function obtenerEquiposColegioDeporteControl($id_colegio, $id_deporte){
+        $equipos = EquiposModel::obtenerEquiposColegioDeporte($id_colegio, $id_deporte);
+        return $equipos;
     }
 
 }
