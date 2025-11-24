@@ -604,4 +604,20 @@ class PartidosModel extends conexion
             print "Error al obtener los datos del jugador en el partido: " . $e;
         }
     }
+
+    public static function eliminarDatosPartidoJugadorModel($id){
+        $tabla = "partido_jugador";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "DELETE FROM $tabla WHERE id = $id";
+        try{
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (PDOException $e) {
+            print "Error al eliminar los datos del jugador en el partido: " . $e;
+        }
+    }
 }
