@@ -1,7 +1,7 @@
 <?php
 include_once CONTROL_PATH . 'EnlacesControl.php';
 include_once VISTA_PATH . 'header.php';
-include_once VISTA_PATH . 'navbar.php';
+//include_once VISTA_PATH . 'navbar.php';
 
 require_once CONTROL_PATH . 'partidos' . DS . 'ControlPartidos.php';
 require_once CONTROL_PATH . 'categorias' . DS . 'ControlCategorias.php';
@@ -13,7 +13,6 @@ $instancia_categorias = ControlCategorias::singleton_categorias();
 $instancia_deportes = ControlDeportes::singleton_deportes();
 $instancia_equipos = ControlEquipos::singleton_equipos();
 
-$partidos = $instancia_partidos->obtenerTodosLosPartidosControl();
 $categorias = $instancia_categorias->obtenerTodosLosCategoriasControl();
 $subcategorias = $instancia_categorias->obtenerTodosLosSubcategoriasControl();
 $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
@@ -25,23 +24,27 @@ if (isset($_POST['buscar'])) {
         'deporte' => $_POST['deporte']
     );
 
-    $faltan_datos = false; 
+   // $partidos = $instancia_partidos->obtenerPartidosFiltradosControl($datos);
 
+    $faltan_datos = false; 
+    
     foreach ($datos as $clave => $valor) {
         if ($valor === NULL || $valor === '') {
             echo '
-                <div class="alert alert-red alert-dismissible fade show" role="alert">
-                    <strong>Error!</strong> El valor de ' . $clave . ' es nulo, debes ingresarlo
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-red alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> El valor de ' . $clave . ' es nulo, debes ingresarlo
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             ';
             $faltan_datos = true;
         }
     }
-
+    
     $equipos = $instancia_equipos->obtenerEquiposFiltradoControl($datos);
+    $partidos = $instancia_partidos->obtenerPartidosFiltradosControl($datos);
 } else {
     $equipos = $instancia_equipos->obtenerEquiposInformacionControl();
+    $partidos = $instancia_partidos->obtenerTodosLosPartidosControl();
 }
 
 

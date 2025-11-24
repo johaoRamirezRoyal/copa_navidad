@@ -5,7 +5,34 @@ include_once VISTA_PATH . 'navbar.php';
 ?>
 
 <div class="container" style="margin-top: 120px; padding-top: 18px;">
-    <div class="row g-4 justify-content-center">
+    <div class="row g-4 justify-content-center mb-4">
+        <div class="col-lg-12">
+            <h2 class="text-center text-capitalize text-danger">Panel de Control - Copa Navidad</h2>
+            <p class="text-center">Bienvenido al panel de administración. Desde aquí puedes gestionar las diferentes secciones del sistema.</p>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Colegios&font=roboto" class="card-img-top" alt="Colegios">
+                <div class="card-body">
+                    <h5 class="card-title">Agregar Colegio Participante</h5>
+                    <a href="<?=BASE_URL?>panelControl/colegios/index" class="btn btn-outline-primary w-100">
+                        Ir a colegios
+                    </a>
+                </div>
+            </div>
+        </div>
+                <!-- Nuevo: Administrador de grupos -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Grupos&font=roboto" class="card-img-top" alt="Grupos">
+                <div class="card-body">
+                    <h5 class="card-title">Administrador de grupos</h5>
+                    <a href="<?= BASE_URL?>panelControl/grupos/index" class="btn btn-outline-primary w-100">
+                        Ir a grupos
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-4 col-md-6">
             <div class="card h-100 shadow-sm card-borde-gris">
                 <img src="https://placehold.co/400x200?text=Equipos&font=roboto" class="card-img-top" alt="Equipos">
@@ -28,60 +55,14 @@ include_once VISTA_PATH . 'navbar.php';
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 shadow-sm card-borde-gris">
-                <img src="https://placehold.co/400x200?text=Colegios&font=roboto" class="card-img-top" alt="Colegios">
-                <div class="card-body">
-                    <h5 class="card-title">Agregar Colegio Participante</h5>
-                    <a href="<?=BASE_URL?>panelControl/colegios/index" class="btn btn-outline-primary w-100">
-                        Ir a colegios
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 shadow-sm card-borde-gris">
-                <img src="https://placehold.co/400x200?text=Categorías&font=roboto" class="card-img-top" alt="Categorías">
-                <div class="card-body">
-                    <h5 class="card-title">Agregar Categoría / Subcategoría</h5>
-                    <a href="#" class="btn btn-outline-primary w-100">
-                        Ir a categorías
-                    </a>
-                </div>
-            </div>
-        </div>
+
         <div class="col-lg-4 col-md-6">
             <div class="card h-100 shadow-sm card-borde-gris">
                 <img src="https://placehold.co/400x200?text=Enfrentamientos&font=roboto" class="card-img-top" alt="Enfrentamientos">
                 <div class="card-body">
-                    <h5 class="card-title">Agregar Enfrentamiento</h5>
+                    <h5 class="card-title">Enfrentamiento</h5>
                     <a href="<?= BASE_URL?>panelControl/enfrentamientos/index" class="btn btn-outline-primary w-100">
                         Ir a enfrentamientos
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nuevo: Administrador de grupos -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 shadow-sm card-borde-gris">
-                <img src="https://placehold.co/400x200?text=Grupos&font=roboto" class="card-img-top" alt="Grupos">
-                <div class="card-body">
-                    <h5 class="card-title">Administrador de grupos</h5>
-                    <a href="<?= BASE_URL?>panelControl/grupos/index" class="btn btn-outline-primary w-100">
-                        Ir a grupos
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 shadow-sm card-borde-gris">
-                <img src="https://placehold.co/400x200?text=Resultados&font=roboto" class="card-img-top" alt="Resultados">
-                <div class="card-body">
-                    <h5 class="card-title">Definir Resultados</h5>
-                    <a href="<?=BASE_URL?>panelControl/resultados/index" class="btn btn-outline-primary w-100">
-                        Ir a resultados
                     </a>
                 </div>
             </div>

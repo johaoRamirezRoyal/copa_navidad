@@ -37,6 +37,44 @@ class PartidosModel extends conexion
         }
     }
 
+    public static function obtenerPartidosFiltradosModel($datos)
+    {
+        $tabla = 'partidos';
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT
+                        p.*,
+                        d.nombre AS disciplina_nom,
+                        c.nombre AS categoria_nom,
+                        s.nombre AS subcategoria_nom,
+                        e1.nombre AS equipo1_nom,
+                        e2.nombre AS equipo2_nom,
+                        cp1.nombre AS colegio_equipo1_nom, 
+                        cp2.nombre AS colegio_equipo2_nom
+                    FROM $tabla p
+                    LEFT JOIN disciplinas d ON p.disciplina = d.id
+                    LEFT JOIN categorias c ON p.categoria = c.id
+                    LEFT JOIN subcategoria s ON p.subcategoria = s.id
+                    LEFT JOIN equipos e1 ON e1.id = p.equipo1
+                    LEFT JOIN equipos e2 ON e2.id = p.equipo2
+                    LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
+                    LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
+                    WHERE p.equipo1 IS NOT NULL AND p.equipo2 IS NOT NULL
+
+                    " . $datos['categoria'] . $datos['subcategoria'] . $datos['deporte'] . "
+
+                    ORDER BY p.fecha DESC;";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print 'Error al consultar los enfrentamientos: ' . $e->getMessage();
+        }
+    }
+
     public static function obtenerEnfrentamientoID($id)
     {
         $tabla = "partidos";
@@ -507,6 +545,46 @@ class PartidosModel extends conexion
             }
         } catch (PDOException $e) {
             print "Error al obtener el próximo enfrentamiento: " . $e;
+        }
+    }
+
+    public static function agregarDatosPartidoJugadorModel($datos)
+    {
+        $tabla = "partido_jugador";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "INSERT INTO $tabla (id_partido, id_jugador, amonestacion_leve, amonestacion_grave, punto_conseguido) 
+                    VALUES (:id_enfrentamiento, :id_jugador, :amonestacion_leve, :amonestacion_grave, :punto_conseguido)";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":id_enfrentamiento", $datos['id_enfrentamiento']);
+            $preparado->bindParam(":id_jugador", $datos['id_jugador']);
+            $preparado->bindParam(":amonestacion_leve", $datos['amonestacion_leve']);
+            $preparado->bindParam(":amonestacion_grave", $datos['amonestacion_grave']);
+            $preparado->bindParam(":punto_conseguido", $datos['punto_conseguido']);
+            if ($preparado->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al agregar el registro del jugador en el partido: " . $e;
+        }
+    }
+
+    public static function verDatosPartidoJugadorModel($id_enfrentamiento, $id_jugador)
+    {
+        $tabla = "partido_jugador";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT * FROM $tabla WHERE id_partido = $id_enfrentamiento AND id_jugador = $id_jugador;";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al obtener los datos del jugador en el partido: " . $e;
         }
     }
 }

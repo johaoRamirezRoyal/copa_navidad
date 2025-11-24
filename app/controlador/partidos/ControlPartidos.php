@@ -20,6 +20,27 @@ class ControlPartidos
         return $mostrar;
     }
 
+    public function obtenerPartidosFiltradosControl($datos)
+    {
+        $categoria = (isset($_POST['categoria'])) ? ' AND p.categoria = ' . $_POST['categoria'] : '';
+        $subcategoria = (isset($_POST['subcategoria'])) ? ' AND p.subcategoria = ' . $_POST['subcategoria'] : '';
+        $deporte = (isset($_POST['deporte'])) ? ' AND p.disciplina = ' . $_POST['deporte'] : '';
+
+        if ($categoria == null && $subcategoria == null && $deporte == null) {
+            $mostrar = PartidosModel::obtenerTodosLosPartidosModel();
+            return $mostrar;
+        }
+
+        $datos = array(
+            'categoria' => $categoria,
+            'subcategoria' => $subcategoria,
+            'deporte' => $deporte
+        );
+
+        $mostrar = PartidosModel::obtenerPartidosFiltradosModel($datos);
+        return $mostrar;
+    }
+
     public function obtenerEnfrentamientoIDControl($id)
     {
         $mostrar = PartidosModel::obtenerEnfrentamientoID($id);
@@ -131,6 +152,28 @@ class ControlPartidos
                 'id_deporte' => $_POST['id_deporte']
             );
 
+            foreach ($_POST['id_jugador'] as $i => $jugador_id) {
+
+                $leve  = $_POST['amonestacion_leve'][$i];
+                $grave = $_POST['amonestacion_grave'][$i];
+                $punto = $_POST['punto_conseguido'][$i];
+
+                // Verificar si tiene datos para guardar
+                if ($leve == "" && $grave == "" && $punto == "") {
+                    continue; // no guardar nada
+                }
+
+                $datos_jugador = array(
+                    'id_enfrentamiento' => $_POST['id_enfrentamiento'],
+                    'id_jugador' => $jugador_id,
+                    'amonestacion_leve' => $leve,
+                    'amonestacion_grave' => $grave,
+                    'punto_conseguido' => $punto
+                );
+                // Si llega aquí es porque sí tiene algo que registrar
+                $agregarDatosJugador = PartidosModel::agregarDatosPartidoJugadorModel($datos_jugador);
+            }
+            
             $busqueda = PartidosModel::obtenerResultadoDeEnfrentamiento($datos['id_enfrentamiento']);
 
             $agregar_resultado = false;
@@ -150,7 +193,6 @@ class ControlPartidos
             } else {
                 $agregar_resultado = PartidosModel::definirResultadoDeEnfrentamientoModel($datos);
             }
-
             if ($agregar_resultado) {
                 echo '<div class="alert alert-green" role="alert">
                             <strong>Exito!</strong> Se ha definido el resultado con éxito.
@@ -163,7 +205,7 @@ class ControlPartidos
                                     alert.classList.remove("show");
                                     alert.classList.add("fade");
                                 }
-                                setTimeout(() => window.location.replace("index?enfrentamiento='. $datos['id_enfrentamiento'] .'"), 200);
+                                setTimeout(() => window.location.replace("index?enfrentamiento=' . $datos['id_enfrentamiento'] . '"), 200);
                             }, 2050)
                         </script>';
             } else {
@@ -182,12 +224,14 @@ class ControlPartidos
         return $datos;
     }
 
-    public function obtenerInformacionResultadoEnfrentamientos(){
+    public function obtenerInformacionResultadoEnfrentamientos()
+    {
         $datos = PartidosModel::obtenerInformacionResultadoEnfrentamientos();
         return $datos;
     }
 
-    public function obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha){
+    public function obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha)
+    {
         $datos = PartidosModel::obtenerInformacionResultadoEnfrentamientosEnBaseAlDia($fecha);
         return $datos;
     }

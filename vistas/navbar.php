@@ -13,7 +13,8 @@
         strpos($uri, 'blog') !== false ||
         strpos($uri, 'portfolio') !== false ||
         strpos($uri, 'panelControl/jugadores/index') !== false ||
-        strpos($uri, 'teams/table') !== false
+        strpos($uri, 'teams/table') !== false ||
+        strpos($uri, 'panelControl/resultados/index') !== false
     );
 ?>
 
