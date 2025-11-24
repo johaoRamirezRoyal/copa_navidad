@@ -170,10 +170,33 @@ class ControlPartidos
                     'amonestacion_grave' => $grave,
                     'punto_conseguido' => $punto
                 );
-                // Si llega aquí es porque sí tiene algo que registrar
-                $agregarDatosJugador = PartidosModel::agregarDatosPartidoJugadorModel($datos_jugador);
+
+                $buscarDatosJugador = PartidosModel::verDatosPartidoJugadorModel($datos_jugador['id_enfrentamiento'], $datos_jugador['id_jugador']);
+
+                if ($buscarDatosJugador) {
+
+                    $eliminarDatosJugador = PartidosModel::eliminarDatosPartidoJugadorModel($buscarDatosJugador['id']);
+
+                    if ($eliminarDatosJugador) {
+
+                        $agregarDatosJugador = PartidosModel::agregarDatosPartidoJugadorModel($datos_jugador);
+
+                    } else {
+
+                        echo
+                        '<div class="alert alert-red alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> Ya existe un registro del jugador y no se pudo actualizar.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+                        return;
+                    }
+                } else {
+
+                    // Si llega aquí es porque sí tiene algo que registrar
+                    $agregarDatosJugador = PartidosModel::agregarDatosPartidoJugadorModel($datos_jugador);
+                }
             }
-            
+
             $busqueda = PartidosModel::obtenerResultadoDeEnfrentamiento($datos['id_enfrentamiento']);
 
             $agregar_resultado = false;
@@ -254,13 +277,15 @@ class ControlPartidos
         return $datos;
     }
 
-    public function verDatosPartidoJugadorGeneralControl($id_jugador){
+    public function verDatosPartidoJugadorGeneralControl($id_jugador)
+    {
         $datos = PartidosModel::verDatosPartidoJugadorGeneralModel($id_jugador);
         return $datos;
     }
 
-    public function verDatosPartidoJugadorControl($id_jugador, $id_enfrentamiento){
-        $datos = PartidosModel::verDatosPartidoJugadorModel($id_jugador, $id_enfrentamiento);
+    public function verDatosPartidoJugadorControl($id_enfrentamiento, $id_jugador)
+    {
+        $datos = PartidosModel::verDatosPartidoJugadorModel($id_enfrentamiento, $id_jugador);
         return $datos;
     }
 }

@@ -119,7 +119,9 @@ $jugadores_equipo2 = $instancia_jugadores->obtenerJugadoresPorEquipoControl($dat
 
                 <div class="row mb-3 align-items-center">
                     <div class="col-lg-4 text-start">
-                        <?php foreach ($jugadores_equipo1 as $jugador): ?>
+                        <?php foreach ($jugadores_equipo1 as $jugador): 
+                            $amonestaciones_puntos = $instancia_partidos->verDatosPartidoJugadorControl($id_enfrentamiento, $jugador['id']);
+                            ?>
                         <div class="card shadow-sm border-0 mb-1">
                             <div class="card-body">
                                 
@@ -134,17 +136,17 @@ $jugadores_equipo2 = $instancia_jugadores->obtenerJugadoresPorEquipoControl($dat
                                 <div class="row g-2">
                                     <div class="col-4">
                                         <label class="form-label text-warning">Amonestación leve</label>
-                                        <input name="amonestacion_leve[]" type="number" class="form-control" placeholder="0" min="0">
+                                        <input name="amonestacion_leve[]" type="number" class="form-control" placeholder="0" min="0" value = <?= ($amonestaciones_puntos != null) ? $amonestaciones_puntos['amonestacion_leve'] : 0 ?>>
                                     </div>
 
                                     <div class="col-4">
                                         <label class="form-label text-danger">Amonestación grave</label>
-                                        <input name="amonestacion_grave[]" type="number" class="form-control" placeholder="0" min="0">
+                                        <input name="amonestacion_grave[]" type="number" class="form-control" placeholder="0" min="0" value = <?= ($amonestaciones_puntos != null) ? $amonestaciones_puntos['amonestacion_grave'] : 0 ?>>
                                     </div>
 
                                     <div class="col-4">
                                         <label class="form-label text-success">Punto conseguido</label>
-                                        <input name="punto_conseguido[]" type="number" class="form-control" placeholder="0" min="0">
+                                        <input name="punto_conseguido[]" type="number" class="form-control" placeholder="0" min="0" value = <?= ($amonestaciones_puntos != null) ? $amonestaciones_puntos['punto_conseguido'] : 0 ?>>
                                     </div>
                                 </div>
 
@@ -158,7 +160,9 @@ $jugadores_equipo2 = $instancia_jugadores->obtenerJugadoresPorEquipoControl($dat
                     </div>
 
                     <div class="col-lg-4 text-end">
-                    <?php foreach ($jugadores_equipo2 as $jugador): ?>
+                    <?php foreach ($jugadores_equipo2 as $jugador):
+                        $amonestaciones_puntos = $instancia_partidos->verDatosPartidoJugadorControl($id_enfrentamiento, $jugador['id']);
+                        ?>
                        <div class="card shadow-sm border-0 mb-1">
                             <div class="card-body">
                                 <input type="hidden" name="id_jugador[]" value="<?= $jugador['id'] ?>">
@@ -172,16 +176,16 @@ $jugadores_equipo2 = $instancia_jugadores->obtenerJugadoresPorEquipoControl($dat
                                 <div class="row g-2">
                                     <div class="col-4">
                                         <label class="form-label text-warning">Amonestación leve</label>
-                                        <input name="amonestacion_leve[]" type="number" class="form-control" placeholder="0" min="0">
+                                        <input name="amonestacion_leve[]" type="number" class="form-control" placeholder="0" min="0" value = <?= ($amonestaciones_puntos != null) ? $amonestaciones_puntos['amonestacion_leve'] : 0 ?> >
                                     </div>
 
                                     <div class="col-4">
                                         <label class="form-label text-danger">Amonestación grave</label>
-                                        <input name="amonestacion_grave[]" type="number" class="form-control" placeholder="0" min="0">
+                                        <input name="amonestacion_grave[]" type="number" class="form-control" placeholder="0" min="0" value = <?= ($amonestaciones_puntos != null) ? $amonestaciones_puntos['amonestacion_grave'] : 0 ?>>
                                     </div>
                                     <div class="col-4">
                                         <label class="form-label text-success">Punto conseguido</label>
-                                        <input name="punto_conseguido[]" type="number" class="form-control" placeholder="0" min="0">
+                                        <input name="punto_conseguido[]" type="number" class="form-control" placeholder="0" min="0" value = <?= ($amonestaciones_puntos != null) ? $amonestaciones_puntos['punto_conseguido'] : 0 ?>>
                                     </div>
                                 </div>
                             </div>
