@@ -575,9 +575,11 @@ class PartidosModel extends conexion
     {
         $tabla = "partido_jugador";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "SELECT * FROM $tabla WHERE id_partido = $id_enfrentamiento AND id_jugador = $id_jugador;";
+        $cmdsql = "SELECT * FROM $tabla WHERE id_partido = :id_partido AND id_jugador = :id_jugador";
         try {
             $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(':id_partido', $id_enfrentamiento, PDO::PARAM_INT);
+            $preparado->bindParam(':id_jugador', $id_jugador, PDO::PARAM_INT);
             if ($preparado->execute()) {
                 return $preparado->fetch(PDO::FETCH_ASSOC);
             } else {
@@ -592,11 +594,12 @@ class PartidosModel extends conexion
     {
         $tabla = "partido_jugador";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "SELECT * FROM $tabla WHERE id_jugador = $id_jugador";
+        $cmdsql = "SELECT * FROM $tabla WHERE id_jugador = :id_jugador";
         try {
             $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(':id_jugador', $id_jugador, PDO::PARAM_INT);
             if ($preparado->execute()) {
-                return $preparado->fetch(PDO::FETCH_ASSOC);
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
             } else {
                 return false;
             }

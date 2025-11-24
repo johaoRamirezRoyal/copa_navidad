@@ -40,6 +40,8 @@ if (!$info_equipo) {
 
 $ultimos_partidos = $instancia_partidos->obtenerUltimoPartidoControl($id_equipo);
 $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo);
+$resutado_jugadores = $instancia_partidos->verDatosPartidoJugadorGeneralControl($id_jugador);
+var_dump($resutado_jugadores);
 
 ?>
 
@@ -101,6 +103,25 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
         .table thead {
             background: linear-gradient(90deg, var(--brand), #8c0000);
             color: #fff;
+        }
+        /* Colores suaves por columna (sobrescriben el fondo del thead para celdas específicas) */
+        .table thead th.th-amber,
+        .table thead th.th-red,
+        .table thead th.th-green {
+            background: none;
+            color: #111;
+        }
+        .table thead th.th-amber {
+            background: linear-gradient(135deg, #fff9db 0%, #fff3b8 100%);
+            color: #6b4f00;
+        }
+        .table thead th.th-red {
+            background: linear-gradient(135deg, #ffecec 0%, #ffd7d7 100%);
+            color: #6a0000;
+        }
+        .table thead th.th-green {
+            background: linear-gradient(135deg, #eaffef 0%, #c8ffd7 100%);
+            color: #0d4f16;
         }
         .table tbody tr {
             transition: transform .35s ease, box-shadow .35s ease;
@@ -168,6 +189,20 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
             .team-logo { width:48px; height:48px; }
             .score { font-size: 1.8rem; }
         }
+
+    /* Player card custom styles */
+    .player-card {
+        min-height: 140px;
+        transition: transform .18s, box-shadow .18s;
+        box-shadow: 0 8px 32px rgba(20,23,168,0.13), 0 1.5px 6px rgba(255, 255, 255, 0.09);
+    }
+    .player-card:hover {
+        transform: translateY(-4px) scale(1.025);
+        box-shadow: 0 16px 40px rgba(20,23,168,0.18), 0 3px 12px rgba(255, 255, 255, 0.13);
+    }
+    .stat-badge i {
+        font-size: 1.1em;
+    }
     </style>
 </head>
 <body>
@@ -272,7 +307,7 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
         </div>
 
         <!-- Card de Integrantes del Equipo Mejorada -->
-        <div class="card mb-4 reveal shadow-sm">
+        <div class="card reveal mb-4">
             <div class="card-header text-center d-flex align-items-center justify-content-center gap-2">
                 <i class="bi bi-people-fill fs-4 me-2"></i>
                 <span>Integrantes del Equipo</span>
@@ -293,23 +328,41 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                     <i class="bi bi-person-lines-fill me-1"></i>
                     Número de integrantes: <?php echo $num_integrantes; ?>
                 </p>
-                <div class="row g-2">
-                    <?php foreach ($integrantes as $jugador): ?>
-                        <div class="col-12 col-md-6">
-                            <div class="d-flex align-items-center p-2 rounded bg-light shadow-sm">
-                                <img src="<?php echo avatar_url($jugador["nombre"]); ?>" alt="Avatar" class="me-3 rounded-circle border" width="48" height="48">
-                                <div>
-                                    <span class="fw-semibold"><?php echo htmlspecialchars($jugador["nombre"]); ?></span>
-                                    <span
-                                        class="badge bg-primary-subtle text-dark ms-2"
-                                        data-bs-toggle="tooltip"
-                                        title="Edad: <?php echo htmlspecialchars($jugador["edad"]); ?>">
-                                        Edad: <?php echo htmlspecialchars($jugador["edad"]); ?>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th></th>
+                                <th>Nombre</th>
+                                <th>Edad</th>
+                                <th class="text-center th-amber">Amonestacion Leve</th>
+                                <th class="text-center th-red">Amonestacion Grave</th>
+                                <th class="text-center th-green">Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($integrantes as $jugador): 
+                                // Usa 'id_jugador' si existe, si no, intenta con 'id'
+                                $id_jugador = $jugador['id_jugador'] ?? $jugador['id'] ?? null;
+                                if ($id_jugador === null) {
+                                    continue;
+                                }
+                                $datos_partido_jugador = $instancia_partidos->verDatosPartidoJugadorGeneralControl($id_jugador);
+                                $ultimo_dato = !empty($datos_partido_jugador) ? end($datos_partido_jugador) : null;
+                            ?>
+                            <tr class="reveal">
+                                <td style="width:72px;">
+                                    <img src="<?php echo avatar_url($jugador['nombre']); ?>" alt="Avatar" class="rounded-circle border border-2" width="56" height="56">
+                                </td>
+                                <td class="fw-semibold"><?php echo htmlspecialchars($jugador['nombre']); ?></td>
+                                <td><?php echo htmlspecialchars($jugador['edad']); ?></td>
+                                <td class="text-center th-amber"><?php echo (int)($ultimo_dato['amonestacion_leve'] ?? 0); ?></td>
+                                <td class="text-center th-red"><?php echo (int)($ultimo_dato['amonestacion_grave'] ?? 0); ?></td>
+                                <td class="text-center th-green"><?php echo (int)($ultimo_dato['punto_conseguido'] ?? 0); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
