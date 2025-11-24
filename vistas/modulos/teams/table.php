@@ -40,8 +40,6 @@ if (!$info_equipo) {
 
 $ultimos_partidos = $instancia_partidos->obtenerUltimoPartidoControl($id_equipo);
 $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo);
-$resutado_jugadores = $instancia_partidos->verDatosPartidoJugadorGeneralControl($id_jugador);
-var_dump($resutado_jugadores);
 
 ?>
 
