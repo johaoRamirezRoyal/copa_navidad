@@ -253,4 +253,14 @@ class ControlPartidos
         $datos = PartidosModel::obtenerTablaDePosiciones($grupo);
         return $datos;
     }
+
+    public function verDatosPartidoJugadorGeneralControl($id_jugador){
+        $datos = PartidosModel::verDatosPartidoJugadorGeneralModel($id_jugador);
+        return $datos;
+    }
+
+    public function verDatosPartidoJugadorControl($id_jugador, $id_enfrentamiento){
+        $datos = PartidosModel::verDatosPartidoJugadorModel($id_jugador, $id_enfrentamiento);
+        return $datos;
+    }
 }

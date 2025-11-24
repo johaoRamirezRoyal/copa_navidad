@@ -587,4 +587,21 @@ class PartidosModel extends conexion
             print "Error al obtener los datos del jugador en el partido: " . $e;
         }
     }
+
+    public static function verDatosPartidoJugadorGeneralModel($id_jugador)
+    {
+        $tabla = "partido_jugador";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "SELECT * FROM $tabla WHERE id_jugador = $id_jugador";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetch(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al obtener los datos del jugador en el partido: " . $e;
+        }
+    }
 }
