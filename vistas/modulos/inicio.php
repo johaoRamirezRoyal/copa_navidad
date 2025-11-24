@@ -13,6 +13,7 @@ $instancia_colegios = ControlColegios::singleton_colegios();
 
 $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
 $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
+
 ?>
 
 <div class="container-fluid">

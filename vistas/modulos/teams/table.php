@@ -12,11 +12,13 @@ include_once CONTROL_PATH . 'equipos' . DS . 'ControlEquipos.php';
 include_once CONTROL_PATH . 'jugadores' . DS . 'ControlJugadores.php';
 include_once CONTROL_PATH . 'partidos' . DS . 'ControlPartidos.php';
 include_once CONTROL_PATH . 'grupos' . DS . 'ControlGrupos.php';
+include_once CONTROL_PATH . 'deportes' . DS . 'ControlDeportes.php';
 
 $instancia_equipos = ControlEquipos::singleton_equipos();
 $instancia_jugadores = ControlJugadores::singleton_jugadores();
 $instancia_partidos = ControlPartidos::singleton_partidos();
 $instancia_grupos = ControlGrupos::singleton_grupos();
+$instancia_deportes = ControlDeportes::singleton_deportes();
 
 
 if (isset($_GET['id_equipo'])) {
@@ -175,10 +177,34 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
     
 
     <!-- Carrusel de Escudos -->
+    <?php
+        // texto mostrado: disciplina del equipo (fallback al nombre del equipo)
+        $disciplina_text = !empty($info_equipo['disciplina']) ? htmlspecialchars($info_equipo['disciplina']) : htmlspecialchars($info_equipo['nombre_equipo']);
+
+        // imagen por defecto
+        $img_src = 'https://www.shutterstock.com/image-photo/textured-soccer-game-field-ball-600nw-2511518607.jpg';
+
+        // buscar deporte y usar imagen2 si existe (búsqueda simple)
+        $deportes_all = $instancia_deportes->obtenerTodosLosDeportesControl();
+        if (is_array($deportes_all) && !empty($info_equipo['id_deporte'])) {
+            foreach ($deportes_all as $d) {
+                if ((!empty($d['id']) && (string)$d['id'] === (string)$info_equipo['id_deporte']) ||
+                    (!empty($d['id_deporte']) && (string)$d['id_deporte'] === (string)$info_equipo['id_deporte'])) {
+                    if (!empty($d['imagen2'])) {
+                        $img_src = PUBLIC_PATH . 'img/disiplinas/' . $d['imagen2'];
+                    }
+                    break;
+                }
+            }
+        }
+    ?>
     <div id="carouselExampleFade" class="carousel slide carousel-fade mb-4 reveal" data-bs-ride="carousel" data-bs-interval="3000">
       <div class="carousel-inner rounded">
         <div class="carousel-item active">
-          <img src="https://www.shutterstock.com/image-photo/textured-soccer-game-field-ball-600nw-2511518607.jpg" class="d-block w-100" alt="Imagen equipo">
+          <img src="<?php echo $img_src; ?>" class="d-block w-100" alt="Imagen equipo">
+          <div class="carousel-caption d-none d-md-block">
+            <!-- <h5 class="fw-bold"><?php echo $disciplina_text; ?></h5> -->
+          </div>
         </div>
       </div>
     </div>
@@ -395,59 +421,65 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                         foreach ($tabla as $idx => $fila) {
                             $delay = ($idx * 80);
 
-                            echo "<tr style='transition-delay: {$delay}ms' class='reveal table-row'>";
+                            // Comparación segura e insensible a mayúsculas
+                            $teamName = trim((string)$info_equipo['nombre_equipo']);
+                            $filaName = trim((string)$fila['nombre']);
+                            $isHighlight = mb_strtolower($filaName) === mb_strtolower($teamName);
+
+                            $rowClasses = $isHighlight ? 'reveal table-row highlight-row' : 'reveal table-row';
+                            echo "<tr style='transition-delay: {$delay}ms' class='{$rowClasses}'>";
 
                             if($deporte == "basket"){
                                 echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
-                                echo "<td class='text-start'>{$fila['nombre']}</td>";
-                                echo "<td>{$fila['PJ']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
-                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                                echo "<td class='text-start'>".htmlspecialchars($fila['nombre'])."</td>";
+                                echo "<td>".htmlspecialchars($fila['PJ'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_GANADOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_PERDIDOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_FAVOR'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_CONTRA'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['DIFERENCIA_PUNTOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS'])."</td>";
                             }else if($deporte == "futbol"){
                                 echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
-                                echo "<td class='text-start'>{$fila['nombre']}</td>";
-                                echo "<td>{$fila['PJ']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_EMPATADOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
-                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                                echo "<td class='text-start'>".htmlspecialchars($fila['nombre'])."</td>";
+                                echo "<td>".htmlspecialchars($fila['PJ'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_GANADOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_PERDIDOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_EMPATADOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_FAVOR'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_CONTRA'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['DIFERENCIA_PUNTOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS'])."</td>";
                             }else if($deporte == "softball"){
                                 echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
-                                echo "<td class='text-start'>{$fila['nombre']}</td>";
-                                echo "<td>{$fila['PJ']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
-                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                                echo "<td class='text-start'>".htmlspecialchars($fila['nombre'])."</td>";
+                                echo "<td>".htmlspecialchars($fila['PJ'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_GANADOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_PERDIDOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_FAVOR'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_CONTRA'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['DIFERENCIA_PUNTOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS'])."</td>";
                             }else if($deporte == "volley"){
                                 echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
-                                echo "<td class='text-start'>{$fila['nombre']}</td>";
-                                echo "<td>{$fila['PJ']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
-                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                                echo "<td class='text-start'>".htmlspecialchars($fila['nombre'])."</td>";
+                                echo "<td>".htmlspecialchars($fila['PJ'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_GANADOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_PERDIDOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_FAVOR'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_CONTRA'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['DIFERENCIA_PUNTOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS'])."</td>";
                             }else{
                                 echo "<td><span class='badge badge-pos'>{$posicion}</span></td>";
-                                echo "<td class='text-start'>{$fila['nombre']}</td>";
-                                echo "<td>{$fila['PJ']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_GANADOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PARTIDOS_PERDIDOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_FAVOR']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS_CONTRA']}</td>";
-                                echo "<td class='fw-bold'>{$fila['DIFERENCIA_PUNTOS']}</td>";
-                                echo "<td class='fw-bold'>{$fila['PUNTOS']}</td>";
+                                echo "<td class='text-start'>".htmlspecialchars($fila['nombre'])."</td>";
+                                echo "<td>".htmlspecialchars($fila['PJ'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_GANADOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PARTIDOS_PERDIDOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_FAVOR'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS_CONTRA'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['DIFERENCIA_PUNTOS'])."</td>";
+                                echo "<td class='fw-bold'>".htmlspecialchars($fila['PUNTOS'])."</td>";
                             }
 
                             echo "</tr>";
