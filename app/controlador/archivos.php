@@ -42,22 +42,26 @@ class ControlArchivos
     function guardarArchivo($archivo, $nombre_directorio = "")
     {
         $nom_arch     = $archivo['name'];
-        $ext_original = pathinfo($nom_arch, PATHINFO_EXTENSION);
-        $ext_arch     = pathinfo($nom_arch, PATHINFO_EXTENSION);
-        $ext_arch     = ($ext_arch == 'JPG') ? 'jpg' : $ext_arch;
+        $ext_arch     = strtolower(pathinfo($nom_arch, PATHINFO_EXTENSION));
         $ext_arch     = ($ext_arch == 'jpg') ? 'jpeg' : $ext_arch;
+
         $fecha_arch   = date('YmdHis');
         $nombre_archivo = strtolower(md5(rand(5, 9999) . '_' . $fecha_arch)) . '.' . $ext_arch;
         $carp_destino = PUBLIC_PATH_ARCH . 'img' . DS . $nombre_directorio . DS;
+
+        // Crear carpeta si no existe
+        if (!file_exists($carp_destino)) {
+            mkdir($carp_destino, 0777, true);
+        }
+
         $ruta_img     = $carp_destino . $nombre_archivo;
 
         if ($ext_arch == 'png' || $ext_arch == 'jpeg') {
-            $compressed = $this->compressImage($archivo['tmp_name'], $ruta_img, 50);
+            $this->compressImage($archivo['tmp_name'], $ruta_img, 50);
         } else {
-            if (is_uploaded_file($archivo['tmp_name'])) {
-                move_uploaded_file($archivo['tmp_name'], $ruta_img);
-            }
+            move_uploaded_file($archivo['tmp_name'], $ruta_img);
         }
+
         return $nombre_archivo;
     }
 
@@ -85,4 +89,6 @@ class ControlArchivos
             ); // El archivo no existe
         }
     }
+
+    function transformarImagenAWebp() {}
 }
