@@ -5,7 +5,7 @@ class imagenesEvento extends conexion {
     public static function obtenerImagenesDeporteModel($deporte){
         $tabla = "imagen_evento";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "SELECT * FROM $tabla WHERE id_deporte = :deporte ORDER BY id_imagen_evento DESC";
+        $cmdsql = "SELECT * FROM $tabla WHERE id_deporte = :deporte ORDER BY id_imagen_evento DESC LIMIT 10";
         try{
             $preparado = $cnx->preparar($cmdsql);
             $preparado->bindParam(":deporte", $deporte, PDO::PARAM_INT);
