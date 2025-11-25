@@ -67,6 +67,17 @@ include_once VISTA_PATH . 'navbar.php';
                 </div>
             </div>
         </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-sm card-borde-gris">
+                <img src="https://placehold.co/400x200?text=Imagenes&font=roboto" class="card-img-top" alt="Imagenes">
+                <div class="card-body">
+                    <h5 class="card-title">Imágenes</h5>
+                    <a href="<?= BASE_URL?>panelControl/imagenesEvento/index" class="btn btn-outline-primary w-100">
+                        Ir a imágenes
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <?php
