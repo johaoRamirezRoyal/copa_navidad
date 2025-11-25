@@ -1,6 +1,18 @@
 <?php
 include_once VISTA_PATH . 'header.php';
 include_once VISTA_PATH . 'navbar.php';
+
+include_once CONTROL_PATH . 'imagenesEventos' . DS . 'ControlImagenesEvento.php';
+$instancia_imagenes = ControlImagenesEvento::singleton_imagenes_evento();
+
+// Capturar el parámetro id_deporte de la URL
+$id_deporte = isset($_GET['id_deporte']) ? intval($_GET['id_deporte']) : 0;
+
+// Pasar el id_deporte a la función
+$imagenes = $instancia_imagenes->obtenerImagenesDeporteControl($id_deporte);
+
+// Define the base path for images
+$imagenes_base_path = PUBLIC_PATH . "img/imagenes_eventos/";
 ?>
 
 <style>
@@ -292,6 +304,7 @@ include_once VISTA_PATH . 'navbar.php';
     .styled-title:hover .title-text {
         font-size: 2.7rem;
     }
+
 </style>
 
 <body>
@@ -303,31 +316,9 @@ include_once VISTA_PATH . 'navbar.php';
         </div>
         <div class="galeria">
             <?php
-            $imagenes = [
-                ['url'=>'https://images.pexels.com/photos/34950/pexels-photo.jpg', 'alto'=>260],
-                ['url'=>'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg', 'alto'=>340],
-                ['url'=>'https://images.pexels.com/photos/210186/pexels-photo-210186.jpeg', 'alto'=>280],
-                ['url'=>'https://images.pexels.com/photos/417142/pexels-photo-417142.jpeg', 'alto'=>250],
-                ['url'=>'https://images.pexels.com/photos/355465/pexels-photo-355465.jpeg', 'alto'=>270],
-                ['url'=>'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg', 'alto'=>240],
-                ['url'=>'https://images.pexels.com/photos/417106/pexels-photo-417106.jpeg', 'alto'=>290],
-                ['url'=>'https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg', 'alto'=>260],
-                ['url'=>'https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg', 'alto'=>320],
-                ['url'=>'https://images.pexels.com/photos/325807/pexels-photo-325807.jpeg', 'alto'=>270],
-                ['url'=>'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg', 'alto'=>250],
-                ['url'=>'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg', 'alto'=>300],
-                ['url'=>'https://images.pexels.com/photos/733857/pexels-photo-733857.jpeg', 'alto'=>240],
-                ['url'=>'https://images.pexels.com/photos/1022923/pexels-photo-1022923.jpeg', 'alto'=>290],
-                ['url'=>'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg', 'alto'=>280],
-                ['url'=>'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg', 'alto'=>210],
-                ['url'=>'https://images.pexels.com/photos/1470770/pexels-photo-1470770.jpeg', 'alto'=>300],
-                ['url'=>'https://images.pexels.com/photos/1438761/pexels-photo-1438761.jpeg', 'alto'=>220],
-                ['url'=>'https://images.pexels.com/photos/1707828/pexels-photo-1707828.jpeg', 'alto'=>250],
-                ['url'=>'https://images.pexels.com/photos/1809644/pexels-photo-1809644.jpeg', 'alto'=>300],
-            ];
-            // $imagenes = array_merge($imagenes, $imagenes, $imagenes);
             foreach ($imagenes as $img) {
-                echo "<div class='card'><img src='{$img['url']}' alt='Imagen' data-src='{$img['url']}' style='height:{$img['alto']}px;'></div>";
+                $img_url = $imagenes_base_path . $img['url_image'];
+                echo "<div class='card'><img src='{$img_url}' alt='Imagen' data-src='{$img_url}'></div>";
             }
             ?>
         </div>
@@ -339,58 +330,76 @@ include_once VISTA_PATH . 'navbar.php';
         <button class="lb-btn lb-next" id="lbNext" aria-label="Siguiente">&rarr;</button>
     </div>
 
-    <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const navbar = document.querySelector('.navbar');
-        const imgsEls = Array.from(document.querySelectorAll('.card img'));
-        const imgs = imgsEls.map(i => i.getAttribute('data-src'));
-        let currentIndex = -1;
+<script>
+    // ============================================
+    // GALERÍA LIGHTBOX - Variables Globales
+    // ============================================
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const navbar = document.querySelector('.navbar');
+    const imgsEls = Array.from(document.querySelectorAll('.card img'));
+    const imgs = imgsEls.map(i => i.getAttribute('data-src'));
+    let currentIndex = -1;
 
-        function openLightbox(index) {
-            currentIndex = (index + imgs.length) % imgs.length;
-            lightboxImg.src = imgs[currentIndex];
-            lightbox.classList.add('active');
-            lightbox.setAttribute('aria-hidden','false');
-            if (navbar) navbar.classList.add('navbar-hide');
-            // focus to enable keyboard navigation
-            lightbox.focus();
-        }
+    // ============================================
+    // Función: Abrir Lightbox
+    // ============================================
+    function openLightbox(index) {
+        currentIndex = (index + imgs.length) % imgs.length;
+        lightboxImg.src = imgs[currentIndex];
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden','false');
+        if (navbar) navbar.classList.add('navbar-hide');
+        lightbox.focus(); // Habilita navegación por teclado
+    }
 
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            lightbox.setAttribute('aria-hidden','true');
-            setTimeout(() => { lightboxImg.src = ''; }, 400);
-            if (navbar) navbar.classList.remove('navbar-hide');
-            currentIndex = -1;
-        }
+    // ============================================
+    // Función: Cerrar Lightbox
+    // ============================================
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden','true');
+        setTimeout(() => { lightboxImg.src = ''; }, 400);
+        if (navbar) navbar.classList.remove('navbar-hide');
+        currentIndex = -1;
+    }
 
-        imgsEls.forEach((imgEl, i) => {
-            imgEl.addEventListener('click', () => openLightbox(i));
-        });
+    // ============================================
+    // Event Listeners: Click en Imágenes
+    // ============================================
+    imgsEls.forEach((imgEl, i) => {
+        imgEl.addEventListener('click', () => openLightbox(i));
+    });
 
-        // Prev / Next buttons
-        document.getElementById('lbPrev').addEventListener('click', (e) => {
-            e.stopPropagation();
-            openLightbox(currentIndex - 1);
-        });
-        document.getElementById('lbNext').addEventListener('click', (e) => {
-            e.stopPropagation();
-            openLightbox(currentIndex + 1);
-        });
+    // ============================================
+    // Event Listeners: Botones Navegación (Prev/Next)
+    // ============================================
+    document.getElementById('lbPrev').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLightbox(currentIndex - 1);
+    });
 
-        // close when clicking on backdrop
-        lightbox.addEventListener('click', e => {
-            if (e.target === lightbox) closeLightbox();
-        });
+    document.getElementById('lbNext').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLightbox(currentIndex + 1);
+    });
 
-        // keyboard navigation
-        lightbox.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') openLightbox(currentIndex - 1);
-            if (e.key === 'ArrowRight') openLightbox(currentIndex + 1);
-        });
-    </script>
+    // ============================================
+    // Event Listener: Cerrar al hacer click en fondo
+    // ============================================
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    // ============================================
+    // Event Listener: Navegación por Teclado
+    // ============================================
+    lightbox.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') openLightbox(currentIndex - 1);
+        if (e.key === 'ArrowRight') openLightbox(currentIndex + 1);
+    });
+</script>
 </body>
 <?php
 include_once VISTA_PATH . 'footer.php';

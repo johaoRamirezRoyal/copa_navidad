@@ -64,7 +64,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
                                     <div class="content">
                                         <p class="heading"><?= $deporte['nombre'] ?></p>
                                         <p class="mt-2">
-                                          <a href="#" class="btn custom-animated-btn btn-sm">
+                                          <a href="<?= BASE_URL ?>teams/gallery?id_deporte=<?= $deporte['id'] ?>" class="btn custom-animated-btn btn-sm">
                                             <span>Ver más</span>
                                           </a>
                                         </p>
@@ -484,6 +484,7 @@ body {
 <!-- =================== SCRIPTS =================== -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
+  
 document.addEventListener('DOMContentLoaded', function() {
     AOS.init({ once: false, duration: 2000 });
 
