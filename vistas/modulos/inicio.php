@@ -484,7 +484,6 @@ body {
 <!-- =================== SCRIPTS =================== -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-  
 document.addEventListener('DOMContentLoaded', function() {
     AOS.init({ once: false, duration: 2000 });
 
@@ -492,18 +491,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const cardsRow = document.querySelector('.sports-cards-row');
     const speed = 2;
     let running = true;
+    let isMouseDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let rafId = null;
 
     function isMobile() {
         return window.innerWidth < 992;
     }
 
-    // Duplica los elementos para crear el efecto de bucle infinito
+    // Duplica los elementos para crear el efecto de bucle infinito (solo si no es móvil)
     if (cardsRow && !isMobile()) {
         cardsRow.innerHTML += cardsRow.innerHTML;
     }
 
-    function autoScroll() {
-        if (!scrollContainer || isMobile() || !running) return;
+    function tick() {
+        if (!scrollContainer || isMobile() || !running) {
+            rafId = null;
+            return;
+        }
 
         const scrollWidth = scrollContainer.scrollWidth / 2;
         if (scrollContainer.scrollLeft >= scrollWidth) {
@@ -511,25 +517,73 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             scrollContainer.scrollLeft += speed;
         }
-        requestAnimationFrame(autoScroll);
+
+        rafId = requestAnimationFrame(tick);
     }
 
-    scrollContainer.addEventListener('mouseenter', () => { running = false; });
-    scrollContainer.addEventListener('mouseleave', () => { 
-        if (!isMobile()) {
-            running = true; 
-            autoScroll();
+    function startAutoScroll() {
+        if (!scrollContainer || isMobile() || rafId) return;
+        running = true;
+        rafId = requestAnimationFrame(tick);
+    }
+
+    function stopAutoScroll() {
+        running = false;
+        if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
         }
+    }
+
+    // Inicia auto-scroll (una sola vez)
+    startAutoScroll();
+
+    // Movimiento con cursor (drag)
+    scrollContainer.addEventListener('mousedown', (e) => {
+        isMouseDown = true;
+        startX = e.pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+        scrollContainer.style.cursor = 'grabbing';
+        stopAutoScroll();
     });
 
-    window.addEventListener('resize', () => {
-        running = !isMobile();
-        if (running) autoScroll();
+    scrollContainer.addEventListener('mouseleave', () => {
+        isMouseDown = false;
+        scrollContainer.style.cursor = 'grab';
+        if (!isMobile()) startAutoScroll();
+    });
+
+    scrollContainer.addEventListener('mouseup', () => {
+        isMouseDown = false;
+        scrollContainer.style.cursor = 'grab';
+        if (!isMobile()) startAutoScroll();
+    });
+
+    scrollContainer.addEventListener('mousemove', (e) => {
+        if (!isMouseDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 1.5; // esto controla la "sensibilidad" del drag
+        scrollContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    scrollContainer.addEventListener('mouseenter', () => {
+        scrollContainer.style.cursor = 'grab';
+    });
+
+    // Detener scroll al pasar cursor sobre botones "Ver más"
+    const buttons = document.querySelectorAll('.custom-animated-btn');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', () => {
+            stopAutoScroll();
+        });
+
+        button.addEventListener('mouseleave', () => {
+            if (!isMobile()) startAutoScroll();
+        });
     });
 
     scrollContainer.style.scrollBehavior = 'auto';
-
-    autoScroll();
 });
 </script>
 
