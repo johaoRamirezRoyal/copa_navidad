@@ -1,13 +1,13 @@
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const loader = document.getElementById("loader");
-  if (!loader) return;
+  document.addEventListener("DOMContentLoaded", () => {
+    const loader = document.getElementById("loader");
+    if (!loader) return;
 
-  const hideLoader = () => loader.classList.add("hidden");
+    const hideLoader = () => loader.classList.add("hidden");
 
-  window.addEventListener("load", hideLoader);
-  setTimeout(hideLoader, 2000); // 🔒 Seguridad
-});
+    window.addEventListener("load", hideLoader);
+    setTimeout(hideLoader, 2000); // 🔒 Seguridad
+  });
 </script>
 
 <!-- Bootstrap core JavaScript-->

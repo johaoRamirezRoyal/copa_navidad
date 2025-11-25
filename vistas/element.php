@@ -1,4 +1,4 @@
-<?php
+
 <!-- From Uiverse.io by wilsondesouza -->
 <ul class="example-2">
   <li class="icon-content">

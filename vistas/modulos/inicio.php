@@ -112,28 +112,39 @@ include_once VISTA_PATH . 'script_and_final.php';
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
     .card-container {
-      width: 480px;    /* Antes: 380px */
-      height: 620px;   /* Antes: 500px */
+      width: 480px;
+      height: 620px;
       position: relative;
       transform: skewX(-10deg);
-      margin-bottom: 28px; /* Un poco más de margen */
+      margin-bottom: 28px;
+      border-radius: 18px; /* radio aplicado al contenedor */
+      overflow: visible;
     }
-    .card-container::before {
-      content: "";
-      z-index: -1;
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(#ffffff, #dddddd);
-      transform: scale(0.95);
-      filter: blur(20px);
-    }
+
     .card {
       width: 100%;
       height: 100%;
-      border-radius: inherit;
-      overflow: hidden;
+      border-radius: inherit; /* toma el radio del contenedor */
+      overflow: hidden;       /* asegura que la imagen no sobresalga */
       position: relative;
+      border: 3px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      background-clip: padding-box;
     }
+
+   /* Asegurar que la imagen respete el borde redondeado del card */
+   .card .img-content img,
+   .card-img-top {
+     border-radius: inherit !important;
+     display: block;
+     object-fit: cover;
+   }
+   /* Opcional: versión más sutil en pantallas pequeñas */
+   @media (max-width: 575.98px) {
+     .card {
+       border-width: 2px;
+     }
+   }
     .card .img-content {
       width: 100%;
       height: 100%;
@@ -155,6 +166,7 @@ include_once VISTA_PATH . 'script_and_final.php';
       width: 100%;
       height: 100%;
       display: flex;
+      border-radius: inherit;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -195,8 +207,8 @@ include_once VISTA_PATH . 'script_and_final.php';
     .card-img-top {
         height: 180px;
         object-fit: cover;
-        border-top-left-radius: .5rem;
-        border-top-right-radius: .5rem;
+        border-top-left-radius: .20rem;
+        border-top-right-radius: .20rem;
     }
     .logo-img {
         width: 220px;
@@ -313,7 +325,7 @@ include_once VISTA_PATH . 'script_and_final.php';
     .sports-cards-row {
       display: flex;
       flex-direction: row;
-      gap: 32px;
+      gap: 40px;
       min-width: 0;
       white-space: nowrap;
       justify-content: flex-start;
@@ -481,8 +493,10 @@ include_once VISTA_PATH . 'script_and_final.php';
     }
 </style>
 
-  <!-- =================== SCRIPTS =================== -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js">
+<!-- =================== SCRIPTS =================== -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<script>
   document.addEventListener('DOMContentLoaded', function() {
       AOS.init({ once: false, duration: 2000 });
 

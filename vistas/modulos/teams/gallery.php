@@ -311,9 +311,9 @@
 <body>
     <div class="container" style="margin-top: 100px; padding-top: 50px;">
         <div class="text-center">
-          <div class="styled-title">
-            <span class="title-text">Gallery</span>
-          </div>
+            <div class="styled-title">
+                <span class="title-text">Gallery</span>
+            </div>
         </div>
         <div class="galeria">
             <?php
