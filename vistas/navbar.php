@@ -9,6 +9,7 @@
         strpos($uri, 'panelControl/colegios/index') !== false ||
         strpos($uri, 'panelControl/enfrentamientos/index') !== false ||
         strpos($uri, 'panelControl/grupos/index') !== false ||
+        strpos($uri, 'teams/gallery') !== false ||
         strpos($uri, 'faq') !== false ||
         strpos($uri, 'blog') !== false ||
         strpos($uri, 'portfolio') !== false ||

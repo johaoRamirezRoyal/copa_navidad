@@ -181,7 +181,7 @@ $dataEquipos = []; // Tabla de equipos vacía
 ?>
 
 <section class="py-5 bg-light">
-    <style>
+<style>
         /* Estilos para los logos y nombres de colegios */
         .logo-img {
             width: 220px;
@@ -348,25 +348,25 @@ $dataEquipos = []; // Tabla de equipos vacía
         }
 
         /* --- Mejora visual del acordeón --- */
-.accordion {
+ .accordion {
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 4px 24px rgba(201, 0, 27, 0.13);
     background: #fff;
-}
-.accordion-item {
+ }
+ .accordion-item {
     border: none;
     margin-bottom: 10px;
     border-radius: 16px !important;
     overflow: hidden;
     box-shadow: 0 2px 12px #0001; /* Cambiado de #ff595e11 a #0001 */
     background: #fff;
-}
-.accordion-header {
+ }
+ .accordion-header {
     border-radius: 16px !important;
     overflow: hidden;
-}
-.accordion-button {
+ }
+ .accordion-button {
     background: linear-gradient(90deg, #b9262bff 0%);
     color: #fff;
     font-weight: 600;
@@ -377,30 +377,30 @@ $dataEquipos = []; // Tabla de equipos vacía
     transition: background 0.3s, color 0.3s;
     padding: 1.1em 1.5em;
     outline: none;
-}
-.accordion-button:not(.collapsed) {
+ }
+ .accordion-button:not(.collapsed) {
     background: linear-gradient(90deg, rgba(201, 0, 27, 0.82) 0%, #b9262bff 100%);
     color: #fff;
     box-shadow: 0 4px 16px rgba(201, 0, 27, 0.13);
-}
-.accordion-button:focus {
+ }
+ .accordion-button:focus {
     box-shadow: 0 0 0 2px #0002; /* Cambiado de #ffca3a55 a #0002 */
-}
-.accordion-button::after {
+ }
+ .accordion-button::after {
     filter: invert(1) drop-shadow(0 1px 0 #0002); /* Cambiado de #ffca3a88 a #0002 */
-}
-.accordion-collapse {
+ }
+ .accordion-collapse {
     background: #fff9;
     border-radius: 0 0 16px 16px;
     box-shadow: 0 2px 8px #0001; /* Cambiado de #ffca3a11 a #0001 */
-}
-.accordion-body {
+ }
+ .accordion-body {
     padding: 1.2em 1.5em 1.2em 2em;
     background: #fff;
     border-radius: 0 0 16px 16px;
-}
+ }
 
-.team-link{
+ .team-link{
     display:inline-flex;
     align-items:center;
     gap:10px;
@@ -410,19 +410,19 @@ $dataEquipos = []; // Tabla de equipos vacía
     color:inherit;
     background: rgba(255,255,255,0.35); /* translúcido */
     transition: transform .12s ease, box-shadow .12s ease;
-}
-.team-link:hover{ transform: translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.06); }
-.btn-translucent{
+ }
+ .team-link:hover{ transform: translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+ .btn-translucent{
     font-weight:600;
     font-size:0.85em;
     padding:4px 8px;
     border-radius:8px;
     background: rgba(255, 0, 0, 0.06);
     color:#111;
-}
-.team-icon{ width:28px; height:28px; object-fit:cover; border-radius:6px; }
-.team-emoji{ font-size:1.05em; }
-    </style>
+ }
+ .team-icon{ width:28px; height:28px; object-fit:cover; border-radius:6px; }
+ .team-emoji{ font-size:1.05em; }
+</style>
 
     <div class="container" style="margin-top: 100px; padding-top: 18px;">
         <div class="text-center">
