@@ -18,7 +18,11 @@ class conexion
 
     private static $username       = 'root';
 
+<<<<<<< HEAD
     private static $passwordserver = 'Angel1413@.-+#';
+=======
+    private static $passwordserver = '12345678'; //'SlpapApue141305.-+@';
+>>>>>>> 6e8db3a (añadido nuevas fotografias)
 
     protected $database            = 'copa_navidad';
 
