@@ -1,8 +1,8 @@
 <?php
 clearstatcache();
 header('Content-Type: text/html; charset=utf-8');
-//$url_actual = "https://" . $_SERVER["SERVER_NAME"] . '/';
-$url_actual = 'http://localhost/copa_navidad/';
+$url_actual = "https://" . $_SERVER["SERVER_NAME"] . '/';
+//$url_actual = 'http://localhost/copa_navidad/';
 define('BASE_URL', $url_actual);
 define('PUBLIC_PATH', BASE_URL . 'public/');
 define('VISTA_PATH', ROOT . DS . 'vistas' . DS);
