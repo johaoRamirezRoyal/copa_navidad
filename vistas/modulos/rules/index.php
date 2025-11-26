@@ -6,6 +6,16 @@
 
     $instancia_deportes = ControlDeportes::singleton_deportes();
     $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
+
+    // Mapa de URLs por id de deporte (reemplaza el script JS)
+    $deporte_urls = [
+        6 => 'https://drive.google.com/file/d/1Fj8iBrrqdZNtxdmBFq4CkDwMIo5x_RjP/view',
+        5 => '',
+        4 => '',
+        3 => 'https://drive.google.com/file/d/1LnivJjlARwCXC8vg3dFYVhen0RpKTNb_/view',
+        2 => '',
+        1 => 'https://drive.google.com/file/d/1vtZZ7G9g-_DFm--jy9447AHE6mGot4qf/view',
+    ];
 ?>
 
 <style>
@@ -26,7 +36,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(255, 255, 255, 0);
+        background-color: rgba(255, 255, 255, 0.46);
     }
 
     .rules-card {
@@ -35,23 +45,35 @@
         z-index: 1;
     }
 
+    .carousel-button-container {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+    }
+
     #rulesCarousel {
-        max-width: 500px;
-        max-height: 500px;
+        position: relative;
+        max-width: 800px;
+        max-height: 800px;
         width: 100%;
         height: auto;
     }
 
     #rulesCarousel img {
-        max-height: 500px;
+        max-height: 800px;
         object-fit: cover;
     }
 
     .custom-animated-btn {
         background: #2424246c;
         border: none;
+        border-radius: 10px;
         padding: 10px 20px;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         font-size: 15px;
         font-weight: 600;
         width: 180px;
@@ -102,17 +124,29 @@
                 <?php foreach ($deportes as $index => $deporte): ?>
                     <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                         <?php if (!empty($deporte['imagen'])): ?>
-                            <img src="<?= PUBLIC_PATH ?>img/disiplinas/<?= $deporte['imagen'] ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
+                            <img src="<?= PUBLIC_PATH ?>img/disiplinas/<?= $deporte['imagen3'] ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
                         <?php else: ?>
-                            <img src="https://dummyimage.com/380x500/198754/fff&text=<?= urlencode($deporte['nombre']) ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
+                            <img src="https://dummyimage.com/380x500/198754/fff&text=<?= urlencode($deporte['nombre3']) ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
                         <?php endif; ?>
+                        <div class="carousel-button-container">
+                            <?php $url = $deporte_urls[$deporte['id']] ?? ''; ?>
+                            <?php if (!empty($url)): ?>
+                                <a class="custom-animated-btn" href="<?= $url ?>" target="_blank" rel="noopener noreferrer">
+                                    <span>Ver más</span>
+                                </a>
+                            <?php else: ?>
+                                <button class="custom-animated-btn" disabled>
+                                    <span>Próximamente</span>
+                                </button>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
-            <?php else: ?>
-                <div class="carousel-item active">
-                    <img src="https://dummyimage.com/380x500/198754/fff&text=Sin+deportes" class="card-img-top" alt="Sin deportes disponibles">
-                </div>
-            <?php endif; ?>
+                    <?php else: ?>
+                        <div class="carousel-item active">
+                            <img src="https://dummyimage.com/380x500/198754/fff&text=Sin+deportes" class="card-img-top" alt="Sin deportes disponibles">
+                        </div>
+                    <?php endif; ?>
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#rulesCarousel" data-bs-slide="prev">
@@ -131,3 +165,4 @@
     include_once VISTA_PATH . 'footer.php';
 ?>
 </html>
+
