@@ -40,7 +40,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/index">Teams</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table">Tables</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table">Tables</a></li> -->
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>partidos/index">Matches</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>faq">Rules</a></li>
 
