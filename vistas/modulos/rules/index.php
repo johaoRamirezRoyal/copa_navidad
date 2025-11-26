@@ -6,7 +6,6 @@
 
     $instancia_deportes = ControlDeportes::singleton_deportes();
     $deportes = $instancia_deportes->obtenerTodosLosDeportesControl();
-<<<<<<< HEAD
 
     // Mapa de URLs por id de deporte (reemplaza el script JS)
     $deporte_urls = [
@@ -17,8 +16,6 @@
         2 => '',
         1 => 'https://drive.google.com/file/d/1vtZZ7G9g-_DFm--jy9447AHE6mGot4qf/view',
     ];
-=======
->>>>>>> 6e8db3a (añadido nuevas fotografias)
 ?>
 
 <style>
@@ -39,11 +36,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-<<<<<<< HEAD
         background-color: rgba(255, 255, 255, 0.46);
-=======
-        background-color: rgba(255, 255, 255, 0);
->>>>>>> 6e8db3a (añadido nuevas fotografias)
     }
 
     .rules-card {
@@ -52,7 +45,6 @@
         z-index: 1;
     }
 
-<<<<<<< HEAD
     .carousel-button-container {
         position: absolute;
         bottom: 20px;
@@ -65,37 +57,23 @@
         position: relative;
         max-width: 800px;
         max-height: 800px;
-=======
-    #rulesCarousel {
-        max-width: 500px;
-        max-height: 500px;
->>>>>>> 6e8db3a (añadido nuevas fotografias)
         width: 100%;
         height: auto;
     }
 
     #rulesCarousel img {
-<<<<<<< HEAD
         max-height: 800px;
-=======
-        max-height: 500px;
->>>>>>> 6e8db3a (añadido nuevas fotografias)
         object-fit: cover;
     }
 
     .custom-animated-btn {
         background: #2424246c;
         border: none;
-<<<<<<< HEAD
         border-radius: 10px;
         padding: 10px 20px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-=======
-        padding: 10px 20px;
-        display: inline-block;
->>>>>>> 6e8db3a (añadido nuevas fotografias)
         font-size: 15px;
         font-weight: 600;
         width: 180px;
@@ -146,7 +124,6 @@
                 <?php foreach ($deportes as $index => $deporte): ?>
                     <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                         <?php if (!empty($deporte['imagen'])): ?>
-<<<<<<< HEAD
                             <img src="<?= PUBLIC_PATH ?>img/disiplinas/<?= $deporte['imagen3'] ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
                         <?php else: ?>
                             <img src="https://dummyimage.com/380x500/198754/fff&text=<?= urlencode($deporte['nombre3']) ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
@@ -170,19 +147,6 @@
                             <img src="https://dummyimage.com/380x500/198754/fff&text=Sin+deportes" class="card-img-top" alt="Sin deportes disponibles">
                         </div>
                     <?php endif; ?>
-=======
-                            <img src="<?= PUBLIC_PATH ?>img/disiplinas/<?= $deporte['imagen'] ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
-                        <?php else: ?>
-                            <img src="https://dummyimage.com/380x500/198754/fff&text=<?= urlencode($deporte['nombre']) ?>" class="card-img-top" alt="Imagen de <?= $deporte['nombre'] ?>">
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="carousel-item active">
-                    <img src="https://dummyimage.com/380x500/198754/fff&text=Sin+deportes" class="card-img-top" alt="Sin deportes disponibles">
-                </div>
-            <?php endif; ?>
->>>>>>> 6e8db3a (añadido nuevas fotografias)
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#rulesCarousel" data-bs-slide="prev">
@@ -200,9 +164,5 @@
     include_once VISTA_PATH . 'script_and_final.php'; 
     include_once VISTA_PATH . 'footer.php';
 ?>
-<<<<<<< HEAD
 </html>
 
-=======
-</html>
->>>>>>> 6e8db3a (añadido nuevas fotografias)
