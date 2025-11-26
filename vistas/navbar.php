@@ -42,7 +42,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/index">Teams</a></li>
                 <!-- <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>teams/table">Tables</a></li> -->
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>partidos/index">Matches</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>faq">Rules</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>rules/index">Rules</a></li>
 
                 <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
