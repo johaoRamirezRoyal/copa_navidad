@@ -18,7 +18,7 @@ class conexion
 
     private static $username       = 'root';
 
-    private static $passwordserver = 'SlpapApue141305.-+@';
+    private static $passwordserver = 'Angel1413@.-+#';
 
     protected $database            = 'copa_navidad';
 
