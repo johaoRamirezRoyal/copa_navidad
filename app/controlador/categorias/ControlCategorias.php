@@ -1,6 +1,6 @@
 <?php 
 date_default_timezone_set('America/Bogota');
-require_once MODELO_PATH . DS . 'categorias' . DS . 'CategoriasModal.php';
+require_once MODELO_PATH . 'categorias' . DS . 'categoriasModal.php';
 //require_once MODELO_PATH . DS . 'subcategorias' . DS . 'CategoriasModal.php';
 
 class ControlCategorias
