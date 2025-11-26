@@ -111,426 +111,493 @@ include_once VISTA_PATH . 'script_and_final.php';
 <!-- =================== ESTILOS =================== -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
-.card-container {
-  width: 480px;    /* Antes: 380px */
-  height: 620px;   /* Antes: 500px */
-  position: relative;
-  transform: skewX(-10deg);
-  margin-bottom: 28px; /* Un poco más de margen */
-}
-.card-container::before {
-  content: "";
-  z-index: -1;
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(#ffffff, #dddddd);
-  transform: scale(0.95);
-  filter: blur(20px);
-}
-.card {
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  overflow: hidden;
-  position: relative;
-}
-.card .img-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: scale 0.6s, rotate 0.6s, filter 1s;
-}
-.card .img-content img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-}
-.card .content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 10px;
-  color: #e8e8e8;
-  padding: 20px;
-  line-height: 1.5;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(50px);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-  background: rgba(0, 0, 0, 0.42); /* Fondo semitransparente */
-  backdrop-filter: blur(8px);       /* Desenfoque */
-}
-.card .content .heading {
-  font-size: 32px;
-  font-weight: 700;
-}
-.card:hover .content {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-.card:hover .img-content {
-  scale: 2.5;
-  rotate: 30deg;
-  filter: blur(7px);
-}
-.card:hover .img-content img {
-  opacity: 0.2;
-}
-.sport-card:hover {
-    transform: translateY(-10px) scale(1.06);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-}
-.card-img-top {
-    height: 180px;
-    object-fit: cover;
-    border-top-left-radius: .5rem;
-    border-top-right-radius: .5rem;
-}
-.logo-img {
-    width: 220px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 50%;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-.custom-animated-btn {
-  background: #ffffff44;
-  border: none;
-  padding: 10px 20px;
-  display: inline-block;
-  font-size: 15px;
-  font-weight: 600;
-  width: 180px; /* Más ancho */
-  text-transform: uppercase;
-  cursor: pointer;
-  transform: skew(-21deg);
-  position: relative;
-  overflow: hidden;
-  transition: color 0.5s;
-}
-.custom-animated-btn span {
-  display: inline-block;
-  transform: skew(21deg);
-}
-.custom-animated-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 100%;
-  left: 0;
-  background: rgba(20, 20, 20, 0.66);
-  opacity: 0;
-  z-index: -1;
-  transition: all 0.5s;
-}
-.custom-animated-btn:hover {
-  color: #fff;
-}
-.custom-animated-btn:hover::before {
-  left: 0;
-  right: 0;
-  opacity: 1;
-}
+    .card-container {
+      width: 480px;
+      height: 620px;
+      position: relative;
+      transform: skewX(-10deg);
+      margin-bottom: 28px;
+      border-radius: 18px; /* radio aplicado al contenedor */
+      overflow: visible;
+    }
 
-.styled-title {
-  display: inline-flex;
-  align-items: center;
-  background: linear-gradient(90deg, #b60220ff 0%, #d13a3fff 100%);
-  padding: 12px 38px;
-  border-radius: 8px;
-  box-shadow: 6px 6px 0 #22222244;
-  transform: skewX(-20deg);
-  position: relative;
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 5px;
-  margin-bottom: 2.5rem;
-  transition: box-shadow 0.4s;
-}
+    .card {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit; /* toma el radio del contenedor */
+      overflow: hidden;       /* asegura que la imagen no sobresalga */
+      position: relative;
+      border: 3px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      background-clip: padding-box;
+    }
 
-.styled-title:hover {
-  box-shadow: 20px 20px 0 #1417a8ff;
-}
+   /* Asegurar que la imagen respete el borde redondeado del card */
+   .card .img-content img,
+   .card-img-top {
+     border-radius: inherit !important;
+     display: block;
+     object-fit: cover;
+   }
+   /* Opcional: versión más sutil en pantallas pequeñas */
+   @media (max-width: 575.98px) {
+     .card {
+       border-width: 2px;
+     }
+   }
+    .card .img-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: scale 0.6s, rotate 0.6s, filter 1s;
+    }
+    .card .img-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    }
+    .card .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      border-radius: inherit;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 10px;
+      color: #e8e8e8;
+      padding: 20px;
+      line-height: 1.5;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(50px);
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+      background: rgba(0, 0, 0, 0.42); /* Fondo semitransparente */
+      backdrop-filter: blur(8px);       /* Desenfoque */
+    }
+    .card .content .heading {
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .card:hover .content {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .card:hover .img-content {
+      scale: 2.5;
+      rotate: 30deg;
+      filter: blur(7px);
+    }
+    .card:hover .img-content img {
+      opacity: 0.2;
+    }
+    .sport-card:hover {
+        transform: translateY(-10px) scale(1.06);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+        background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    }
+    .card-img-top {
+        height: 180px;
+        object-fit: cover;
+        border-top-left-radius: .20rem;
+        border-top-right-radius: .20rem;
+    }
+    .logo-img {
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .custom-animated-btn {
+      background: #ffffff44;
+      border: none;
+      padding: 10px 20px;
+      display: inline-block;
+      font-size: 15px;
+      font-weight: 600;
+      width: 180px; /* Más ancho */
+      text-transform: uppercase;
+      cursor: pointer;
+      transform: skew(-21deg);
+      position: relative;
+      overflow: hidden;
+      transition: color 0.5s;
+    }
+    .custom-animated-btn span {
+      display: inline-block;
+      transform: skew(21deg);
+    }
+    .custom-animated-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 100%;
+      left: 0;
+      background: rgba(20, 20, 20, 0.66);
+      opacity: 0;
+      z-index: -1;
+      transition: all 0.5s;
+    }
+    .custom-animated-btn:hover {
+      color: #fff;
+    }
+    .custom-animated-btn:hover::before {
+      left: 0;
+      right: 0;
+      opacity: 1;
+    }
 
-.title-text {
-  transform: skewX(10deg);
-  text-shadow:
-  0 2px 16px #fff,
-  0 0px 8px #fff,
-  0 1px 0 #fff,
-  0 4px 24px #fff,
-  0 4px 16px #0004; /* Sombra blanca muy notoria y sombra negra para profundidad */
-}
+    .styled-title {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(90deg, #b60220ff 0%, #d13a3fff 100%);
+      padding: 12px 38px;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #22222244;
+      transform: skewX(-20deg);
+      position: relative;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 5px;
+      margin-bottom: 2.5rem;
+      transition: box-shadow 0.4s;
+    }
 
-.title-arrow {
-  margin-left: 24px;
-  transition: margin-left 0.4s;
-  display: flex;
-  align-items: center;
-}
+    .styled-title:hover {
+      box-shadow: 20px 20px 0 #1417a8ff;
+    }
 
-.styled-title:hover .title-arrow {
-  margin-left: 40px;
-}
+    .title-text {
+      transform: skewX(10deg);
+      text-shadow:
+      0 2px 16px #fff,
+      0 0px 8px #fff,
+      0 1px 0 #fff,
+      0 4px 24px #fff,
+      0 4px 16px #0004; /* Sombra blanca muy notoria y sombra negra para profundidad */
+    }
 
-.arrow-one {
-  transition: fill 0.5s;
-  animation: arrowColorAnim 1.2s infinite;
-}
+    .title-arrow {
+      margin-left: 24px;
+      transition: margin-left 0.4s;
+      display: flex;
+      align-items: center;
+    }
 
-.sports-scroll-container {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: auto;
-  padding-bottom: 1px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  margin-left: auto;
-  margin-right
-}
-.sports-scroll-container::-webkit-scrollbar {
-  display: none;
-}
-.sports-cards-row {
-  display: flex;
-  flex-direction: row;
-  gap: 32px;
-  min-width: 0;
-  white-space: nowrap;
-  justify-content: flex-start;
-}
+    .styled-title:hover .title-arrow {
+      margin-left: 40px;
+    }
 
-.sports-cards-row .col {
-  min-width: 500px; /* Antes: 400px */
-  display: flex;
-  justify-content: center;
-}
+    .arrow-one {
+      transition: fill 0.5s;
+      animation: arrowColorAnim 1.2s infinite;
+    }
 
-@media (max-width: 991.98px) {
-  .card-container {
-    width: 98vw;
-    max-width: 400px;   /* Antes: 320px */
-    height: 440px;      /* Antes: 340px */
-    margin-bottom: 18px;
-  }
-  .sports-cards-row .col {
-    min-width: 400px;   /* Antes: 320px */
-  }
-  .sports-scroll-container {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-  .styled-title {
-    font-size: 1.3rem;
-    padding: 10px 18px;
-  }
-  .logo-img {
-    width: 150px;
-    height: 150px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
+    .sports-scroll-container {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      overflow: auto;
+      padding-bottom: 1px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      margin-left: auto;
+      margin-right
+    }
+    .sports-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .sports-cards-row {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      min-width: 0;
+      white-space: nowrap;
+      justify-content: flex-start;
+    }
 
-@media (max-width: 575.98px) {
-  .card-container {
-    width: 99vw;
-    max-width: 99vw;
-    height: 320px;      /* Antes: 240px */
-  }
-  .sports-cards-row .col {
-    min-width: 99vw;
-  }
-  .sports-cards-row {
-    gap: 12px;
-  }
-  .logo-img {
-    width: 110px;
-    height: 110px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .styled-title {
-    font-size: 1rem;
-    padding: 8px 8px;
-    margin-bottom: 1.2rem;
-  }
-  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-    padding-left: 4px !important;
-    padding-right: 4px !important;
-  }
-}
+    .sports-cards-row .col {
+      min-width: 500px; /* Antes: 400px */
+      display: flex;
+      justify-content: center;
+    }
 
-/* Ajusta la cuadrícula de colegios para móviles */
-@media (max-width: 767.98px) {
-  .row-cols-sm-2 > * {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .row-cols-md-3 > * {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .row-cols-xl-4 > * {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .col.mb-5.d-flex.justify-content-center {
-    margin-bottom: 1.2rem !important;
-  }
-  .logo-img {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  .card-body h5 {
-    font-size: 1rem;
-  }
-}
+    @media (max-width: 991.98px) {
+      .card-container {
+        width: 98vw;
+        max-width: 400px;   /* Antes: 320px */
+        height: 440px;      /* Antes: 340px */
+        margin-bottom: 18px;
+      }
+      .sports-cards-row .col {
+        min-width: 400px;   /* Antes: 320px */
+      }
+      .sports-scroll-container {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      .styled-title {
+        font-size: 1.3rem;
+        padding: 10px 18px;
+      }
+      .logo-img {
+        width: 150px;
+        height: 150px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
 
-/* Mejora la experiencia de scroll horizontal en móviles */
-.sports-scroll-container {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
+    @media (max-width: 575.98px) {
+      .card-container {
+        width: 99vw;
+        max-width: 99vw;
+        height: 320px;      /* Antes: 240px */
+      }
+      .sports-cards-row .col {
+        min-width: 99vw;
+      }
+      .sports-cards-row {
+        gap: 12px;
+      }
+      .logo-img {
+        width: 110px;
+        height: 110px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .styled-title {
+        font-size: 1rem;
+        padding: 8px 8px;
+        margin-bottom: 1.2rem;
+      }
+      .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+      }
+    }
 
-/* Opcional: desactiva la animación de auto-scroll en móviles */
-@media (max-width: 991.98px) {
-  .sports-scroll-container {
-    overflow-x: auto !important;
-  }
-}
+    /* Ajusta la cuadrícula de colegios para móviles */
+    @media (max-width: 767.98px) {
+      .row-cols-sm-2 > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      .row-cols-md-3 > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      .row-cols-xl-4 > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      .col.mb-5.d-flex.justify-content-center {
+        margin-bottom: 1.2rem !important;
+      }
+      .logo-img {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .card-body h5 {
+        font-size: 1rem;
+      }
+    }
 
-/* Opcional: evita que el body tenga scroll horizontal */
-body {
-  overflow-x: hidden;
-}
+    /* Mejora la experiencia de scroll horizontal en móviles */
+    .sports-scroll-container {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
 
-/* Opcional: ajusta el container principal para evitar desbordes */
-.container-fluid {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 100vw;
-}
+    /* Opcional: desactiva la animación de auto-scroll en móviles */
+    @media (max-width: 991.98px) {
+      .sports-scroll-container {
+        overflow-x: auto !important;
+      }
+    }
 
-.card-body {
-    text-align: center;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-.card-body h5 {
-    text-align: center;
-    width: 100%;
-    margin: 0 auto;
-    font-weight: 700;
-}
+    /* Opcional: evita que el body tenga scroll horizontal */
+    body {
+      overflow-x: hidden;
+    }
 
-.custom-title-blue {
-    color: #0a2342 !important;      /* Azul oscuro para la letra */
-    border-radius: 8px;
-    background: transparent;        /* Sin fondo */
-    padding: 2px 10px;
-    box-shadow: none;
-    text-shadow:
-      0 0 24px #fff,
-      0 0 48px #fff,
-      0 0 96px #fff,
-      0 2px 48px #fff,
-      0 4px 64px #fff,
-      0 8px 128px #fff,
-      0 4px 48px #000a; /* Sombra blanca extremadamente notoria y sombra negra para profundidad */
-    display: inline-block;
-}
+    /* Opcional: ajusta el container principal para evitar desbordes */
+    .container-fluid {
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 100vw;
+    }
 
-.styled-title .title-text {
-  transition: font-size 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
+    .card-body {
+        text-align: center;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    .card-body h5 {
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+        font-weight: 700;
+    }
 
-.styled-title:hover .title-text {
-  font-size: 2.7rem;
-}
+    .custom-title-blue {
+        color: #0a2342 !important;      /* Azul oscuro para la letra */
+        border-radius: 8px;
+        background: transparent;        /* Sin fondo */
+        padding: 2px 10px;
+        box-shadow: none;
+        text-shadow:
+          0 0 24px #fff,
+          0 0 48px #fff,
+          0 0 96px #fff,
+          0 2px 48px #fff,
+          0 4px 64px #fff,
+          0 8px 128px #fff,
+          0 4px 48px #000a; /* Sombra blanca extremadamente notoria y sombra negra para profundidad */
+        display: inline-block;
+    }
 
-.blur-bg-caption {
-    background: rgba(255, 255, 255, 0);
-    border-radius: 50px;
-    padding: 24px 32px;
-    display: inline-block;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-}
+    .styled-title .title-text {
+      transition: font-size 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .styled-title:hover .title-text {
+      font-size: 2.7rem;
+    }
+
+    .blur-bg-caption {
+        background: rgba(255, 255, 255, 0);
+        border-radius: 50px;
+        padding: 24px 32px;
+        display: inline-block;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    }
 </style>
 
 <!-- =================== SCRIPTS =================== -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
 <script>
-  
-document.addEventListener('DOMContentLoaded', function() {
-    AOS.init({ once: false, duration: 2000 });
+  document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({ once: false, duration: 2000 });
 
-    const scrollContainer = document.querySelector('.sports-scroll-container');
-    const cardsRow = document.querySelector('.sports-cards-row');
-    const speed = 2;
-    let running = true;
+      const scrollContainer = document.querySelector('.sports-scroll-container');
+      const cardsRow = document.querySelector('.sports-cards-row');
+      const speed = 2;
+      let running = true;
+      let isMouseDown = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      let rafId = null;
 
-    function isMobile() {
-        return window.innerWidth < 992;
-    }
+      function isMobile() {
+          return window.innerWidth < 992;
+      }
 
-    // Duplica los elementos para crear el efecto de bucle infinito
-    if (cardsRow && !isMobile()) {
-        cardsRow.innerHTML += cardsRow.innerHTML;
-    }
+      // Duplica los elementos para crear el efecto de bucle infinito (solo si no es móvil)
+      if (cardsRow && !isMobile()) {
+          cardsRow.innerHTML += cardsRow.innerHTML;
+      }
 
-    function autoScroll() {
-        if (!scrollContainer || isMobile() || !running) return;
+      function tick() {
+          if (!scrollContainer || isMobile() || !running) {
+              rafId = null;
+              return;
+          }
 
-        const scrollWidth = scrollContainer.scrollWidth / 2;
-        if (scrollContainer.scrollLeft >= scrollWidth) {
-            scrollContainer.scrollLeft = 0;
-        } else {
-            scrollContainer.scrollLeft += speed;
-        }
-        requestAnimationFrame(autoScroll);
-    }
+          const scrollWidth = scrollContainer.scrollWidth / 2;
+          if (scrollContainer.scrollLeft >= scrollWidth) {
+              scrollContainer.scrollLeft = 0;
+          } else {
+              scrollContainer.scrollLeft += speed;
+          }
 
-    scrollContainer.addEventListener('mouseenter', () => { running = false; });
-    scrollContainer.addEventListener('mouseleave', () => { 
-        if (!isMobile()) {
-            running = true; 
-            autoScroll();
-        }
-    });
+          rafId = requestAnimationFrame(tick);
+      }
 
-    window.addEventListener('resize', () => {
-        running = !isMobile();
-        if (running) autoScroll();
-    });
+      function startAutoScroll() {
+          if (!scrollContainer || isMobile() || rafId) return;
+          running = true;
+          rafId = requestAnimationFrame(tick);
+      }
 
-    scrollContainer.style.scrollBehavior = 'auto';
+      function stopAutoScroll() {
+          running = false;
+          if (rafId) {
+              cancelAnimationFrame(rafId);
+              rafId = null;
+          }
+      }
 
-    autoScroll();
-});
+      // Inicia auto-scroll (una sola vez)
+      startAutoScroll();
+
+      // Movimiento con cursor (drag)
+      scrollContainer.addEventListener('mousedown', (e) => {
+          isMouseDown = true;
+          startX = e.pageX - scrollContainer.offsetLeft;
+          scrollLeft = scrollContainer.scrollLeft;
+          scrollContainer.style.cursor = 'grabbing';
+          stopAutoScroll();
+      });
+
+      scrollContainer.addEventListener('mouseleave', () => {
+          isMouseDown = false;
+          scrollContainer.style.cursor = 'grab';
+          if (!isMobile()) startAutoScroll();
+      });
+
+      scrollContainer.addEventListener('mouseup', () => {
+          isMouseDown = false;
+          scrollContainer.style.cursor = 'grab';
+          if (!isMobile()) startAutoScroll();
+      });
+
+      scrollContainer.addEventListener('mousemove', (e) => {
+          if (!isMouseDown) return;
+          e.preventDefault();
+          const x = e.pageX - scrollContainer.offsetLeft;
+          const walk = (x - startX) * 1.5; // esto controla la "sensibilidad" del drag
+          scrollContainer.scrollLeft = scrollLeft - walk;
+      });
+
+      scrollContainer.addEventListener('mouseenter', () => {
+          scrollContainer.style.cursor = 'grab';
+      });
+
+      // Detener scroll al pasar cursor sobre botones "Ver más"
+      const buttons = document.querySelectorAll('.custom-animated-btn');
+      buttons.forEach(button => {
+          button.addEventListener('mouseenter', () => {
+              stopAutoScroll();
+          });
+
+          button.addEventListener('mouseleave', () => {
+              if (!isMobile()) startAutoScroll();
+          });
+      });
+
+      scrollContainer.style.scrollBehavior = 'auto';
+  });
 </script>
 
 
