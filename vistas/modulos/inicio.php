@@ -23,7 +23,7 @@ $info_colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
         <div class="carousel-inner">
             <!-- Slide 1 -->
             <div class="carousel-item active">
-                <img src="public/img/banner/BANNERCOPANAVIDAD.png" class="d-block w-100 animate__animated animate__zoomIn" alt="Welcome Slide">
+                <img src="public/img/banner/BANNERCOPANAVIDAD.webp" class="d-block w-100 animate__animated animate__zoomIn" alt="Welcome Slide">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="text-center">
                         <h2 class="fw-bold mb-0 animate__animated animate__fadeInUp custom-title-blue blur-bg-caption" style="font-size:3rem; padding-bottom:0.05em; text-shadow: 0 0 4px #fff, 0 0 8px #fff;">

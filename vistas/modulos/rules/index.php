@@ -20,7 +20,7 @@
 
 <style>
     .rules-container {
-        background-image: url('<?= BASE_URL ?>/public/img/banner/rules.png');
+        background-image: url('<?= BASE_URL ?>/public/img/banner/rules.webp');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
