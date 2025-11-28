@@ -508,7 +508,7 @@ $dataEquipos = []; // Tabla de equipos vacía
                                                                                     <?php endforeach; ?>
                                                                                 </ul>
                                                                             <?php else: ?>
-                                                                                <span class="no-equipos">No hay equipos inscritos.</span>
+                                                                                <span class="no-equipos">There are no registered teams.</span>
                                                                             <?php endif; ?>
                                                                         </li>
                                                                     <?php endforeach; ?>
@@ -525,7 +525,7 @@ $dataEquipos = []; // Tabla de equipos vacía
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
