@@ -132,11 +132,11 @@
                             <?php $url = $deporte_urls[$deporte['id']] ?? ''; ?>
                             <?php if (!empty($url)): ?>
                                 <a class="custom-animated-btn" href="<?= $url ?>" target="_blank" rel="noopener noreferrer">
-                                    <span>Ver más</span>
+                                    <span>See more.</span>
                                 </a>
                             <?php else: ?>
                                 <button class="custom-animated-btn" disabled>
-                                    <span>Próximamente</span>
+                                    <span>Coming soon.</span>
                                 </button>
                             <?php endif; ?>
                         </div>
