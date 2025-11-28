@@ -12,7 +12,12 @@ $instancia_deporte = ControlDeportes::singleton_deportes();
 
 <div class="container-lg mb-4 mt-5" style="margin-top: 280px; padding-top: 100px; padding-bottom: 100vh;">
     <div class="container-xxl bg-white p-4 shadow-sm rounded border">
-        
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Imágenes del Evento</li>
+            </ol>
+        </nav>
         <!-- Título -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold mb-0">
@@ -49,15 +54,14 @@ $instancia_deporte = ControlDeportes::singleton_deportes();
                     <label for="imagenEvento" class="form-label fw-semibold">
                         Imagen del evento <span class="text-danger">*</span>
                     </label>
-                    <input 
-                        class="form-control" 
-                        type="file" 
-                        id="imagenEvento" 
-                        name="imagenEvento" 
-                        accept="image/*" 
+                    <input
+                        class="form-control"
+                        type="file"
+                        id="imagenEvento"
+                        name="imagenEvento"
+                        accept="image/*"
                         required
-                        onchange="vistaPreviaImagen(event)"
-                    >
+                        onchange="vistaPreviaImagen(event)">
                 </div>
 
                 <!-- Botón -->
@@ -79,17 +83,17 @@ $instancia_deporte = ControlDeportes::singleton_deportes();
 </div>
 
 <script>
-function vistaPreviaImagen(event) {
-    const output = document.getElementById('previewImg');
-    const container = document.getElementById('previewContainer');
+    function vistaPreviaImagen(event) {
+        const output = document.getElementById('previewImg');
+        const container = document.getElementById('previewContainer');
 
-    output.src = URL.createObjectURL(event.target.files[0]);
-    container.style.display = 'block';
-}
+        output.src = URL.createObjectURL(event.target.files[0]);
+        container.style.display = 'block';
+    }
 </script>
 
 <?php
-if(isset($_POST['subirImagenEvento'])){
+if (isset($_POST['subirImagenEvento'])) {
     $instancia_imagenes_evento = ControlImagenesEvento::singleton_imagenes_evento();
     $instancia_imagenes_evento->guardarImagenEventoControl();
 }

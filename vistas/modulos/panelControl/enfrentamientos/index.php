@@ -1,7 +1,7 @@
 <?php
 include_once CONTROL_PATH . 'EnlacesControl.php';
 include_once VISTA_PATH . 'header.php';
-//include_once VISTA_PATH . 'navbar.php';
+include_once VISTA_PATH . 'navbar.php';
 
 require_once CONTROL_PATH . 'partidos' . DS . 'ControlPartidos.php';
 require_once CONTROL_PATH . 'categorias' . DS . 'ControlCategorias.php';
@@ -24,10 +24,10 @@ if (isset($_POST['buscar'])) {
         'deporte' => $_POST['deporte']
     );
 
-   // $partidos = $instancia_partidos->obtenerPartidosFiltradosControl($datos);
+    // $partidos = $instancia_partidos->obtenerPartidosFiltradosControl($datos);
 
-    $faltan_datos = false; 
-    
+    $faltan_datos = false;
+
     foreach ($datos as $clave => $valor) {
         if ($valor === NULL || $valor === '') {
             echo '
@@ -39,7 +39,7 @@ if (isset($_POST['buscar'])) {
             $faltan_datos = true;
         }
     }
-    
+
     $equipos = $instancia_equipos->obtenerEquiposFiltradoControl($datos);
     $partidos = $instancia_partidos->obtenerPartidosFiltradosControl($datos);
 } else {
@@ -51,6 +51,12 @@ if (isset($_POST['buscar'])) {
 ?>
 <div class="container" style="margin-top: 120px; padding-top: 18px;">
     <div class="container-xxl bg-light w-100 p-2">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Enfrentamientos</li>
+            </ol>
+        </nav>
         <div class="text-center">
             <h1>Administrar Enfrentamientos</h1>
             <hr>

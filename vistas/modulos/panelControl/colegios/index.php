@@ -13,9 +13,18 @@ $colegios = $instancia_colegios->obtenerTodosLosColegiosRegistrosControl();
 ?>
 
 <div class="container" style="margin-top: 120px; padding-top: 18px;">
+
+    
     <div class="card text-center">
         <div class="card-header">
-
+            
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Colegios</li>
+                </ol>
+            </nav>
+            
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-bs-toggle="tab" href="#listado" role="tab">Listado de colegios</a>
@@ -52,22 +61,22 @@ $colegios = $instancia_colegios->obtenerTodosLosColegiosRegistrosControl();
                                     <td><?= $nombre ?></td>
                                     <td><?= $estado ?></td>
                                     <td>
-                                        <div class="btn-group" rule="group" >
+                                        <div class="btn-group" rule="group">
 
                                             <?php
-                                                if($colegio['activo'] == 1):
+                                            if ($colegio['activo'] == 1):
                                             ?>
-                                            <form method="POST" style="display: inline" class="m-2">
-                                                <input type="hidden" name="id" value="<?= $id ?>">
-                                                <button type="submit" name="desactivar" class="btn btn-warning btn-sm">Cancelar participación</button>
-                                            </form>
+                                                <form method="POST" style="display: inline" class="m-2">
+                                                    <input type="hidden" name="id" value="<?= $id ?>">
+                                                    <button type="submit" name="desactivar" class="btn btn-warning btn-sm">Cancelar participación</button>
+                                                </form>
                                             <?php endif ?>
 
-                                            <?php if($colegio['activo'] == 0): ?>
-                                            <form method="POST" style="display: inline" class="m-2">
-                                                <input type="hidden" name="id" value="<?= $id ?>">
-                                                <button type="submit" name="activar" class="btn btn-success btn-sm">Renovar participación</button>
-                                            </form>
+                                            <?php if ($colegio['activo'] == 0): ?>
+                                                <form method="POST" style="display: inline" class="m-2">
+                                                    <input type="hidden" name="id" value="<?= $id ?>">
+                                                    <button type="submit" name="activar" class="btn btn-success btn-sm">Renovar participación</button>
+                                                </form>
                                             <?php endif ?>
 
                                             <form method="POST" style="display:inline;" class="m-2">
@@ -108,15 +117,15 @@ if (isset($_POST['crear_colegio'])) {
     $instancia_colegios->crearColegioParticipanteControl();
 }
 
-if(isset($_POST['desactivar'])){
+if (isset($_POST['desactivar'])) {
     $instancia_colegios->eliminarColegioParticipanteControl();
 }
 
-if(isset($_POST['eliminar_colegio'])){
+if (isset($_POST['eliminar_colegio'])) {
     $instancia_colegios->eliminarRegistroColegioParticipanteControl();
 }
 
-if(isset($_POST['activar'])){
+if (isset($_POST['activar'])) {
     $instancia_colegios->activarColegioParticipanteControl();
 }
 
