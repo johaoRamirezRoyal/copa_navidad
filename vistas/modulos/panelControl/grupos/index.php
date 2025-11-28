@@ -47,7 +47,7 @@ if (isset($_POST['buscar'])) {
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Grupos</li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/grupos/index" class="link-opacity-50">Grupos</a></li>
                 </ol>
             </nav>
 
