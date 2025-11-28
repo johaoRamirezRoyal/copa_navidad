@@ -40,8 +40,16 @@ if (isset($_POST['buscar'])) {
 ?>
 
 <div class="container mb-4" style="margin-top: 120px; padding-top: 18px;">
+
+    
     <div class="card text-center">
         <div class="card-header">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/equipos/index" class="link-opacity-50">Equipos</a></li>
+                </ol>
+            </nav>
 
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
                 <li class="nav-item">

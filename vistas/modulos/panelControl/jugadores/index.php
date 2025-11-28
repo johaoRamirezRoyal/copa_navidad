@@ -3,7 +3,7 @@ date_default_timezone_set('America/Bogota');
 include_once CONTROL_PATH . 'EnlacesControl.php';
 
 include_once VISTA_PATH . 'header.php';
-//include_once VISTA_PATH . 'navbar.php';
+include_once VISTA_PATH . 'navbar.php';
 
 require_once CONTROL_PATH . DS . 'jugadores' . DS . 'ControlJugadores.php';
 require_once CONTROL_PATH . DS . 'categorias' . DS . 'ControlCategorias.php';
@@ -43,8 +43,16 @@ if (isset($_POST['filtrar_jugadores'])) {
 ?>
 
 <div class="container pb-5" style="margin-top: 120px; padding-top: 18px;">
+
+    
     <div class="card text-center">
         <div class="card-header">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/jugadores/index" class="link-opacity-50">Jugadores</a></li>
+                </ol>
+            </nav>
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
                 <li class="nav-item">
                     <a href="#listado" class="nav-link <?= isset($_POST['buscar_equipos']) ? '' : 'active' ?>" data-bs-toggle="tab" role="tab">Listado de jugadores</a>
@@ -65,7 +73,7 @@ if (isset($_POST['filtrar_jugadores'])) {
                                 <div>
                                     <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del jugador">
                                 </div>
-    
+
                                 <div>
                                     <button type="submit" class="btn btn-success btn-md form-control" name="filtrar_jugadores">
                                         Buscar Usuario
