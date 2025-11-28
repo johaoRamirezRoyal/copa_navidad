@@ -9,7 +9,7 @@
 
     // Mapa de URLs por id de deporte (reemplaza el script JS)
     $deporte_urls = [
-        6 => 'https://drive.google.com/file/d/1WQvWpYE9zYfGtnjDGH2GdyV5alrGdN7c/view',
+        8 => 'https://drive.google.com/file/d/1WQvWpYE9zYfGtnjDGH2GdyV5alrGdN7c/view',
         5 => '',
         4 => '',
         3 => 'https://drive.google.com/file/d/1Kj6QU92hWqYhJWmQZlyu8B3MqWNGOYDk/view',
