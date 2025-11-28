@@ -26,10 +26,10 @@ $colegios = $instancia_colegios->obtenerTodosLosColegiosControl();
 
 if (isset($_POST['buscar'])) {
     $datos = array(
-    'categoria' => $_POST['categoria'] ?? null,
-    'subcategoria' => $_POST['subcategoria'] ?? null,
-    'deporte' => $_POST['deporte'] ?? null
-);
+        'categoria' => $_POST['categoria'] ?? null,
+        'subcategoria' => $_POST['subcategoria'] ?? null,
+        'deporte' => $_POST['deporte'] ?? null
+    );
 
 
     $grupos = $instancia_grupos->obtenerGruposFiltradoControl($datos);
@@ -39,8 +39,17 @@ if (isset($_POST['buscar'])) {
 ?>
 
 <div class="container" style="margin-top: 120px; padding-top: 18px;">
+
+    
     <div class="card text-center">
         <div class="card-header">
+            
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Grupos</li>
+                </ol>
+            </nav>
 
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
                 <li class="nav-item">
@@ -178,7 +187,7 @@ if (isset($_POST['buscar'])) {
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <div class="col-lg-4">
                                                                 <div class="mb-3 text-start">
                                                                     <label for="deporte" class="form-label"><b>Selecciona el deporte del equipo <span class="text-danger">*</span></b></label>
@@ -241,7 +250,7 @@ if (isset($_POST['buscar'])) {
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-4">
                                     <div class="mb-3 text-start">
                                         <label for="deporte" class="form-label"><b>Selecciona el deporte del equipo <span class="text-danger">*</span></b></label>
