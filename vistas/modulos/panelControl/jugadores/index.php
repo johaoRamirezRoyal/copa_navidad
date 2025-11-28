@@ -50,7 +50,7 @@ if (isset($_POST['filtrar_jugadores'])) {
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/index">Panel de Control</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Jugadores</li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>panelControl/jugadores/index" class="link-opacity-50">Jugadores</a></li>
                 </ol>
             </nav>
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
