@@ -163,6 +163,7 @@ if (isset($_POST['buscar'])) {
                     <div class="modal fade modal-xl" id="editarEnfrentamiento_<?= $partido['id'] ?>" tabindex="-1" aria-labelledby="editarEnfrentamiento_<?= $partido['id'] ?>" aria-hidden="true">
                         <div class="modal-dialog">
                             <form method="POST">
+                                <input type="hidden" name="id_enfrentamiento" value="<?= $partido['id'] ?>">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="editarEnfrentamiento"><b>Editar enfrentamiento</b></h1>
@@ -348,4 +349,8 @@ if (isset($_POST['crear_enfrentamiento'])) {
 
 if (isset($_POST['eliminar_partido'])) {
     $instancia_partidos->eliminarPartidoControl();
+}
+
+if(isset($_POST['editar_enfrentamiento'])) {
+    $instancia_partidos->editarPartidoControl();
 }
