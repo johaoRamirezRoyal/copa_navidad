@@ -24,7 +24,7 @@ class PartidosModel extends conexion
                     LEFT JOIN equipos e2 ON e2.id = p.equipo2
                     LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
                     LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
-                    ORDER BY p.fecha DESC;";
+                    ORDER BY p.fecha ASC;";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
@@ -131,7 +131,7 @@ class PartidosModel extends conexion
                     LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
                     LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
                     WHERE DATE(p.fecha) = '$fecha'
-                    ORDER BY p.fecha DESC;";
+                    ORDER BY p.fecha ASC;";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
