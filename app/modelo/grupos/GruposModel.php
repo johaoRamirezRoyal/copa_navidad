@@ -116,7 +116,29 @@ class GruposModel extends conexion
     }
 }
 
-
+    public static function editarGrupoModel($datos)
+    {
+        $tabla = "grupos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "UPDATE $tabla 
+                    SET nombre = :nombre, disciplina = :disciplina, categoria = :categoria, subcategoria = :sub_categoria
+                    WHERE id = :id";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":nombre", $datos['nombre']);
+            $preparado->bindParam(":disciplina", $datos['disciplina']);
+            $preparado->bindParam(":categoria", $datos['categoria']);
+            $preparado->bindParam(":sub_categoria", $datos['sub_categoria']);
+            $preparado->bindParam(":id", $datos['id']);
+            if ($preparado->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al editar el grupo: " . $e->getMessage();
+        }
+    }
 
 
     function puntosVolley($setsEquipo, $setsRival)

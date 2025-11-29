@@ -63,6 +63,46 @@ class ControlGrupos
         }
     }
 
+    public function actualizarGrupoControl(){
+        if(isset($_POST['actualizar_grupo'])){
+            $datos = array(
+                'id' => $_POST['id'],
+                'nombre' => $_POST['nombre'],
+                'disciplina' => $_POST['diciplina'],
+                'categoria' => $_POST['categoria'],
+                'sub_categoria' => $_POST['sub_categoria']
+            );
+            
+            $editar_grupo = GruposModel::editarGrupoModel($datos);
+
+            if($editar_grupo){
+                echo '                       
+                <div class="alert alert-green" role="alert">
+                    <strong>Exito!</strong> El grupo se ha editado correctamente.
+                </div>
+                        
+                <script>
+                    setTimeout(()=> {
+                        const alert = document.querySelector(".alert");
+                        if(alert) {
+                            alert.classList.remove("show");
+                            alert.classList.add("fade");
+                        }
+                        setTimeout(() => window.location.replace("index"), 200);
+                        }, 2050)
+                    </script>
+                    ';
+            }else{
+                echo '
+                    <div class="alert alert-red alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> No se ha podido editar el grupo.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    ';
+            }
+        }
+    }
+
     public function eliminarGrupoControl(){
         if(isset($_POST['eliminar_grupo'])){
             $id = $_POST['id'];
