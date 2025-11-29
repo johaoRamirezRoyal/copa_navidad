@@ -623,4 +623,30 @@ class PartidosModel extends conexion
             print "Error al eliminar los datos del jugador en el partido: " . $e;
         }
     }
+
+    public static function editarPartidoModel($datos){
+        $tabla = "partidos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "UPDATE $tabla 
+                    SET fecha = :fecha, lugar = :lugar, disciplina = :disciplina, categoria = :categoria, subcategoria = :subcategoria, equipo1 = :equipo1, equipo2 = :equipo2
+                    WHERE id = :id";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":fecha", $datos['fecha']);
+            $preparado->bindParam(":lugar", $datos['lugar']);
+            $preparado->bindParam(":disciplina", $datos['disciplina']);
+            $preparado->bindParam(":categoria", $datos['categoria']);
+            $preparado->bindParam(":subcategoria", $datos['subcategoria']);
+            $preparado->bindParam(":equipo1", $datos['equipo1']);
+            $preparado->bindParam(":equipo2", $datos['equipo2']);
+            $preparado->bindParam(":id", $datos['id']);
+            if ($preparado->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al editar el enfrentamiento: " . $e;
+        }
+    }
 }
