@@ -121,6 +121,13 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
             background: linear-gradient(135deg, #eaffef 0%, #c8ffd7 100%);
             color: #0d4f16;
         }
+
+        /* Nueva regla: aplicar fondo verde a las celdas de la columna */
+        .table tbody td.th-green {
+            background: linear-gradient(135deg, #eaffef 0%, #c8ffd7 100%);
+            color: #0d4f16;
+        }
+
         .table tbody tr {
             transition: transform .35s ease, box-shadow .35s ease;
         }
@@ -315,24 +322,19 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                 $integrantes = $instancia_jugadores->obtenerJugadoresPorEquipoControl($id_equipo);
                 $num_integrantes = count($integrantes);
 
-                // Función para generar avatar aleatorio usando ui-avatars.com
                 function avatar_url($nombre)
                 {
                     $nombre_url = urlencode($nombre);
                     return "https://ui-avatars.com/api/?name={$nombre_url}&background=1417a8&color=fff&size=64";
                 }
                 ?>
-                <p class="fw-bold mb-3">
-                    <i class="bi bi-person-lines-fill me-1"></i>
-                    Número de integrantes: <?php echo $num_integrantes; ?>
-                </p>
+                
                 <div class="table-responsive">
                     <table class="table table-striped align-middle">
                         <thead class="table-light">
                             <tr>
                                 <th></th>
-                                <th>Nombre</th>
-                                <th>Edad</th>
+                                <th>Nombre</th>                                
                                 <th class="text-center th-amber">Amonestacion Leve</th>
                                 <th class="text-center th-red">Amonestacion Grave</th>
                                 <th class="text-center th-green">Puntos</th>
@@ -353,7 +355,6 @@ $proximo_partido = $instancia_partidos->obtenerProximoPartidoControl($id_equipo)
                                     <img src="<?php echo avatar_url($jugador['nombre']); ?>" alt="Avatar" class="rounded-circle border border-2" width="56" height="56">
                                 </td>
                                 <td class="fw-semibold"><?php echo htmlspecialchars($jugador['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($jugador['edad']); ?></td>
                                 <td class="text-center th-amber"><?php echo (int)($ultimo_dato['amonestacion_leve'] ?? 0); ?></td>
                                 <td class="text-center th-red"><?php echo (int)($ultimo_dato['amonestacion_grave'] ?? 0); ?></td>
                                 <td class="text-center th-green"><?php echo (int)($ultimo_dato['punto_conseguido'] ?? 0); ?></td>

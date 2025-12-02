@@ -17,6 +17,16 @@ if(isset($_POST['partidos_hoy'])){
     $label = "Matches";
 }
 
+// Agrupar partidos por deporte
+$partidos_por_deporte = [];
+foreach ($partidos as $partido) {
+    $deporte = $partido['disciplina_nom'];
+    if (!isset($partidos_por_deporte[$deporte])) {
+        $partidos_por_deporte[$deporte] = [];
+    }
+    $partidos_por_deporte[$deporte][] = $partido;
+}
+
 ?>
 <style>
 /* Modern Sports Card - Light Version */
@@ -386,6 +396,120 @@ if(isset($_POST['partidos_hoy'])){
     0 4px 24px #fff,
     0 4px 16px #0004;
 }
+
+/* Nuevo estilo para H1 de deportes - Solo Texto con Inclinación y Brillo Gris Claro */
+.deporte-titulo {
+    color: #1e3a8a;
+    font-weight: 800;
+    font-size: 2.5rem;
+    padding: 0;
+    margin-bottom: 3rem;
+    margin-top: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: visible;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    background: none;
+    box-shadow: none;
+    border: none;
+    backdrop-filter: none;
+    transform: skewX(-15deg);
+    text-shadow: 
+        0 0 10px rgba(148, 163, 184, 0.5),
+        0 0 20px rgba(148, 163, 184, 0.3);
+}
+
+.deporte-titulo:hover {
+    color: #003fd3ff;
+    transform: skewX(-15deg) translateX(10px);
+    letter-spacing: 3px;
+    text-shadow: 
+        0 0 20px rgba(148, 163, 184, 0.8),
+        0 0 40px rgba(203, 213, 225, 0.6),
+        0 0 60px rgba(226, 232, 240, 0.4);
+}
+
+.deporte-titulo::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    /* Línea roja (degradado suave) */
+    background: linear-gradient(90deg, #dc2626 0%, #a21a1a 100%);
+    /* Brillo rojo suave */
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.45);
+    animation: expandLine 0.6s ease forwards;
+    transition: all 0.3s ease;
+}
+
+.deporte-titulo:hover::before {
+    width: 100%;
+    box-shadow: 0 0 18px rgba(220, 38, 38, 0.65), 0 0 36px rgba(255, 99, 99, 0.25);
+}
+
+.deporte-titulo i {
+    font-size: 2.5rem;
+    animation: bounce 2s infinite;
+    color: #1e3a8a;
+    transform: skewX(15deg);
+    filter: drop-shadow(0 0 8px rgba(148, 163, 184, 0.6));
+}
+
+.deporte-titulo:hover i {
+    color: #003fd3ff;
+    filter: drop-shadow(0 0 15px rgba(203, 213, 225, 0.8));
+}
+
+.deporte-titulo span {
+    transform: skewX(15deg);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: skewX(15deg) translateY(0);
+    }
+    50% {
+        transform: skewX(15deg) translateY(-8px);
+    }
+}
+
+@keyframes expandLine {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+/* Responsive para el título */
+@media (max-width: 768px) {
+    .deporte-titulo {
+        font-size: 1.8rem;
+        gap: 0.7rem;
+    }
+    
+    .deporte-titulo i {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .deporte-titulo {
+        font-size: 1.5rem;
+        gap: 0.5rem;
+    }
+    
+    .deporte-titulo i {
+        font-size: 1.8rem;
+    }
+}
 </style>
 <div class="container-fluid pt-5" style="background: linear-gradient(135deg, #f8fafc 0%, #e2eafc 100%); margin-top: 85px; padding-top: 18px;">
     <div class="py-5">
@@ -402,91 +526,91 @@ if(isset($_POST['partidos_hoy'])){
         <form method="POST" class="mb-4 text-start">
             <button type="submit" class="cta" name="partidos_hoy">
               <span class="span">
-                <!-- Ícono SVG -->
                 Today's Matches
               </span>
             </button>
         </form>
-        <!-- NUEVO: Flexbox para las cards -->
-        <div class="cards-flex-container">
-            <?php foreach ($partidos as $partido):
-                $deporte = $partido['disciplina_nom'];
-                $categoria = $partido['categoria_nom'];
-                $subcategoria = $partido['subcategoria_nom'];
-                $lugar = $partido['lugar'];
-                $fecha_hora = $partido['fecha'];
-                list($fecha, $hora) = explode(' ', $fecha_hora);
-                $colegio1 = $partido['colegio_equipo1_nom'];
-                $colegio2 = $partido['colegio_equipo2_nom'];
-                $inicio = new DateTime($fecha_hora);
-                $fin = (clone $inicio)->modify('+1 hours');
-                $ahora = new DateTime();
+        
+        <?php foreach ($partidos_por_deporte as $deporte => $partidos_deporte): ?>
+            <h1 class="deporte-titulo">
+                <i class="bi bi-trophy-fill"></i> 
+                <?= htmlspecialchars($deporte) ?>
+            </h1>
+            
+            <!-- NUEVO: Flexbox para las cards -->
+            <div class="cards-flex-container">
+                <?php foreach ($partidos_deporte as $partido):
+                    $categoria = $partido['categoria_nom'];
+                    $subcategoria = $partido['subcategoria_nom'];
+                    $lugar = $partido['lugar'];
+                    $fecha_hora = $partido['fecha'];
+                    list($fecha, $hora) = explode(' ', $fecha_hora);
+                    $colegio1 = $partido['colegio_equipo1_nom'];
+                    $colegio2 = $partido['colegio_equipo2_nom'];
+                    $inicio = new DateTime($fecha_hora);
+                    $fin = (clone $inicio)->modify('+3 hours');
+                    $ahora = new DateTime();
 
-                $directo = ($ahora >= $inicio && $ahora <= $fin);
-                $score1 = ($partido['pts_equipo1'] === null) ? 0 : $partido['pts_equipo1'];
-                $score2 = ($partido['pts_equipo2'] === null) ? 0 : $partido['pts_equipo2'];
+                    $directo = ($ahora >= $inicio && $ahora <= $fin);
+                    $score1 = ($partido['pts_equipo1'] === null) ? 0 : $partido['pts_equipo1'];
+                    $score2 = ($partido['pts_equipo2'] === null) ? 0 : $partido['pts_equipo2'];
 
-            ?>
-            <div class="card-flex-item">
-                <div class="sports-card-wrapper w-100">
-                    <div class="sports-card h-100">
-                        <!-- NUEVA CABECERA CON DEPORTE, CATEGORÍA Y EN VIVO -->
-                        <div class="meta-info" style="border-radius:2.2rem 2.2rem 0 0; border-bottom: 1px solid #e2eafc; background: #eaf3ff;">
-                            <span>
-                                <i class="bi bi-trophy-fill"></i>
-                                <?= htmlspecialchars($deporte) ?>
-                            </span>
-                            <span>
-                                <i class="bi bi-people-fill"></i>
-                                <?= htmlspecialchars($categoria) ?> • <?= ucfirst($subcategoria) ?>
-                            </span>
-                            <?php if($directo && $partido['pts_equipo1'] === null && $partido['pts_equipo2'] === null): ?>
-                                <span class="badge-live">
-                                    <i class="bi bi-broadcast-pin"></i> EN VIVO
+                ?>
+                <div class="card-flex-item">
+                    <div class="sports-card-wrapper w-100">
+                        <div class="sports-card h-100">
+                            <div class="meta-info" style="border-radius:2.2rem 2.2rem 0 0; border-bottom: 1px solid #e2eafc; background: #eaf3ff;">
+                                <span>
+                                    <i class="bi bi-people-fill"></i>
+                                    <?= htmlspecialchars($categoria) ?> • <?= ucfirst($subcategoria) ?>
                                 </span>
-                            <?php endif; ?>
-                        </div>
-                        <!-- FIN CABECERA -->
-                        <div class="teams" data-status="<?= $directo ? 'inprogress' : 'scheduled' ?>">
-                            <span class="team-info team-home">
-                                <span class="team-info-container">
-                                    <span class="team-name-info"><?= htmlspecialchars($colegio1) ?></span>
-                                </span>
-                            </span>
-                            <span class="event-scoreboard">
-                                <span class="event-score-container">
-                                    <span class="current-time-container">
-                                        <span class="event-current-time">
-                                        </span>
-                                        <?php if($directo): ?>
-                                        <span class="progress-dots" data-progress="1S">
-                                            <span class="load"></span>
-                                        </span>
-                                        <?php endif; ?>
+                                <?php if($directo): ?>
+                                    <span class="badge-live">
+                                        <i class="bi bi-broadcast-pin"></i> EN VIVO
                                     </span>
-                                    <span class="score-container">
-                                        <span class="score-home"><?= $score1 ?></span>
-                                        <span class="custom-sep">-</span>
-                                        <span class="score-away"><?= $score2 ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="teams" data-status="<?= $directo ? 'inprogress' : 'scheduled' ?>">
+                                <span class="team-info team-home">
+                                    <span class="team-info-container">
+                                        <span class="team-name-info"><?= htmlspecialchars($colegio1) ?></span>
                                     </span>
                                 </span>
-                            </span>
-                            <span class="team-info team-away">
-                                <span class="team-info-container">
-                                    <span class="team-name-info"><?= htmlspecialchars($colegio2) ?></span>
+                                <span class="event-scoreboard">
+                                    <span class="event-score-container">
+                                        <span class="current-time-container">
+                                            <span class="event-current-time"></span>
+                                            <?php if($directo): ?>
+                                            <span class="progress-dots" data-progress="1S">
+                                                <span class="load"></span>
+                                            </span>
+                                            <?php endif; ?>
+                                        </span>
+                                        <span class="score-container">
+                                            <span class="score-home"><?= $score1 ?></span>
+                                            <span class="custom-sep">-</span>
+                                            <span class="score-away"><?= $score2 ?></span>
+                                        </span>
+                                    </span>
                                 </span>
-                            </span>
-                        </div>
-                        <div class="meta-info" style="border-radius:0 0 2.2rem 2.2rem;">
-                            <span><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($lugar) ?></span>
-                            <span><i class="bi bi-calendar-event"></i> <?= $fecha ?></span>
-                            <span><i class="bi bi-clock"></i> <?= $hora ?></span>
+                                <span class="team-info team-away">
+                                    <span class="team-info-container">
+                                        <span class="team-name-info"><?= htmlspecialchars($colegio2) ?></span>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="meta-info" style="border-radius:0 0 2.2rem 2.2rem;">
+                                <span><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($lugar) ?></span>
+                                <span><i class="bi bi-calendar-event"></i> <?= $fecha ?></span>
+                                <span><i class="bi bi-clock"></i> <?= $hora ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-        </div>
+            <hr style="margin: 3rem 0; border: none; border-top: 2px solid #e2eafc;">
+        <?php endforeach; ?>
     </div>
 </div>
 <!-- Footer-->
