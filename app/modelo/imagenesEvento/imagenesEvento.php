@@ -7,7 +7,7 @@ class imagenesEvento extends conexion
     {
         $tabla = "imagen_evento";
         $cnx = conexion::singleton_conexion();
-        $cmdsql = "SELECT * FROM $tabla WHERE id_deporte = :deporte ORDER BY id DESC LIMIT 10";
+        $cmdsql = "SELECT * FROM $tabla WHERE id_deporte = :deporte ORDER BY id DESC";
         try {
             $preparado = $cnx->preparar($cmdsql);
             $preparado->bindParam(":deporte", $deporte, PDO::PARAM_INT);
