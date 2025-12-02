@@ -36,6 +36,7 @@ if (isset($_POST['buscar'])) {
 } else {
     $grupos = $instancia_grupos->obtenerTodosLosGruposControl();
 }
+
 ?>
 
 <div class="container" style="margin-top: 120px; padding-top: 18px;">
@@ -119,6 +120,9 @@ if (isset($_POST['buscar'])) {
                                 $categoria = $grupo['categoria_nombre'];
                                 $deporte = $grupo['disciplina_nombre'];
                                 $subcategoria = $grupo['subcategoria_nombre'];
+                                $id_categoria = $grupo['categoria'];
+                                $id_subcategoria = $grupo['subcategoria'];
+                                $id_deporte = $grupo['disciplina'];
                             ?>
                                 <tr class="text-center">
                                     <td><?= $nombre ?></td>
@@ -167,7 +171,7 @@ if (isset($_POST['buscar'])) {
                                                                     <select class="form-select form-select" name="categoria" aria-label="Categoria Busqueda" required>
                                                                         <option selected disabled>Selecciona una categoria</option>
                                                                         <?php foreach ($categorias as $categoria):
-                                                                            $select = ($categoria['id'] == $equipo['id_categoria']) ? 'selected' : '';
+                                                                            $select = ($categoria['id'] == $id_categoria) ? 'selected' : '';
                                                                         ?>
                                                                             <option value="<?= $categoria['id'] ?>" <?= $select ?>><?= $categoria['nombre'] ?></option>
                                                                         <?php endforeach ?>
@@ -180,7 +184,7 @@ if (isset($_POST['buscar'])) {
                                                                     <select class="form-select form-select" name="sub_categoria" aria-label="Subcategoria Busqueda" required>
                                                                         <option selected disabled>Selecciona una subcategoria</option>
                                                                         <?php foreach ($subcategorias as $subcategoria):
-                                                                            $select = ($subcategoria['id'] == $equipo['id_subcategoria']) ? 'selected' : '';
+                                                                            $select = ($subcategoria['id'] == $id_subcategoria) ? 'selected' : '';
                                                                         ?>
                                                                             <option value="<?= $subcategoria['id'] ?>" <?= $select ?>><?= ucfirst($subcategoria['nombre']) ?></option>
                                                                         <?php endforeach ?>
@@ -194,7 +198,7 @@ if (isset($_POST['buscar'])) {
                                                                     <select class="form-select form-select" name="diciplina" aria-label="Disciplina" required>
                                                                         <option selected disabled>Selecciona un deporte</option>
                                                                         <?php foreach ($deportes as $deporte):
-                                                                            $select = ($deporte['id'] == $equipo['id_deporte']) ? 'selected' : '';
+                                                                            $select = ($deporte['id'] == $id_deporte) ? 'selected' : '';
                                                                         ?>
                                                                             <option value="<?= $deporte['id'] ?>" <?= $select ?>><?= ucfirst($deporte['nombre']) ?></option>
                                                                         <?php endforeach ?>
@@ -233,8 +237,10 @@ if (isset($_POST['buscar'])) {
                                         <label for="categoria" class="form-label"><b>Selecciona una categoria<span class="text-danger">*</span></b></label>
                                         <select class="form-select form-select" name="categoria" aria-label="Categoria Busqueda" required>
                                             <option selected disabled>Selecciona una categoria</option>
-                                            <?php foreach ($categorias as $categoria): ?>
-                                                <option value="<?= $categoria['id'] ?>"><?= $categoria['nombre'] ?></option>
+                                            <?php foreach ($categorias as $categoria): 
+                                                $select = ($categoria['id'] == $equipo['id_categoria']) ? 'selected' : '';
+                                                ?>
+                                                <option value="<?= $categoria['id'] ?>" <?= $select ?> > <?= $categoria['nombre'] ?> </option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
@@ -244,8 +250,10 @@ if (isset($_POST['buscar'])) {
                                         <label for="subcategoria" class="form-label"><b>Selecciona una subcategoria<span class="text-danger">*</span></b></label>
                                         <select class="form-select form-select" name="sub_categoria" aria-label="Subcategoria Busqueda" required>
                                             <option selected disabled>Selecciona una subcategoria</option>
-                                            <?php foreach ($subcategorias as $subcategoria): ?>
-                                                <option value="<?= $subcategoria['id'] ?>"><?= ucfirst($subcategoria['nombre']) ?></option>
+                                            <?php foreach ($subcategorias as $subcategoria): 
+                                                $select = ($subcategoria['id'] == $equipo['id_subcategoria']) ? 'selected' : '';
+                                                ?>
+                                                <option value="<?= $subcategoria['id'] ?>" <?= $select ?> > <?= ucfirst($subcategoria['nombre']) ?> </option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>

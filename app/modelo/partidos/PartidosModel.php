@@ -24,7 +24,7 @@ class PartidosModel extends conexion
                     LEFT JOIN equipos e2 ON e2.id = p.equipo2
                     LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
                     LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
-                    ORDER BY p.fecha DESC;";
+                    ORDER BY p.fecha ASC;";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
@@ -131,7 +131,7 @@ class PartidosModel extends conexion
                     LEFT JOIN colegios_participantes cp1 ON cp1.id = e1.colegio
                     LEFT JOIN colegios_participantes cp2 ON cp2.id = e2.colegio 
                     WHERE DATE(p.fecha) = '$fecha'
-                    ORDER BY p.fecha DESC;";
+                    ORDER BY p.fecha ASC;";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
@@ -293,7 +293,7 @@ class PartidosModel extends conexion
                     LEFT JOIN categorias c ON p.categoria = c.id
                     LEFT JOIN subcategoria s ON p.subcategoria = s.id
                     LEFT JOIN disciplinas d ON p.disciplina = d.id
-                    ORDER BY p.fecha DESC;";
+                    ORDER BY p.fecha ASC;";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
@@ -328,7 +328,7 @@ class PartidosModel extends conexion
                     LEFT JOIN subcategoria s ON p.subcategoria = s.id
                     LEFT JOIN disciplinas d ON p.disciplina = d.id
                     WHERE DATE(p.fecha) = '$fecha'
-                    ORDER BY p.fecha DESC;";
+                    ORDER BY p.fecha ASC;";
         try {
             $preparado = $cnx->preparar($cmdsql);
             if ($preparado->execute()) {
@@ -621,6 +621,32 @@ class PartidosModel extends conexion
             }
         }catch (PDOException $e) {
             print "Error al eliminar los datos del jugador en el partido: " . $e;
+        }
+    }
+
+    public static function editarPartidoModel($datos){
+        $tabla = "partidos";
+        $cnx = conexion::singleton_conexion();
+        $cmdsql = "UPDATE $tabla 
+                    SET fecha = :fecha, lugar = :lugar, disciplina = :disciplina, categoria = :categoria, subcategoria = :subcategoria, equipo1 = :equipo1, equipo2 = :equipo2
+                    WHERE id = :id";
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            $preparado->bindParam(":fecha", $datos['fecha']);
+            $preparado->bindParam(":lugar", $datos['lugar']);
+            $preparado->bindParam(":disciplina", $datos['disciplina']);
+            $preparado->bindParam(":categoria", $datos['categoria']);
+            $preparado->bindParam(":subcategoria", $datos['subcategoria']);
+            $preparado->bindParam(":equipo1", $datos['equipo1']);
+            $preparado->bindParam(":equipo2", $datos['equipo2']);
+            $preparado->bindParam(":id", $datos['id']);
+            if ($preparado->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al editar el enfrentamiento: " . $e;
         }
     }
 }
