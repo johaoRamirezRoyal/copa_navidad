@@ -440,7 +440,7 @@ if(isset($_POST['partidos_hoy'])){
                                 <i class="bi bi-people-fill"></i>
                                 <?= htmlspecialchars($categoria) ?> • <?= ucfirst($subcategoria) ?>
                             </span>
-                            <?php if($directo && $partido['pts_equipo1'] !== null || $partido['pts_equipo2'] !== null): ?>
+                            <?php if($directo && $partido['pts_equipo1'] === null && $partido['pts_equipo2'] === null): ?>
                                 <span class="badge-live">
                                     <i class="bi bi-broadcast-pin"></i> EN VIVO
                                 </span>
