@@ -548,7 +548,7 @@ foreach ($partidos as $partido) {
                     $colegio1 = $partido['colegio_equipo1_nom'];
                     $colegio2 = $partido['colegio_equipo2_nom'];
                     $inicio = new DateTime($fecha_hora);
-                    $fin = (clone $inicio)->modify('+3 hours');
+                    $fin = (clone $inicio)->modify('+1 hours');
                     $ahora = new DateTime();
 
                     $directo = ($ahora >= $inicio && $ahora <= $fin);
