@@ -82,11 +82,12 @@ class GruposModel extends conexion
         }
     }
 
-    public static function obtenerGruposFiltradoModel($categoria, $subcategoria, $deporte){
-    $tabla = "grupos";
-    $cnx = conexion::singleton_conexion();
+    public static function obtenerGruposFiltradoModel($categoria, $subcategoria, $deporte)
+    {
+        $tabla = "grupos";
+        $cnx = conexion::singleton_conexion();
 
-    $cmdsql = "SELECT
+        $cmdsql = "SELECT
                     g.id,
                     g.categoria AS id_categoria,
                     g.subcategoria AS id_subcategoria,
@@ -104,17 +105,17 @@ class GruposModel extends conexion
                 WHERE g.nombre IS NOT NULL
                 $categoria $subcategoria $deporte;";
 
-    try{
-        $preparado = $cnx->preparar($cmdsql);
-        if($preparado->execute()){
-            return $preparado->fetchAll(PDO::FETCH_ASSOC);
-        }else{
-            return false;
+        try {
+            $preparado = $cnx->preparar($cmdsql);
+            if ($preparado->execute()) {
+                return $preparado->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            print "Error al traer los grupos por filtro: " . $e->getMessage();
         }
-    }catch(PDOException $e){
-        print "Error al traer los grupos por filtro: " . $e->getMessage();
     }
-}
 
     public static function editarGrupoModel($datos)
     {
@@ -168,6 +169,14 @@ class GruposModel extends conexion
     {
 
         $grupo_info = GruposModel::obtenerGrupoPorIdModel($id_grupo);
+
+        $id_categoria = $grupo_info['categoria'];
+        $id_subcategoria = $grupo_info['subcategoria'];
+        $id_disciplina = $grupo_info['disciplina'];
+
+        var_dump($grupo_info);
+        die();
+
         $array_futbol = [2, 8]; // IDs de disciplinas que son futbol
         $array_volley = [3]; // IDs de disciplinas que son volley
         $array_softball = [6]; // IDs de disciplinas que son softball
@@ -177,15 +186,15 @@ class GruposModel extends conexion
             $pts_victoria = 3;
             $pts_derrota = 0;
             $pts_empate = 1;
-        } else if(in_array($grupo_info['disciplina'], $array_basket)) {
+        } else if (in_array($grupo_info['disciplina'], $array_basket)) {
             $pts_victoria = 2;
             $pts_derrota = 1;
             $pts_empate = 0;
-        }else if(in_array($grupo_info['disciplina'], $array_softball)) {
+        } else if (in_array($grupo_info['disciplina'], $array_softball)) {
             $pts_victoria = 2;
             $pts_derrota = 1;
             $pts_empate = 0;
-        }else{
+        } else {
             $pts_victoria = 1;
             $pts_derrota = 0;
             $pts_empate = 0;
@@ -240,71 +249,51 @@ class GruposModel extends conexion
 
                         SUM(
                             CASE 
-                            
-                                ----------------------------------------------------
-                                -- SI ES VOLEY (DISCIPLINA = 3) SE CALCULAN PUNTOS
-                                ----------------------------------------------------
                                 WHEN g.disciplina = 3 THEN 
                                     CASE 
-                                        ------------------------------------------------
-                                        -- El equipo es id_equipo1
-                                        ------------------------------------------------
                                         WHEN r.id_equipo1 = e.id THEN
                                             CASE 
-                                                WHEN r.sets_equipo1 = 2 AND r.sets_equipo2 = 0 THEN 4
-                                                WHEN r.sets_equipo1 = 2 AND r.sets_equipo2 = 1 THEN 3
-                                                WHEN r.sets_equipo1 = 1 AND r.sets_equipo2 = 2 THEN 2
-                                                WHEN r.sets_equipo1 = 0 AND r.sets_equipo2 = 2 THEN 1
+                                                WHEN r.pts_equipo1 = 2 AND r.pts_equipo2 = 0 THEN 4
+                                                WHEN r.pts_equipo1 = 2 AND r.pts_equipo2 = 1 THEN 3
+                                                WHEN r.pts_equipo1 = 1 AND r.pts_equipo2 = 2 THEN 2
+                                                WHEN r.pts_equipo1 = 0 AND r.pts_equipo2 = 2 THEN 1
                                                 ELSE 0
                                             END
-
-                                        ------------------------------------------------
-                                        -- El equipo es id_equipo2
-                                        ------------------------------------------------
                                         WHEN r.id_equipo2 = e.id THEN
                                             CASE 
-                                                WHEN r.sets_equipo2 = 2 AND r.sets_equipo1 = 0 THEN 4
-                                                WHEN r.sets_equipo2 = 2 AND r.sets_equipo1 = 1 THEN 3
-                                                WHEN r.sets_equipo2 = 1 AND r.sets_equipo1 = 2 THEN 2
-                                                WHEN r.sets_equipo2 = 0 AND r.sets_equipo1 = 2 THEN 1
+                                                WHEN r.pts_equipo2 = 2 AND r.pts_equipo1 = 0 THEN 4
+                                                WHEN r.pts_equipo2 = 2 AND r.pts_equipo1 = 1 THEN 3
+                                                WHEN r.pts_equipo2 = 1 AND r.pts_equipo1 = 2 THEN 2
+                                                WHEN r.pts_equipo2 = 0 AND r.pts_equipo1 = 2 THEN 1
                                                 ELSE 0
                                             END
-
                                     END
-
-                                ----------------------------------------------------
-                                -- SI NO ES VOLEY USA TU LÓGICA NORMAL
-                                ----------------------------------------------------
                                 ELSE
                                     CASE
                                         WHEN r.ganador = e.id THEN $pts_victoria
-                                        WHEN r.ganador = 0 THEN $pts_empate
-                                        ELSE $pts_derrota
+                                        WHEN r.ganador = 0 THEN 1 $pts_empate
+                                        ELSE 0
                                     END
                             END
                         ) AS PTS
 
                     FROM equipos e
 
-                    -- Trae los resultados donde participa el equipo
                     LEFT JOIN resultado_enfrentamiento r
                         ON e.id IN (r.id_equipo1, r.id_equipo2)
 
-                    -- Obtener datos del grupo para conocer la disciplina
                     LEFT JOIN grupos g
                         ON g.id = e.id_grupo
 
-                    -- Obtener rival para validar grupo
                     LEFT JOIN equipos rival
-                        ON rival.id = 
-                            CASE 
-                                WHEN r.id_equipo1 = e.id THEN r.id_equipo2
-                                ELSE r.id_equipo1
-                            END
+                        ON rival.id = CASE 
+                            WHEN r.id_equipo1 = e.id THEN r.id_equipo2
+                            ELSE r.id_equipo1
+                        END
 
-                    -- Solo partidos entre el mismo grupo
-                    WHERE e.id_grupo = $id_grupo
-                    AND (rival.id_grupo = e.id_grupo OR rival.id IS NULL)
+                    WHERE e.categoria = $id_categoria
+                    AND e.sub_categoria = $id_subcategoria
+                    AND e.diciplina = $id_disciplina
 
                     GROUP BY e.id
                     ORDER BY PTS DESC, DG DESC, GF DESC;

@@ -348,6 +348,11 @@ class PartidosModel extends conexion
     {
 
         $grupo_info = GruposModel::obtenerGrupoPorIdModel($id_grupo);
+
+        $id_categoria = $grupo_info['categoria'];
+        $id_subcategoria = $grupo_info['subcategoria'];
+        $id_disciplina = $grupo_info['disciplina'];
+
         $array_futbol = [2, 8]; // IDs de disciplinas que son futbol
         $array_volley = [3]; // IDs de disciplinas que son volley
         $array_softball = [6]; // IDs de disciplinas que son softball
@@ -460,7 +465,7 @@ class PartidosModel extends conexion
                                     ELSE r.id_equipo1
                                 END
                         -- Solo partidos entre el mismo grupo
-                        WHERE e.id_grupo = $id_grupo
+                        WHERE e.categoria = $id_categoria AND e.sub_categoria = $id_subcategoria AND e.diciplina = $id_disciplina
                         AND (rival.id_grupo = e.id_grupo OR rival.id IS NULL)
                         GROUP BY e.id
                         ORDER BY PUNTOS DESC, DIFERENCIA_PUNTOS DESC, PUNTOS_FAVOR DESC;";
