@@ -466,7 +466,7 @@ class PartidosModel extends conexion
                                 END
                         -- Solo partidos entre el mismo grupo
                         WHERE e.categoria = $id_categoria AND e.sub_categoria = $id_subcategoria AND e.diciplina = $id_disciplina
-                        AND (rival.id_grupo = e.id_grupo OR rival.id IS NULL)
+                        -- AND (rival.id_grupo = e.id_grupo OR rival.id IS NULL)
                         GROUP BY e.id
                         ORDER BY PUNTOS DESC, DIFERENCIA_PUNTOS DESC, PUNTOS_FAVOR DESC;";
 
